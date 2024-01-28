@@ -13,6 +13,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Name | GitHub | Major | Year |
 | ------------- | ------------- | ------------- | ------------- |
 |William Wang | [wangwiza](https://github.com/wangwiza) | Software Engineering | U2 |
+|Li Yang Lei | [leiliyang](https://github.com/LeiLiYang) | Software Engineering | U2 |
 
 
 ## Overview Tables
@@ -20,6 +21,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | NAME                   | ROLE |  SPRINT 1 | SPRINT 2 | SPRINT 3 | SPRINT 4 |
 |------------------------|------|-----------|----------|----------|----------|
 | William Wang       | Documentation Lead | 0      |    0     |    0      |    0      |
+| Li Yang Lei       | Chief Technology Officer (CTO) | 0      |    0     |    0      |    0      |
 
 ### Deliverable 1
 
@@ -28,6 +30,7 @@ The project report for this deliverable can be found [here]().
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>Setting up repo with Spring backend</li><li>Setting up documentation architecture</li><li>Document minutes, wiki, README.md, issues</li></ul> | 5 |
+| Li Yang Lei | <ul><li>Created use case diagram</li><li>Detailed a use case specification</li></ul> | 2 |
 
 ### Deliverable 2
 
@@ -36,6 +39,7 @@ The project report for this deliverable can be found [here]().
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
+| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 3
 
@@ -44,6 +48,7 @@ The project report for this deliverable can be found [here]().
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
+| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 4
 
@@ -52,3 +57,4 @@ The project report for this deliverable can be found [here]().
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
+| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
