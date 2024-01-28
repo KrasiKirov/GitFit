@@ -1,1 +1,54 @@
-uwu
+## Project Overview
+Welcome to Achilles - Your Ultimate Sport Center Management System! 🏋️‍♂️🔗 This GitHub repository is home to the codebase that powers Achilles, our cutting-edge web application designed to revolutionize the management of sport centers. With Achilles, we empower owners and instructors to seamlessly organize and supervise classes, while offering customers a user-friendly platform to explore schedules, register for sessions, and take control of their fitness journey. Achilles is not just a project; it's a commitment to providing a robust and intuitive solution that enhances the operations of sport centers and delivers an unparalleled experience for owners, instructors, and fitness enthusiasts. Together, let's elevate the world of fitness management with Achilles! 💪🌐
+
+## Running the Project
+No idea yet...
+
+## Using the Application
+No idea yet either...
+
+### About us
+We are 6 McGill University students from the Faculty of Engineering
+
+| Name | GitHub | Major | Year |
+| ------------- | ------------- | ------------- | ------------- |
+|William Wang | [wangwiza](https://github.com/wangwiza) | Software Engineering | U2 |
+
+
+## Overview Tables
+### Project
+| NAME                   | ROLE |  SPRINT 1 | SPRINT 2 | SPRINT 3 | SPRINT 4 |
+|------------------------|------|-----------|----------|----------|----------|
+| William Wang       | Documentation Lead | 0      |    0     |    0      |    0      |
+
+### Deliverable 1
+
+The project report for this deliverable can be found [here]().
+
+| Name | Contributions | Hours |
+| ------------- | ------------- | ------------- |
+| William Wang | <ul><li>Setting up repo with Spring backend</li><li>Setting up documentation architecture</li><li>Document minutes, wiki, README.md, issues</li></ul> | 5 |
+
+### Deliverable 2
+
+The project report for this deliverable can be found [here]().
+
+| Name | Contributions | Hours |
+| ------------- | ------------- | ------------- |
+| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
+
+### Deliverable 3
+
+The project report for this deliverable can be found [here]().
+
+| Name | Contributions | Hours |
+| ------------- | ------------- | ------------- |
+| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
+
+### Deliverable 4
+
+The project report for this deliverable can be found [here]().
+
+| Name | Contributions | Hours |
+| ------------- | ------------- | ------------- |
+| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
