@@ -14,6 +14,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | ------------- | ------------- | ------------- | ------------- |
 |William Wang | [wangwiza](https://github.com/wangwiza) | Software Engineering | U2 |
 |Li Yang Lei | [leiliyang](https://github.com/LeiLiYang) | Software Engineering | U2 |
+|Kevin-Ruikai Li | [kevinruikai-li](https://github.com/kevinruikai-li) | Software Engineering | U2 |
 
 
 ## Overview Tables
@@ -22,6 +23,7 @@ We are 6 McGill University students from the Faculty of Engineering
 |------------------------|------|-----------|----------|----------|----------|
 | William Wang       | Documentation Lead | 0      |    0     |    0      |    0      |
 | Li Yang Lei       | Chief Technology Officer (CTO) | 0      |    0     |    0      |    0      |
+| Kevin-Ruikai Li | Software Developer | 0      |    0     |    0      |    0      |
 
 ### Deliverable 1
 
