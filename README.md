@@ -33,6 +33,7 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>Setting up repo with Spring backend</li><li>Setting up documentation architecture</li><li>Document minutes, wiki, README.md, issues</li></ul> | 5 |
 | Li Yang Lei | <ul><li>Created use case diagram</li><li>Detailed a use case specification</li></ul> | 2 |
+| Kevin-Ruikai Li | <ul><li>Use Case diagrams</li><li>Requirements</li><li>Detailed specification of use case</li></ul> | 2 |
 
 ### Deliverable 2
 
@@ -42,6 +43,7 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 3
 
@@ -51,6 +53,7 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 4
 
@@ -60,3 +63,4 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
