@@ -17,6 +17,7 @@ We are 6 McGill University students from the Faculty of Engineering
 |Kevin-Ruikai Li | [kevinruikai-li](https://github.com/kevinruikai-li) | Software Engineering | U2 |
 |Vlad Arama | [vladarama](https://github.com/vladarama) | Software Engineering | U2 |
 |Krasimir Kirov | [KrasiKirov](https://github.com/KrasiKirov) | Software Engineering | U2 |
+|Jatin Patel | [Jatin-Pat](https://github.com/Jatin-Pat) | Software Engineering | U2 |
 
 
 ## Overview Tables
