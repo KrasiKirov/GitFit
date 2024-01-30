@@ -15,6 +15,7 @@ We are 6 McGill University students from the Faculty of Engineering
 |William Wang | [wangwiza](https://github.com/wangwiza) | Software Engineering | U2 |
 |Li Yang Lei | [leiliyang](https://github.com/LeiLiYang) | Software Engineering | U2 |
 |Kevin-Ruikai Li | [kevinruikai-li](https://github.com/kevinruikai-li) | Software Engineering | U2 |
+|Vlad Arama | [vladarama](https://github.com/vladarama) | Software Engineering | U2 |
 
 
 ## Overview Tables
@@ -24,6 +25,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | William Wang       | Documentation Lead | 0      |    0     |    0      |    0      |
 | Li Yang Lei       | Chief Technology Officer (CTO) | 0      |    0     |    0      |    0      |
 | Kevin-Ruikai Li | Software Developer | 0      |    0     |    0      |    0      |
+| Vlad Arama | Backend Lead | 0      |    0     |    0      |    0      |
 
 ### Deliverable 1
 
@@ -34,6 +36,7 @@ The project report for this deliverable can be found [here]().
 | William Wang | <ul><li>Setting up repo with Spring backend</li><li>Setting up documentation architecture</li><li>Document minutes, wiki, README.md, issues</li></ul> | 5 |
 | Li Yang Lei | <ul><li>Created use case diagram</li><li>Detailed a use case specification</li></ul> | 2 |
 | Kevin-Ruikai Li | <ul><li>Use Case diagrams</li><li>Requirements</li><li>Detailed specification of use case</li></ul> | 2 |
+| Vlad Arama | <ul><li>Created use case diagrams</li><li>Detailed a use case specification</li></ul> | 2 |
 
 ### Deliverable 2
 
@@ -44,6 +47,7 @@ The project report for this deliverable can be found [here]().
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 3
 
@@ -54,6 +58,7 @@ The project report for this deliverable can be found [here]().
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 4
 
@@ -64,3 +69,4 @@ The project report for this deliverable can be found [here]().
 | William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
 | Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
