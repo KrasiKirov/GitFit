@@ -29,7 +29,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Kevin-Ruikai Li | Software Developer | 0      |    0     |    0      |    0      |
 | Vlad Arama | Backend Lead | 0      |    0     |    0      |    0      |
 | Krasimir Kirov | Software Developer | 0      |    0     |    0      |    0      |
-| Jatin Patel | TBD | 0      |    0     |    0      |    0      |
+| Jatin Patel | Backend Developer | 0      |    0     |    0      |    0      |
 
 ### Deliverable 1
 
