@@ -29,6 +29,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Kevin-Ruikai Li | Software Developer | 0      |    0     |    0      |    0      |
 | Vlad Arama | Backend Lead | 0      |    0     |    0      |    0      |
 | Krasimir Kirov | Software Developer | 0      |    0     |    0      |    0      |
+| Jatin Patel | TBD | 0      |    0     |    0      |    0      |
 
 ### Deliverable 1
 
@@ -41,6 +42,7 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>Use Case diagrams</li><li>Requirements</li><li>Detailed specification of use case</li></ul> | 2 |
 | Vlad Arama | <ul><li>Created use case diagrams</li><li>Detailed a use case specification</li></ul> | 2 |
 | Krasimir Kirov | <ul><li>Created use case diagrams</li><li>Detailed a use case specification</li></ul> | 2 |
+| Jatin Patel | <ul><li>Created use case diagrams</li><li>Detailed a use case specification</li></ul> | 2 |
 
 ### Deliverable 2
 
@@ -53,6 +55,7 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 
 ### Deliverable 3
 
@@ -65,6 +68,8 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+
 
 ### Deliverable 4
 
@@ -77,3 +82,4 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
 | Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
