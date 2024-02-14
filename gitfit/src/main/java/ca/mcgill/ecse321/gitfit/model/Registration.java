@@ -1,11 +1,5 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
 import java.sql.Date;
 
-// line 36 "model.ump"
-// line 80 "model.ump"
 public class Registration
 {
 
@@ -129,28 +123,5 @@ public class Registration
     sportCenter.addRegistration(this);
     wasSet = true;
     return wasSet;
-  }
-
-  public void delete()
-  {
-    session = null;
-    customer = null;
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if(placeholderSportCenter != null)
-    {
-      placeholderSportCenter.removeRegistration(this);
-    }
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "session = "+(getSession()!=null?Integer.toHexString(System.identityHashCode(getSession())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "sportCenter = "+(getSportCenter()!=null?Integer.toHexString(System.identityHashCode(getSportCenter())):"null");
   }
 }

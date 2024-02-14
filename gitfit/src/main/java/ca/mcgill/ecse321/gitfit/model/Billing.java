@@ -1,10 +1,3 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
-
-// line 59 "model.ump"
-// line 99 "model.ump"
 public class Billing
 {
 
@@ -152,29 +145,5 @@ public class Billing
     sportCenter.addBilling(this);
     wasSet = true;
     return wasSet;
-  }
-
-  public void delete()
-  {
-    customer = null;
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if(placeholderSportCenter != null)
-    {
-      placeholderSportCenter.removeBilling(this);
-    }
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "country" + ":" + getCountry()+ "," +
-            "state" + ":" + getState()+ "," +
-            "postalCode" + ":" + getPostalCode()+ "," +
-            "cardNumber" + ":" + getCardNumber()+ "," +
-            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "sportCenter = "+(getSportCenter()!=null?Integer.toHexString(System.identityHashCode(getSportCenter())):"null");
   }
 }

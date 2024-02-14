@@ -1,10 +1,3 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
-
-// line 26 "model.ump"
-// line 116 "model.ump"
 public class Owner extends Account
 {
 
@@ -40,17 +33,5 @@ public class Owner extends Account
   public int getOwnerId()
   {
     return ownerId;
-  }
-
-  public void delete()
-  {
-    super.delete();
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "ownerId" + ":" + getOwnerId()+ "]";
   }
 }

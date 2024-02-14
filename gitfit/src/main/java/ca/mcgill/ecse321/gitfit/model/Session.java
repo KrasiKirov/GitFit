@@ -1,12 +1,6 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
 import java.sql.Time;
 import java.sql.Date;
 
-// line 43 "model.ump"
-// line 87 "model.ump"
 public class Session
 {
 
@@ -23,14 +17,14 @@ public class Session
 
   //Session Associations
   private Instructor instructor;
-  private Class class;
+  private FitnessClass fitnessClass;
   private SportCenter sportCenter;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, Class aClass, SportCenter aSportCenter)
+  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass, SportCenter aSportCenter)
   {
     id = aId;
     price = aPrice;
@@ -41,9 +35,9 @@ public class Session
     {
       throw new RuntimeException("Unable to create Session due to aInstructor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (!setClass(aClass))
+    if (!setFitnessClass(aFitnessClass))
     {
-      throw new RuntimeException("Unable to create Session due to aClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Session due to aFitnessClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddSportCenter = setSportCenter(aSportCenter);
     if (!didAddSportCenter)
@@ -126,9 +120,9 @@ public class Session
     return instructor;
   }
   /* Code from template association_GetOne */
-  public Class getClass()
+  public FitnessClass getFitnessClass()
   {
-    return class;
+    return fitnessClass;
   }
   /* Code from template association_GetOne */
   public SportCenter getSportCenter()
@@ -147,12 +141,12 @@ public class Session
     return wasSet;
   }
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setClass(Class aNewClass)
+  public boolean setFitnessClass(FitnessClass aNewFitnessClass)
   {
     boolean wasSet = false;
-    if (aNewClass != null)
+    if (aNewFitnessClass != null)
     {
-      class = aNewClass;
+      fitnessClass = aNewFitnessClass;
       wasSet = true;
     }
     return wasSet;
@@ -175,31 +169,5 @@ public class Session
     sportCenter.addSession(this);
     wasSet = true;
     return wasSet;
-  }
-
-  public void delete()
-  {
-    instructor = null;
-    class = null;
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if(placeholderSportCenter != null)
-    {
-      placeholderSportCenter.removeSession(this);
-    }
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
-            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "instructor = "+(getInstructor()!=null?Integer.toHexString(System.identityHashCode(getInstructor())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "class = "+(getClass()!=null?Integer.toHexString(System.identityHashCode(getClass())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "sportCenter = "+(getSportCenter()!=null?Integer.toHexString(System.identityHashCode(getSportCenter())):"null");
   }
 }

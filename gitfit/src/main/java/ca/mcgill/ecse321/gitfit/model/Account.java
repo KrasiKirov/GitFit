@@ -1,10 +1,3 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
-
-// line 14 "model.ump"
-// line 106 "model.ump"
 public class Account
 {
 
@@ -116,26 +109,5 @@ public class Account
     sportCenter.addAccount(this);
     wasSet = true;
     return wasSet;
-  }
-
-  public void delete()
-  {
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if(placeholderSportCenter != null)
-    {
-      placeholderSportCenter.removeAccount(this);
-    }
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "email" + ":" + getEmail()+ "," +
-            "password" + ":" + getPassword()+ "," +
-            "lastName" + ":" + getLastName()+ "," +
-            "firstName" + ":" + getFirstName()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "sportCenter = "+(getSportCenter()!=null?Integer.toHexString(System.identityHashCode(getSportCenter())):"null");
   }
 }

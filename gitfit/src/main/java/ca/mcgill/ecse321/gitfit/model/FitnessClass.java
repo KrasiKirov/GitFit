@@ -1,30 +1,23 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
-
-// line 53 "model.ump"
-// line 94 "model.ump"
-public class Class
+public class FitnessClass
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //Class Attributes
+  //FitnessClass Attributes
   private int id;
   private String name;
   private String description;
 
-  //Class Associations
+  //FitnessClass Associations
   private SportCenter sportCenter;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Class(int aId, String aName, String aDescription, SportCenter aSportCenter)
+  public FitnessClass(int aId, String aName, String aDescription, SportCenter aSportCenter)
   {
     id = aId;
     name = aName;
@@ -32,7 +25,7 @@ public class Class
     boolean didAddSportCenter = setSportCenter(aSportCenter);
     if (!didAddSportCenter)
     {
-      throw new RuntimeException("Unable to create class due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create fitnessClass due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -96,30 +89,10 @@ public class Class
     sportCenter = aSportCenter;
     if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter))
     {
-      existingSportCenter.removeClass(this);
+      existingSportCenter.removeFitnessClass(this);
     }
-    sportCenter.addClass(this);
+    sportCenter.addFitnessClass(this);
     wasSet = true;
     return wasSet;
-  }
-
-  public void delete()
-  {
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if(placeholderSportCenter != null)
-    {
-      placeholderSportCenter.removeClass(this);
-    }
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
-            "name" + ":" + getName()+ "," +
-            "description" + ":" + getDescription()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "sportCenter = "+(getSportCenter()!=null?Integer.toHexString(System.identityHashCode(getSportCenter())):"null");
   }
 }
