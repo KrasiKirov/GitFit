@@ -1,3 +1,10 @@
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
+
+// line 9 "model.ump"
+// line 96 "model.ump"
 public class Account
 {
 
@@ -11,24 +18,16 @@ public class Account
   private String lastName;
   private String firstName;
 
-  //Account Associations
-  private SportCenter sportCenter;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aEmail, String aPassword, String aLastName, String aFirstName, SportCenter aSportCenter)
+  public Account(String aEmail, String aPassword, String aLastName, String aFirstName)
   {
     email = aEmail;
     password = aPassword;
     lastName = aLastName;
     firstName = aFirstName;
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter)
-    {
-      throw new RuntimeException("Unable to create account due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
   }
 
   //------------------------
@@ -86,28 +85,17 @@ public class Account
   {
     return firstName;
   }
-  /* Code from template association_GetOne */
-  public SportCenter getSportCenter()
-  {
-    return sportCenter;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter)
-  {
-    boolean wasSet = false;
-    if (aSportCenter == null)
-    {
-      return wasSet;
-    }
 
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter))
-    {
-      existingSportCenter.removeAccount(this);
-    }
-    sportCenter.addAccount(this);
-    wasSet = true;
-    return wasSet;
+  public void delete()
+  {}
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "email" + ":" + getEmail()+ "," +
+            "password" + ":" + getPassword()+ "," +
+            "lastName" + ":" + getLastName()+ "," +
+            "firstName" + ":" + getFirstName()+ "]";
   }
 }

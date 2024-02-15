@@ -1,7 +1,11 @@
-import java.sql.Time;
-import java.util.*;
-import java.sql.Date;
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
+
+import java.sql.Time;
+
+// line 2 "model.ump"
+// line 65 "model.ump"
 public class SportCenter
 {
 
@@ -15,13 +19,6 @@ public class SportCenter
   private Time openingTime;
   private Time closingTime;
 
-  //SportCenter Associations
-  private List<Account> accounts;
-  private List<Registration> registrations;
-  private List<Session> sessions;
-  private List<FitnessClass> fitnessClasses;
-  private List<Billing> billings;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
@@ -32,11 +29,6 @@ public class SportCenter
     maxCapacity = aMaxCapacity;
     openingTime = aOpeningTime;
     closingTime = aClosingTime;
-    accounts = new ArrayList<Account>();
-    registrations = new ArrayList<Registration>();
-    sessions = new ArrayList<Session>();
-    fitnessClasses = new ArrayList<FitnessClass>();
-    billings = new ArrayList<Billing>();
   }
 
   //------------------------
@@ -94,62 +86,17 @@ public class SportCenter
   {
     return closingTime;
   }
-  /* Code from template association_GetMany */
-  public Account getAccount(int index)
-  {
-    Account aAccount = accounts.get(index);
-    return aAccount;
-  }
 
-  public List<Account> getAccounts()
-  {
-    List<Account> newAccounts = Collections.unmodifiableList(accounts);
-    return newAccounts;
-  }
+  public void delete()
+  {}
 
-  public List<Registration> getRegistrations()
-  {
-    List<Registration> newRegistrations = Collections.unmodifiableList(registrations);
-    return newRegistrations;
-  }
 
-  
-  /* Code from template association_GetMany */
-  public Session getSession(int index)
+  public String toString()
   {
-    Session aSession = sessions.get(index);
-    return aSession;
-  }
-
-  public List<Session> getSessions()
-  {
-    List<Session> newSessions = Collections.unmodifiableList(sessions);
-    return newSessions;
-  }
-
-  /* Code from template association_GetMany */
-  public FitnessClass getFitnessClass(int index)
-  {
-    FitnessClass aFitnessClass = fitnessClasses.get(index);
-    return aFitnessClass;
-  }
-
-  public List<FitnessClass> getFitnessClasses()
-  {
-    List<FitnessClass> newFitnessClasses = Collections.unmodifiableList(fitnessClasses);
-    return newFitnessClasses;
-  }
-
-  /* Code from template association_GetMany */
-  public Billing getBilling(int index)
-  {
-    Billing aBilling = billings.get(index);
-    return aBilling;
-  }
-
-  public List<Billing> getBillings()
-  {
-    List<Billing> newBillings = Collections.unmodifiableList(billings);
-    return newBillings;
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
+            "maxCapacity" + ":" + getMaxCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "openingTime" + "=" + (getOpeningTime() != null ? !getOpeningTime().equals(this)  ? getOpeningTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "closingTime" + "=" + (getClosingTime() != null ? !getClosingTime().equals(this)  ? getClosingTime().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }

@@ -1,3 +1,10 @@
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
+
+// line 21 "model.ump"
+// line 106 "model.ump"
 public class Owner extends Account
 {
 
@@ -12,9 +19,9 @@ public class Owner extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Owner(String aEmail, String aPassword, String aLastName, String aFirstName, SportCenter aSportCenter, int aOwnerId)
+  public Owner(String aEmail, String aPassword, String aLastName, String aFirstName, int aOwnerId)
   {
-    super(aEmail, aPassword, aLastName, aFirstName, aSportCenter);
+    super(aEmail, aPassword, aLastName, aFirstName);
     ownerId = aOwnerId;
   }
 
@@ -33,5 +40,17 @@ public class Owner extends Account
   public int getOwnerId()
   {
     return ownerId;
+  }
+
+  public void delete()
+  {
+    super.delete();
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "ownerId" + ":" + getOwnerId()+ "]";
   }
 }

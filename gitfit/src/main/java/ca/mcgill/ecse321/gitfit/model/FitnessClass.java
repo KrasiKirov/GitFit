@@ -1,3 +1,10 @@
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
+
+// line 48 "model.ump"
+// line 116 "model.ump"
 public class FitnessClass
 {
 
@@ -10,23 +17,15 @@ public class FitnessClass
   private String name;
   private String description;
 
-  //FitnessClass Associations
-  private SportCenter sportCenter;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public FitnessClass(int aId, String aName, String aDescription, SportCenter aSportCenter)
+  public FitnessClass(int aId, String aName, String aDescription)
   {
     id = aId;
     name = aName;
     description = aDescription;
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter)
-    {
-      throw new RuntimeException("Unable to create fitnessClass due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
   }
 
   //------------------------
@@ -71,28 +70,16 @@ public class FitnessClass
   {
     return description;
   }
-  /* Code from template association_GetOne */
-  public SportCenter getSportCenter()
-  {
-    return sportCenter;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter)
-  {
-    boolean wasSet = false;
-    if (aSportCenter == null)
-    {
-      return wasSet;
-    }
 
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter))
-    {
-      existingSportCenter.removeFitnessClass(this);
-    }
-    sportCenter.addFitnessClass(this);
-    wasSet = true;
-    return wasSet;
+  public void delete()
+  {}
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "," +
+            "description" + ":" + getDescription()+ "]";
   }
 }

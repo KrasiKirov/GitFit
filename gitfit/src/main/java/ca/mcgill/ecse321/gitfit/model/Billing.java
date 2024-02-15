@@ -1,3 +1,10 @@
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
+
+// line 54 "model.ump"
+// line 89 "model.ump"
 public class Billing
 {
 
@@ -14,13 +21,12 @@ public class Billing
 
   //Billing Associations
   private Customer customer;
-  private SportCenter sportCenter;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Billing(String aCountry, String aState, String aPostalCode, String aCardNumber, String aAddress, Customer aCustomer, SportCenter aSportCenter)
+  public Billing(String aCountry, String aState, String aPostalCode, String aCardNumber, String aAddress, Customer aCustomer)
   {
     country = aCountry;
     state = aState;
@@ -30,11 +36,6 @@ public class Billing
     if (!setCustomer(aCustomer))
     {
       throw new RuntimeException("Unable to create Billing due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter)
-    {
-      throw new RuntimeException("Unable to create billing due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -111,11 +112,6 @@ public class Billing
   {
     return customer;
   }
-  /* Code from template association_GetOne */
-  public SportCenter getSportCenter()
-  {
-    return sportCenter;
-  }
   /* Code from template association_SetUnidirectionalOne */
   public boolean setCustomer(Customer aNewCustomer)
   {
@@ -127,23 +123,21 @@ public class Billing
     }
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter)
-  {
-    boolean wasSet = false;
-    if (aSportCenter == null)
-    {
-      return wasSet;
-    }
 
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter))
-    {
-      existingSportCenter.removeBilling(this);
-    }
-    sportCenter.addBilling(this);
-    wasSet = true;
-    return wasSet;
+  public void delete()
+  {
+    customer = null;
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "country" + ":" + getCountry()+ "," +
+            "state" + ":" + getState()+ "," +
+            "postalCode" + ":" + getPostalCode()+ "," +
+            "cardNumber" + ":" + getCardNumber()+ "," +
+            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
   }
 }

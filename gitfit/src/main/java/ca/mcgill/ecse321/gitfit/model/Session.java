@@ -1,6 +1,12 @@
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
 import java.sql.Time;
 import java.sql.Date;
 
+// line 38 "model.ump"
+// line 82 "model.ump"
 public class Session
 {
 
@@ -18,13 +24,12 @@ public class Session
   //Session Associations
   private Instructor instructor;
   private FitnessClass fitnessClass;
-  private SportCenter sportCenter;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass, SportCenter aSportCenter)
+  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass)
   {
     id = aId;
     price = aPrice;
@@ -38,11 +43,6 @@ public class Session
     if (!setFitnessClass(aFitnessClass))
     {
       throw new RuntimeException("Unable to create Session due to aFitnessClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter)
-    {
-      throw new RuntimeException("Unable to create session due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -124,11 +124,6 @@ public class Session
   {
     return fitnessClass;
   }
-  /* Code from template association_GetOne */
-  public SportCenter getSportCenter()
-  {
-    return sportCenter;
-  }
   /* Code from template association_SetUnidirectionalOne */
   public boolean setInstructor(Instructor aNewInstructor)
   {
@@ -151,23 +146,23 @@ public class Session
     }
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter)
-  {
-    boolean wasSet = false;
-    if (aSportCenter == null)
-    {
-      return wasSet;
-    }
 
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter))
-    {
-      existingSportCenter.removeSession(this);
-    }
-    sportCenter.addSession(this);
-    wasSet = true;
-    return wasSet;
+  public void delete()
+  {
+    instructor = null;
+    fitnessClass = null;
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
+            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "instructor = "+(getInstructor()!=null?Integer.toHexString(System.identityHashCode(getInstructor())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "fitnessClass = "+(getFitnessClass()!=null?Integer.toHexString(System.identityHashCode(getFitnessClass())):"null");
   }
 }
