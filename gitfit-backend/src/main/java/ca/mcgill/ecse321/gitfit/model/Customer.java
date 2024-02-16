@@ -1,5 +1,11 @@
 package ca.mcgill.ecse321.gitfit.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Customer extends Account
 {
 
@@ -8,6 +14,8 @@ public class Customer extends Account
   //------------------------
 
   //Customer Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int customerId;
 
   //------------------------
@@ -20,6 +28,9 @@ public class Customer extends Account
     customerId = aCustomerId;
   }
 
+  public Customer() {
+      super();
+  }
   //------------------------
   // INTERFACE
   //------------------------
