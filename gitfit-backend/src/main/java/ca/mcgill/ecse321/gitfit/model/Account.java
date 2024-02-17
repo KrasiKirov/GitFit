@@ -18,6 +18,8 @@ public class Account {
   // ------------------------
   // CONSTRUCTOR
   // ------------------------
+  public Account() {
+  }
 
   public Account(String aEmail, String aPassword, String aLastName, String aFirstName) {
     email = aEmail;
@@ -29,9 +31,6 @@ public class Account {
   // ------------------------
   // INTERFACE
   // ------------------------
-
-  public Account() {
-  }
 
   public boolean setEmail(String aEmail) {
     boolean wasSet = false;
