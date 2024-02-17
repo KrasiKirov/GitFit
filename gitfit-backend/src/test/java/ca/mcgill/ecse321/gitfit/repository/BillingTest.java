@@ -31,19 +31,41 @@ public class BillingTest {
 
     @Test
     public void testBillingPersistence() {
-//        Billing billing = new Billing("Canada","Quebec", "H3A 0G4", "8888 8888 8888 8888", "McGill Avenue",)
+
         Customer customer = new Customer();
-        customerRepository.save(customer);
-        Billing billing = new Billing();
-        billing.setCountry("Canada");
-        billing.setCustomer(customer);
+        customer = customerRepository.save(customer);
+
+        String country = "Canada";
+        String state = "Quebec";
+        String postalCode = "H3A 0G4";
+        String cardNumber = "8888 8888 8888 8888";
+        String address = "McGill Avenue";
+        Billing billing = new Billing(country, state, postalCode, cardNumber, address, customer);
         billing = billingRepository.save(billing);
 
-        assertNotNull(billing);
-        assertEquals("Canada", billingRepository.findBillingById(billing.getId()).getCountry());
-        System.out.println(billingRepository.findBillingById(billing.getId()).getCountry());
+        //        billing.setCountry("Canada");
+//        billing.setCustomer(customer);
 
 
+        // getId from saved object
+        int billingId = billing.getId();
+        int customerId = customer.getCustomerId();
+
+        // read back object from database
+        Billing billingFromDB = billingRepository.findBillingById(billingId);
+
+        // assertions
+        assertEquals(billingId, billingFromDB.getId());
+        assertEquals(country, billingFromDB.getCountry());
+        assertEquals(state, billingFromDB.getState());
+        assertEquals(postalCode, billingFromDB.getPostalCode());
+        assertEquals(cardNumber, billingFromDB.getCardNumber());
+        assertEquals(address, billingFromDB.getAddress());
+        assertEquals(customerId, customer.getCustomerId());
+
+//        assertNotNull(billing);
+//        assertEquals("Canada", billingRepository.findBillingById(billing.getId()).getCountry());
+        System.out.println(customerId + billingId);
     }
 
 
