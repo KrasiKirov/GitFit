@@ -30,7 +30,7 @@ public class FitnessClassRepositoryTest {
         fitnessClass.setDescription(description);
 
         // Save fitness class
-        fitnessClassRepository.save(fitnessClass);
+        fitnessClass = fitnessClassRepository.save(fitnessClass);
 
         // Read fitness class from database
         fitnessClass = fitnessClassRepository.findFitnessClassById(fitnessClass.getId());
