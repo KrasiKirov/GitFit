@@ -2,8 +2,7 @@ package ca.mcgill.ecse321.gitfit.dao;
 
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
-import ca.mcgill.ecse321.gitfit.repository.BillingRepository;
-import ca.mcgill.ecse321.gitfit.repository.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

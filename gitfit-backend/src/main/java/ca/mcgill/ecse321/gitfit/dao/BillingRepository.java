@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.gitfit.repository;
+package ca.mcgill.ecse321.gitfit.dao;
 
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import org.springframework.data.jpa.repository.JpaRepository;
