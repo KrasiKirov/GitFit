@@ -6,57 +6,51 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Customer extends Account
-{
+public class Customer extends Account {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //Customer Attributes
+  // Customer Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int customerId;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
 
-  public Customer(String aEmail, String aPassword, String aLastName, String aFirstName, int aCustomerId)
-  {
+  public Customer(String aEmail, String aPassword, String aLastName, String aFirstName, int aCustomerId) {
     super(aEmail, aPassword, aLastName, aFirstName);
     customerId = aCustomerId;
   }
 
   public Customer() {
-      super();
+    super();
   }
-  //------------------------
-  // INTERFACE
-  //------------------------
 
-  public boolean setCustomerId(int aCustomerId)
-  {
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setCustomerId(int aCustomerId) {
     boolean wasSet = false;
     customerId = aCustomerId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getCustomerId()
-  {
+  public int getCustomerId() {
     return customerId;
   }
 
-  public void delete()
-  {
+  public void delete() {
     super.delete();
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "customerId" + ":" + getCustomerId()+ "]";
+  public String toString() {
+    return super.toString() + "[" +
+        "customerId" + ":" + getCustomerId() + "]";
   }
 }

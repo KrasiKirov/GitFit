@@ -1,51 +1,43 @@
 package ca.mcgill.ecse321.gitfit.model;
 
-public class Instructor extends Account
-{
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+@Entity
+public class Instructor extends Account {
 
-  //Instructor Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int instructorId;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Instructor(String aEmail, String aPassword, String aLastName, String aFirstName, int aInstructorId)
-  {
+  public Instructor(String aEmail, String aPassword, String aLastName, String aFirstName, int aInstructorId) {
     super(aEmail, aPassword, aLastName, aFirstName);
     instructorId = aInstructorId;
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
+  public Instructor() {
+    super();
+  }
 
-  public boolean setInstructorId(int aInstructorId)
-  {
+  public boolean setInstructorId(int aInstructorId) {
     boolean wasSet = false;
     instructorId = aInstructorId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getInstructorId()
-  {
+  public int getInstructorId() {
     return instructorId;
   }
 
-  public void delete()
-  {
+  public void delete() {
     super.delete();
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "instructorId" + ":" + getInstructorId()+ "]";
+  public String toString() {
+    return super.toString() + "[" +
+        "instructorId" + ":" + getInstructorId() + "]";
   }
 }
