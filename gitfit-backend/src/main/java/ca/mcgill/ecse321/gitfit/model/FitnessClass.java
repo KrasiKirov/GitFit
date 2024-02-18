@@ -1,5 +1,11 @@
 package ca.mcgill.ecse321.gitfit.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class FitnessClass
 {
 
@@ -8,7 +14,9 @@ public class FitnessClass
   //------------------------
 
   //FitnessClass Attributes
-  private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
   private String name;
   private String description;
 
@@ -16,12 +24,13 @@ public class FitnessClass
   // CONSTRUCTOR
   //------------------------
 
-  public FitnessClass(int aId, String aName, String aDescription)
+  public FitnessClass(String aName, String aDescription)
   {
-    id = aId;
     name = aName;
     description = aDescription;
   }
+
+  public FitnessClass() {}
 
   //------------------------
   // INTERFACE
