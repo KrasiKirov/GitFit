@@ -61,7 +61,7 @@ public class RegistrationRepositoryTests {
 
         // create registration
         Registration registration = new Registration();
-        Date aDate = Date.valueOf("2020-11-11");
+        Date aDate = Date.valueOf("2024-02-01");
         registration.setDate(aDate);
         registration.setSession(session);
         registration.setCustomer(customer);
