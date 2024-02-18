@@ -79,7 +79,7 @@ public class RegistrationRepositoryTests {
         assertNotNull(registrationFromDb);
         assertNotNull(registrationFromDb.getId());
 
-        assertEquals(registration.getDate(), registrationFromDb.getDate());
+        assertEquals(aDate, registrationFromDb.getDate());
         assertEquals(sessionId, registrationFromDb.getSession().getId());
         assertEquals(customerId, registrationFromDb.getCustomer().getCustomerId());
     }
