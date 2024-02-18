@@ -1,11 +1,17 @@
 package ca.mcgill.ecse321.gitfit.model;
 
-
 import java.sql.Time;
 import java.sql.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
 
 // line 38 "model.ump"
 // line 82 "model.ump"
+@Entity
 public class Session
 {
 
@@ -14,6 +20,8 @@ public class Session
   //------------------------
 
   //Session Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int price;
   private Time endTime;
@@ -21,16 +29,21 @@ public class Session
   private Date date;
 
   //Session Associations
+  @ManyToOne(optional = false)
   private Instructor instructor;
+  @ManyToOne(optional = false)
   private FitnessClass fitnessClass;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass)
+  public Session() {}
+
+  // removed id from constructor
+  public Session(int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass)
   {
-    id = aId;
+    // id = aId; // this line is commented out because the id is generated automatically
     price = aPrice;
     endTime = aEndTime;
     startTime = aStartTime;
