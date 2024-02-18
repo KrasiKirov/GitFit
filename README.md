@@ -1,9 +1,6 @@
 ## Project Overview
 Welcome to GitFit - Your Ultimate Sport Center Management System! 🏋️‍♂️🔗 This GitHub repository is home to the codebase that powers GitFit, our cutting-edge web application designed to revolutionize the management of sport centers. With GitFit, we empower owners and instructors to seamlessly organize and supervise classes, while offering customers a user-friendly platform to explore schedules, register for sessions, and take control of their fitness journey. GitFit is not just a project; it's a commitment to providing a robust and intuitive solution that enhances the operations of sport centers and delivers an unparalleled experience for owners, instructors, and fitness enthusiasts. Together, let's elevate the world of fitness management with GitFit! 💪🌐
 
-## Running the Project
-No idea yet...
-
 ### About us
 We are 6 McGill University students from the Faculty of Engineering
 
