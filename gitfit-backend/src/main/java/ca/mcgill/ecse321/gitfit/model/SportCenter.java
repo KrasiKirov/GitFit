@@ -3,8 +3,12 @@ package ca.mcgill.ecse321.gitfit.model;
 
 import java.sql.Time;
 
-// line 2 "model.ump"
-// line 65 "model.ump"
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class SportCenter
 {
 
@@ -13,6 +17,8 @@ public class SportCenter
   //------------------------
 
   //SportCenter Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int maxCapacity;
   private Time openingTime;
@@ -22,9 +28,14 @@ public class SportCenter
   // CONSTRUCTOR
   //------------------------
 
-  public SportCenter(int aId, int aMaxCapacity, Time aOpeningTime, Time aClosingTime)
+  public SportCenter()
   {
-    id = aId;
+  }
+  
+  // removed id from constructor
+  public SportCenter(int aMaxCapacity, Time aOpeningTime, Time aClosingTime)
+  {
+    // id = aId; // id is auto-generated
     maxCapacity = aMaxCapacity;
     openingTime = aOpeningTime;
     closingTime = aClosingTime;
