@@ -45,9 +45,8 @@ public class BillingRepositoryTests {
         Billing billing = new Billing(country, state, postalCode, cardNumber, address, customer);
         billing = billingRepository.save(billing);
 
-        //        billing.setCountry("Canada");
-//        billing.setCustomer(customer);
-
+        // billing.setCountry("Canada");
+        // billing.setCustomer(customer);
 
         // getId from saved object
         int billingId = billing.getId();
@@ -65,10 +64,10 @@ public class BillingRepositoryTests {
         assertEquals(address, billingFromDB.getAddress());
         assertEquals(customerId, customer.getCustomerId());
 
-//        assertNotNull(billing);
-//        assertEquals("Canada", billingRepository.findBillingById(billing.getId()).getCountry());
+        // assertNotNull(billing);
+        // assertEquals("Canada",
+        // billingRepository.findBillingById(billing.getId()).getCountry());
         System.out.println(customerId + billingId);
     }
-
 
 }

@@ -40,9 +40,10 @@ public class Session
 
   public Session() {}
 
-  public Session(int aId, int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass)
+  // removed id from constructor
+  public Session(int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor, FitnessClass aFitnessClass)
   {
-    id = aId;
+    // id = aId; // this line is commented out because the id is generated automatically
     price = aPrice;
     endTime = aEndTime;
     startTime = aStartTime;
