@@ -37,8 +37,8 @@ public class InstructorRepositoryTests {
         instructor.setLastName(lastName);
         instructor.setFirstName(firstName);
 
-        // save instructor to database
-        instructorRepository.save(instructor);
+        // save instructor to database, store persisted instructor in variable
+        instructor = instructorRepository.save(instructor);
 
         // Read instructor from database
         // After save
