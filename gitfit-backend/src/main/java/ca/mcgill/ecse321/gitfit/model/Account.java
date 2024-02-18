@@ -4,20 +4,11 @@ import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class Account {
-
-  // ------------------------
-  // MEMBER VARIABLES
-  // ------------------------
-
-  // Account Attributes
   private String email;
   private String password;
   private String lastName;
   private String firstName;
 
-  // ------------------------
-  // CONSTRUCTOR
-  // ------------------------
   public Account() {
   }
 
@@ -27,10 +18,6 @@ public class Account {
     lastName = aLastName;
     firstName = aFirstName;
   }
-
-  // ------------------------
-  // INTERFACE
-  // ------------------------
 
   public boolean setEmail(String aEmail) {
     boolean wasSet = false;
