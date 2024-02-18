@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.gitfit.model;
-
+import jakarta.persistence.*;
+@Entity
 public class Billing
 {
 
@@ -8,6 +9,9 @@ public class Billing
   //------------------------
 
   //Billing Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
   private String country;
   private String state;
   private String postalCode;
@@ -15,6 +19,7 @@ public class Billing
   private String address;
 
   //Billing Associations
+  @ManyToOne(optional = false)
   private Customer customer;
 
   //------------------------
@@ -33,10 +38,18 @@ public class Billing
       throw new RuntimeException("Unable to create Billing due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
+  public Billing() {}
   //------------------------
   // INTERFACE
   //------------------------
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
   public boolean setCountry(String aCountry)
   {
@@ -124,15 +137,15 @@ public class Billing
     customer = null;
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "country" + ":" + getCountry()+ "," +
-            "state" + ":" + getState()+ "," +
-            "postalCode" + ":" + getPostalCode()+ "," +
-            "cardNumber" + ":" + getCardNumber()+ "," +
-            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
-  }
+//
+//  public String toString()
+//  {
+//    return super.toString() + "["+
+//            "country" + ":" + getCountry()+ "," +
+//            "state" + ":" + getState()+ "," +
+//            "postalCode" + ":" + getPostalCode()+ "," +
+//            "cardNumber" + ":" + getCardNumber()+ "," +
+//            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
+//            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
+//  }
 }

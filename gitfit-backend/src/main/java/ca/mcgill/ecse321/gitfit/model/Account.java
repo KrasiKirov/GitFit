@@ -18,8 +18,12 @@ public class Account {
     lastName = aLastName;
     firstName = aFirstName;
   }
+  //------------------------
+  // INTERFACE
+  //------------------------
 
-  public boolean setEmail(String aEmail) {
+  public boolean setEmail(String aEmail)
+  {
     boolean wasSet = false;
     email = aEmail;
     wasSet = true;
