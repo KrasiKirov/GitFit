@@ -36,7 +36,7 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>Use Case diagrams</li><li>Requirements</li><li>Detailed specification of use case</li></ul> | 2 |
 | Vlad Arama | <ul><li>Created use case diagrams</li><li>Detailed a use case specification</li></ul> | 2 |
 | Krasimir Kirov | <ul><li> Requirements, Use Case diagrams, Detailed use cases, Domain Model Documentation and Important Decisions, Persistence layer testing</li></ul> | 17 |
-| Jatin Patel | <ul><li>Issue creation</li><li>Use case diagrams</li><li>Persistence layer backend</li><li> persistence layer testing</li><li> Documentation - Github, Tests</li><li>Detailed a use case specification</li></ul> | 16 |
+| Jatin Patel | <ul><li>Issue creation</li><li>Use case diagrams</li><li>Persistence layer backend</li><li>Persistence layer testing</li><li>Documentation - Github, Tests</li><li>Detailed a use case specification</li></ul> | 16 |
 
 ### Deliverable 2
 
