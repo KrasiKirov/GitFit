@@ -38,7 +38,7 @@ public class OwnerRepositoryTests {
         owner.setFirstName(firstName);
 
         // save owner to database
-        ownerRepository.save(owner);
+        owner = ownerRepository.save(owner);
 
         // Read owner from database
         // After save
