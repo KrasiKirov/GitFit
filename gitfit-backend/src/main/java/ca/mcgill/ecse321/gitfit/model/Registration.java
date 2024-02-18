@@ -3,29 +3,29 @@ package ca.mcgill.ecse321.gitfit.model;
 
 import java.sql.Date;
 
-// line 31 "model.ump"
-// line 75 "model.ump"
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Registration
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Registration Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private Date date;
 
-  //Registration Associations
+  @ManyToOne(optional = false)
   private Session session;
+
+  @ManyToOne(optional = false)
   private Customer customer;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
+  public Registration() {}
 
-  public Registration(int aId, Date aDate, Session aSession, Customer aCustomer)
-  {
+  public Registration(int aId, Date aDate, Session aSession, Customer aCustomer) {
     id = aId;
     date = aDate;
     if (!setSession(aSession))
@@ -38,48 +38,37 @@ public class Registration
     }
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public boolean setId(int aId)
-  {
+  public boolean setId(int aId) {
     boolean wasSet = false;
     id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setDate(Date aDate)
-  {
+  public boolean setDate(Date aDate) {
     boolean wasSet = false;
     date = aDate;
     wasSet = true;
     return wasSet;
   }
 
-  public int getId()
-  {
+  public int getId() {
     return id;
   }
 
-  public Date getDate()
-  {
+  public Date getDate() {
     return date;
   }
-  /* Code from template association_GetOne */
-  public Session getSession()
-  {
+
+  public Session getSession() {
     return session;
   }
-  /* Code from template association_GetOne */
-  public Customer getCustomer()
-  {
+
+  public Customer getCustomer() {
     return customer;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setSession(Session aNewSession)
-  {
+
+  public boolean setSession(Session aNewSession) {
     boolean wasSet = false;
     if (aNewSession != null)
     {
@@ -88,9 +77,8 @@ public class Registration
     }
     return wasSet;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setCustomer(Customer aNewCustomer)
-  {
+
+  public boolean setCustomer(Customer aNewCustomer) {
     boolean wasSet = false;
     if (aNewCustomer != null)
     {
@@ -100,15 +88,13 @@ public class Registration
     return wasSet;
   }
 
-  public void delete()
-  {
+  public void delete() {
     session = null;
     customer = null;
   }
 
 
-  public String toString()
-  {
+  public String toString() {
     return super.toString() + "["+
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
