@@ -1,7 +1,10 @@
-package ca.mcgill.ecse321.gitfit.repository;
+package ca.mcgill.ecse321.gitfit.dao;
 
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.repository.BillingRepository;
+import ca.mcgill.ecse321.gitfit.repository.CustomerRepository;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class BillingTest {
+public class BillingRepositoryTests {
     @Autowired
     private BillingRepository billingRepository;
     @Autowired

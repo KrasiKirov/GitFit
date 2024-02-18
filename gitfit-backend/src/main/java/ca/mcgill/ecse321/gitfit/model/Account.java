@@ -18,7 +18,6 @@ public class Account {
     lastName = aLastName;
     firstName = aFirstName;
   }
-  public Account() {}
   //------------------------
   // INTERFACE
   //------------------------
