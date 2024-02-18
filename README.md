@@ -4,9 +4,6 @@ Welcome to GitFit - Your Ultimate Sport Center Management System! 🏋️‍♂�
 ## Running the Project
 No idea yet...
 
-## Using the Application
-No idea yet either...
-
 ### About us
 We are 6 McGill University students from the Faculty of Engineering
 
