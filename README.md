@@ -44,12 +44,12 @@ The project report for this deliverable can be found [here]().
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
-| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
-| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| William Wang | |  |
+| Li Yang Lei |  |  |
+| Kevin-Ruikai Li |  | |
+| Vlad Arama |  |  |
+| Krasimir Kirov |  |  |
+| Jatin Patel |  |  |
 
 ### Deliverable 3
 
@@ -57,12 +57,12 @@ The project report for this deliverable can be found [here]().
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
-| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
-| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| William Wang | |  |
+| Li Yang Lei |  |  |
+| Kevin-Ruikai Li |  | |
+| Vlad Arama |  |  |
+| Krasimir Kirov |  |  |
+| Jatin Patel |  |  |
 
 
 ### Deliverable 4
@@ -71,9 +71,9 @@ The project report for this deliverable can be found [here]().
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
-| William Wang | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 69420 |
-| Li Yang Lei | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Kevin-Ruikai Li | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Vlad Arama | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Krasimir Kirov | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
-| Jatin Patel | <ul><li>uwu</li><li>owo</li><li>umu</li></ul> | 88888 |
+| William Wang | |  |
+| Li Yang Lei |  |  |
+| Kevin-Ruikai Li |  | |
+| Vlad Arama |  |  |
+| Krasimir Kirov |  |  |
+| Jatin Patel |  |  |
