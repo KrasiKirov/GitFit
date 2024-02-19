@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class BillingRepositoryTests {
@@ -27,10 +28,11 @@ public class BillingRepositoryTests {
 
     @Test
     public void testBillingPersistence() {
-
+        // create Customer object and save it to database
         Customer customer = new Customer();
         customer = customerRepository.save(customer);
 
+        // create Billing object and save it to database
         String country = "Canada";
         String state = "Quebec";
         String postalCode = "H3A 0G4";
@@ -39,17 +41,15 @@ public class BillingRepositoryTests {
         Billing billing = new Billing(country, state, postalCode, cardNumber, address, customer);
         billing = billingRepository.save(billing);
 
-        // billing.setCountry("Canada");
-        // billing.setCustomer(customer);
-
-        // getId from saved object
+        // getId from saved billing object and customer object
         int billingId = billing.getId();
         int customerId = customer.getCustomerId();
 
-        // read back object from database
+        // read back billing from database
         Billing billingFromDB = billingRepository.findBillingById(billingId);
 
         // assertions
+        assertNotNull(billing);
         assertEquals(billingId, billingFromDB.getId());
         assertEquals(country, billingFromDB.getCountry());
         assertEquals(state, billingFromDB.getState());
@@ -58,10 +58,7 @@ public class BillingRepositoryTests {
         assertEquals(address, billingFromDB.getAddress());
         assertEquals(customerId, customer.getCustomerId());
 
-        // assertNotNull(billing);
-        // assertEquals("Canada",
-        // billingRepository.findBillingById(billing.getId()).getCountry());
-        System.out.println(customerId + billingId);
+
     }
 
 }
