@@ -27,7 +27,7 @@ We are 6 McGill University students from the Faculty of Engineering
 
 ### Deliverable 1
 
-The project report for this deliverable can be found [here]().
+The project report for this deliverable can be found [here](https://github.com/McGill-ECSE321-Winter2024/project-group-6/wiki).
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
