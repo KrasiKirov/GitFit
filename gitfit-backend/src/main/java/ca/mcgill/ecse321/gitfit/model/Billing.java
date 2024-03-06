@@ -19,7 +19,7 @@ public class Billing
   private String address;
 
   //Billing Associations
-  @ManyToOne(optional = false)
+  @OneToOne(optional = false)
   private Customer customer;
 
   //------------------------

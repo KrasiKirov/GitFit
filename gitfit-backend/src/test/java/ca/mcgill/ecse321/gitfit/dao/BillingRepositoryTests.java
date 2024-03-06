@@ -31,7 +31,7 @@ public class BillingRepositoryTests {
         // create Customer object and save it to database
         Customer customer = new Customer();
         customer = customerRepository.save(customer);
-
+        System.out.println("************************************************************************");
         // create Billing object and save it to database
         String country = "Canada";
         String state = "Quebec";
