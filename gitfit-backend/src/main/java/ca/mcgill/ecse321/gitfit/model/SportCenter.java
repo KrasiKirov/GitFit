@@ -27,8 +27,12 @@ public class SportCenter {
   private Time closingTime;
 
   // SportCenter Associations
-  @OneToMany(mappedBy="sportCenter", cascade = { CascadeType.ALL })
-  private List<Account> accounts;
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
+  private List<Owner> owners;
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
+  private List<Instructor> instructors;
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
+  private List<Customer> customers;
   @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
   private List<Registration> registrations;
   @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
@@ -47,7 +51,9 @@ public class SportCenter {
     maxCapacity = aMaxCapacity;
     openingTime = aOpeningTime;
     closingTime = aClosingTime;
-    accounts = new ArrayList<Account>();
+    owners = new ArrayList<Owner>();
+    instructors = new ArrayList<Instructor>();
+    customers = new ArrayList<Customer>();
     registrations = new ArrayList<Registration>();
     sessions = new ArrayList<Session>();
     fitnessClasses = new ArrayList<FitnessClass>();
@@ -102,28 +108,80 @@ public class SportCenter {
   }
 
   /* Code from template association_GetMany */
-  public Account getAccount(int index) {
-    Account aAccount = accounts.get(index);
-    return aAccount;
+  public Owner getOwner(int index) {
+    Owner aOwner = owners.get(index);
+    return aOwner;
   }
 
-  public List<Account> getAccounts() {
-    List<Account> newAccounts = Collections.unmodifiableList(accounts);
-    return newAccounts;
+  public List<Owner> getOwners() {
+    List<Owner> newOwners = Collections.unmodifiableList(owners);
+    return newOwners;
   }
 
-  public int numberOfAccounts() {
-    int number = accounts.size();
+  public int numberOfOwners() {
+    int number = owners.size();
     return number;
   }
 
-  public boolean hasAccounts() {
-    boolean has = accounts.size() > 0;
+  public boolean hasOwners() {
+    boolean has = owners.size() > 0;
     return has;
   }
 
-  public int indexOfAccount(Account aAccount) {
-    int index = accounts.indexOf(aAccount);
+  public int indexOfOwner(Owner aOwner) {
+    int index = owners.indexOf(aOwner);
+    return index;
+  }
+
+  /* Code from template association_GetMany */
+  public Instructor getInstructor(int index) {
+    Instructor aInstructor = instructors.get(index);
+    return aInstructor;
+  }
+
+  public List<Instructor> getInstructors() {
+    List<Instructor> newInstructors = Collections.unmodifiableList(instructors);
+    return newInstructors;
+  }
+
+  public int numberOfInstructors() {
+    int number = instructors.size();
+    return number;
+  }
+
+  public boolean hasInstructors() {
+    boolean has = instructors.size() > 0;
+    return has;
+  }
+
+  public int indexOfInstructor(Instructor aInstructor) {
+    int index = instructors.indexOf(aInstructor);
+    return index;
+  }
+
+  /* Code from template association_GetMany */
+  public Customer getCustomer(int index) {
+    Customer aCustomer = customers.get(index);
+    return aCustomer;
+  }
+
+  public List<Customer> getCustomers() {
+    List<Customer> newCustomers = Collections.unmodifiableList(customers);
+    return newCustomers;
+  }
+
+  public int numberOfCustomers() {
+    int number = customers.size();
+    return number;
+  }
+
+  public boolean hasCustomers() {
+    boolean has = customers.size() > 0;
+    return has;
+  }
+
+  public int indexOfCustomer(Customer aCustomer) {
+    int index = customers.indexOf(aCustomer);
     return index;
   }
 
@@ -206,68 +264,215 @@ public class SportCenter {
   }
 
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAccounts() {
+  public static int minimumNumberOfOwners() {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
 
-  public boolean addAccount(Account aAccount) {
+  /* Code from template association_AddManyToOne */
+  public Owner addOwner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName) {
+    return new Owner(aUsername, aEmail, aPassword, aLastName, aFirstName, this);
+  }
+
+  public boolean addOwner(Owner aOwner) {
     boolean wasAdded = false;
-    if (accounts.contains(aAccount)) {
+    if (owners.contains(aOwner)) {
       return false;
     }
-    SportCenter existingSportCenter = aAccount.getSportCenter();
+    SportCenter existingSportCenter = aOwner.getSportCenter();
     boolean isNewSportCenter = existingSportCenter != null && !this.equals(existingSportCenter);
     if (isNewSportCenter) {
-      aAccount.setSportCenter(this);
+      aOwner.setSportCenter(this);
     } else {
-      accounts.add(aAccount);
+      owners.add(aOwner);
     }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeAccount(Account aAccount) {
+  public boolean removeOwner(Owner aOwner) {
     boolean wasRemoved = false;
-    // Unable to remove aAccount, as it must always have a sportCenter
-    if (!this.equals(aAccount.getSportCenter())) {
-      accounts.remove(aAccount);
+    // Unable to remove aOwner, as it must always have a sportCenter
+    if (!this.equals(aOwner.getSportCenter())) {
+      owners.remove(aOwner);
       wasRemoved = true;
     }
     return wasRemoved;
   }
 
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addAccountAt(Account aAccount, int index) {
+  public boolean addOwnerAt(Owner aOwner, int index) {
     boolean wasAdded = false;
-    if (addAccount(aAccount)) {
+    if (addOwner(aOwner)) {
       if (index < 0) {
         index = 0;
       }
-      if (index > numberOfAccounts()) {
-        index = numberOfAccounts() - 1;
+      if (index > numberOfOwners()) {
+        index = numberOfOwners() - 1;
       }
-      accounts.remove(aAccount);
-      accounts.add(index, aAccount);
+      owners.remove(aOwner);
+      owners.add(index, aOwner);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveAccountAt(Account aAccount, int index) {
+  public boolean addOrMoveOwnerAt(Owner aOwner, int index) {
     boolean wasAdded = false;
-    if (accounts.contains(aAccount)) {
+    if (owners.contains(aOwner)) {
       if (index < 0) {
         index = 0;
       }
-      if (index > numberOfAccounts()) {
-        index = numberOfAccounts() - 1;
+      if (index > numberOfOwners()) {
+        index = numberOfOwners() - 1;
       }
-      accounts.remove(aAccount);
-      accounts.add(index, aAccount);
+      owners.remove(aOwner);
+      owners.add(index, aOwner);
       wasAdded = true;
     } else {
-      wasAdded = addAccountAt(aAccount, index);
+      wasAdded = addOwnerAt(aOwner, index);
+    }
+    return wasAdded;
+  }
+
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfInstructors() {
+    return 0;
+  }
+
+  /* Code from template association_AddManyToOne */
+  public Instructor addInstructor(String aUsername, String aEmail, String aPassword, String aLastName,
+      String aFirstName) {
+    return new Instructor(aUsername, aEmail, aPassword, aLastName, aFirstName, this);
+  }
+
+  public boolean addInstructor(Instructor aInstructor) {
+    boolean wasAdded = false;
+    if (instructors.contains(aInstructor)) {
+      return false;
+    }
+    SportCenter existingSportCenter = aInstructor.getSportCenter();
+    boolean isNewSportCenter = existingSportCenter != null && !this.equals(existingSportCenter);
+    if (isNewSportCenter) {
+      aInstructor.setSportCenter(this);
+    } else {
+      instructors.add(aInstructor);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeInstructor(Instructor aInstructor) {
+    boolean wasRemoved = false;
+    // Unable to remove aInstructor, as it must always have a sportCenter
+    if (!this.equals(aInstructor.getSportCenter())) {
+      instructors.remove(aInstructor);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addInstructorAt(Instructor aInstructor, int index) {
+    boolean wasAdded = false;
+    if (addInstructor(aInstructor)) {
+      if (index < 0) {
+        index = 0;
+      }
+      if (index > numberOfInstructors()) {
+        index = numberOfInstructors() - 1;
+      }
+      instructors.remove(aInstructor);
+      instructors.add(index, aInstructor);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveInstructorAt(Instructor aInstructor, int index) {
+    boolean wasAdded = false;
+    if (instructors.contains(aInstructor)) {
+      if (index < 0) {
+        index = 0;
+      }
+      if (index > numberOfInstructors()) {
+        index = numberOfInstructors() - 1;
+      }
+      instructors.remove(aInstructor);
+      instructors.add(index, aInstructor);
+      wasAdded = true;
+    } else {
+      wasAdded = addInstructorAt(aInstructor, index);
+    }
+    return wasAdded;
+  }
+
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfCustomers() {
+    return 0;
+  }
+
+  /* Code from template association_AddManyToOne */
+  public Customer addCustomer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName) {
+    return new Customer(aUsername, aEmail, aPassword, aLastName, aFirstName, this);
+  }
+
+  public boolean addCustomer(Customer aCustomer) {
+    boolean wasAdded = false;
+    if (customers.contains(aCustomer)) {
+      return false;
+    }
+    SportCenter existingSportCenter = aCustomer.getSportCenter();
+    boolean isNewSportCenter = existingSportCenter != null && !this.equals(existingSportCenter);
+    if (isNewSportCenter) {
+      aCustomer.setSportCenter(this);
+    } else {
+      customers.add(aCustomer);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeCustomer(Customer aCustomer) {
+    boolean wasRemoved = false;
+    // Unable to remove aCustomer, as it must always have a sportCenter
+    if (!this.equals(aCustomer.getSportCenter())) {
+      customers.remove(aCustomer);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addCustomerAt(Customer aCustomer, int index) {
+    boolean wasAdded = false;
+    if (addCustomer(aCustomer)) {
+      if (index < 0) {
+        index = 0;
+      }
+      if (index > numberOfCustomers()) {
+        index = numberOfCustomers() - 1;
+      }
+      customers.remove(aCustomer);
+      customers.add(index, aCustomer);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveCustomerAt(Customer aCustomer, int index) {
+    boolean wasAdded = false;
+    if (customers.contains(aCustomer)) {
+      if (index < 0) {
+        index = 0;
+      }
+      if (index > numberOfCustomers()) {
+        index = numberOfCustomers() - 1;
+      }
+      customers.remove(aCustomer);
+      customers.add(index, aCustomer);
+      wasAdded = true;
+    } else {
+      wasAdded = addCustomerAt(aCustomer, index);
     }
     return wasAdded;
   }
@@ -278,8 +483,8 @@ public class SportCenter {
   }
 
   /* Code from template association_AddManyToOne */
-  public Registration addRegistration(int aId, Date aDate, Session aSession, Customer aCustomer) {
-    return new Registration(aId, aDate, aSession, aCustomer, this);
+  public Registration addRegistration(Date aDate, Session aSession, Customer aCustomer) {
+    return new Registration(aDate, aSession, aCustomer, this);
   }
 
   public boolean addRegistration(Registration aRegistration) {
@@ -487,10 +692,22 @@ public class SportCenter {
   }
 
   public void delete() {
-    while (accounts.size() > 0) {
-      Account aAccount = accounts.get(accounts.size() - 1);
-      aAccount.delete();
-      accounts.remove(aAccount);
+    while (owners.size() > 0) {
+      Owner aOwner = owners.get(owners.size() - 1);
+      aOwner.delete();
+      owners.remove(aOwner);
+    }
+
+    while (instructors.size() > 0) {
+      Instructor aInstructor = instructors.get(instructors.size() - 1);
+      aInstructor.delete();
+      instructors.remove(aInstructor);
+    }
+
+    while (customers.size() > 0) {
+      Customer aCustomer = customers.get(customers.size() - 1);
+      aCustomer.delete();
+      customers.remove(aCustomer);
     }
 
     while (registrations.size() > 0) {

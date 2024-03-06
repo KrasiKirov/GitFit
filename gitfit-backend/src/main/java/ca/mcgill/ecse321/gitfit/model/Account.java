@@ -1,24 +1,30 @@
 package ca.mcgill.ecse321.gitfit.model;
 
+import java.util.*;
+
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
 
 @MappedSuperclass
 public abstract class Account {
+
+  // ------------------------
+  // STATIC VARIABLES
+  // ------------------------
+
+  private static Map<String, Account> accountsByUsername = new HashMap<String, Account>();
 
   // ------------------------
   // MEMBER VARIABLES
   // ------------------------
 
   // Account Attributes
+  @Column(nullable = false, unique = true)
+  private String username;
   private String email;
   private String password;
   private String lastName;
   private String firstName;
-
-  // Account Associations
-  @ManyToOne(optional = false)
-  private SportCenter sportCenter;
 
   // ------------------------
   // CONSTRUCTOR
@@ -27,21 +33,38 @@ public abstract class Account {
   public Account() {
   }
 
-  public Account(String aEmail, String aPassword, String aLastName, String aFirstName, SportCenter aSportCenter) {
+  public Account(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName) {
     email = aEmail;
     password = aPassword;
     lastName = aLastName;
     firstName = aFirstName;
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter) {
+    if (!setUsername(aUsername)) {
       throw new RuntimeException(
-          "Unable to create account due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+          "Cannot create due to duplicate username. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
   }
 
   // ------------------------
   // INTERFACE
   // ------------------------
+
+  public boolean setUsername(String aUsername) {
+    boolean wasSet = false;
+    String anOldUsername = getUsername();
+    if (anOldUsername != null && anOldUsername.equals(aUsername)) {
+      return true;
+    }
+    if (hasWithUsername(aUsername)) {
+      return wasSet;
+    }
+    username = aUsername;
+    wasSet = true;
+    if (anOldUsername != null) {
+      accountsByUsername.remove(anOldUsername);
+    }
+    accountsByUsername.put(aUsername, this);
+    return wasSet;
+  }
 
   public boolean setEmail(String aEmail) {
     boolean wasSet = false;
@@ -71,6 +94,20 @@ public abstract class Account {
     return wasSet;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
+  /* Code from template attribute_GetUnique */
+  public static Account getWithUsername(String aUsername) {
+    return accountsByUsername.get(aUsername);
+  }
+
+  /* Code from template attribute_HasUnique */
+  public static boolean hasWithUsername(String aUsername) {
+    return getWithUsername(aUsername) != null;
+  }
+
   public String getEmail() {
     return email;
   }
@@ -87,43 +124,16 @@ public abstract class Account {
     return firstName;
   }
 
-  /* Code from template association_GetOne */
-  public SportCenter getSportCenter() {
-    return sportCenter;
-  }
-
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter) {
-    boolean wasSet = false;
-    if (aSportCenter == null) {
-      return wasSet;
-    }
-
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter)) {
-      existingSportCenter.removeAccount(this);
-    }
-    sportCenter.addAccount(this);
-    wasSet = true;
-    return wasSet;
-  }
-
   public void delete() {
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if (placeholderSportCenter != null) {
-      placeholderSportCenter.removeAccount(this);
-    }
+    accountsByUsername.remove(getUsername());
   }
 
   public String toString() {
     return super.toString() + "[" +
+        "username" + ":" + getUsername() + "," +
         "email" + ":" + getEmail() + "," +
         "password" + ":" + getPassword() + "," +
         "lastName" + ":" + getLastName() + "," +
-        "firstName" + ":" + getFirstName() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "sportCenter = "
-        + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : "null");
+        "firstName" + ":" + getFirstName() + "]";
   }
 }

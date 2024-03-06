@@ -36,8 +36,7 @@ public class Registration {
   public Registration() {
   }
 
-  public Registration(int aId, Date aDate, Session aSession, Customer aCustomer, SportCenter aSportCenter) {
-    id = aId;
+  public Registration(Date aDate, Session aSession, Customer aCustomer, SportCenter aSportCenter) {
     date = aDate;
     if (!setSession(aSession)) {
       throw new RuntimeException(
