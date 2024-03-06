@@ -8,28 +8,40 @@ import jakarta.persistence.Id;
 @Entity
 public class Owner extends Account {
 
+  // ------------------------
+  // MEMBER VARIABLES
+  // ------------------------
+
+  // Owner Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int ownerId;
+  private int id;
 
-  public Owner(String aEmail, String aPassword, String aLastName, String aFirstName, int aOwnerId) {
-    super(aEmail, aPassword, aLastName, aFirstName);
-    ownerId = aOwnerId;
-  }
+  // ------------------------
+  // CONSTRUCTOR
+  // ------------------------
 
   public Owner() {
     super();
   }
 
-  public boolean setOwnerId(int aOwnerId) {
+  public Owner(String aEmail, String aPassword, String aLastName, String aFirstName, SportCenter aSportCenter) {
+    super(aEmail, aPassword, aLastName, aFirstName, aSportCenter);
+  }
+
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setId(int aId) {
     boolean wasSet = false;
-    ownerId = aOwnerId;
+    id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getOwnerId() {
-    return ownerId;
+  public int getId() {
+    return id;
   }
 
   public void delete() {
@@ -38,6 +50,6 @@ public class Owner extends Account {
 
   public String toString() {
     return super.toString() + "[" +
-        "ownerId" + ":" + getOwnerId() + "]";
+        "id" + ":" + getId() + "]";
   }
 }

@@ -8,28 +8,40 @@ import jakarta.persistence.Id;
 @Entity
 public class Instructor extends Account {
 
+  // ------------------------
+  // MEMBER VARIABLES
+  // ------------------------
+
+  // Instructor Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int instructorId;
+  private int id;
 
-  public Instructor(String aEmail, String aPassword, String aLastName, String aFirstName, int aInstructorId) {
-    super(aEmail, aPassword, aLastName, aFirstName);
-    instructorId = aInstructorId;
-  }
+  // ------------------------
+  // CONSTRUCTOR
+  // ------------------------
 
   public Instructor() {
     super();
   }
 
-  public boolean setInstructorId(int aInstructorId) {
+  public Instructor(String aEmail, String aPassword, String aLastName, String aFirstName, SportCenter aSportCenter) {
+    super(aEmail, aPassword, aLastName, aFirstName, aSportCenter);
+  }
+
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setId(int aId) {
     boolean wasSet = false;
-    instructorId = aInstructorId;
+    id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getInstructorId() {
-    return instructorId;
+  public int getId() {
+    return id;
   }
 
   public void delete() {
@@ -38,6 +50,6 @@ public class Instructor extends Account {
 
   public String toString() {
     return super.toString() + "[" +
-        "instructorId" + ":" + getInstructorId() + "]";
+        "id" + ":" + getId() + "]";
   }
 }
