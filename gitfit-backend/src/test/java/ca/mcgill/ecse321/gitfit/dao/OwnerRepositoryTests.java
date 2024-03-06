@@ -42,7 +42,7 @@ public class OwnerRepositoryTests {
 
         // Read owner from database
         // After save
-        owner = ownerRepository.findById(owner.getId());
+        owner = ownerRepository.findOwnerById(owner.getId());
 
         // Assert that owner is not null and has correct attributes
         assertNotNull(owner);
