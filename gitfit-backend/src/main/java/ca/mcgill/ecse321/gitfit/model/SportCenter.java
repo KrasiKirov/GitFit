@@ -27,13 +27,13 @@ public class SportCenter {
   private Time closingTime;
 
   // SportCenter Associations
-  @OneToMany(cascade = { CascadeType.ALL })
+  @OneToMany(mappedBy="sportCenter", cascade = { CascadeType.ALL })
   private List<Account> accounts;
-  @OneToMany(cascade = { CascadeType.ALL })
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
   private List<Registration> registrations;
-  @OneToMany(cascade = { CascadeType.ALL })
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
   private List<Session> sessions;
-  @OneToMany(cascade = { CascadeType.ALL })
+  @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
   private List<FitnessClass> fitnessClasses;
 
   // ------------------------
