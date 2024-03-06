@@ -66,7 +66,7 @@ public class RegistrationRepositoryTests {
 
         // getId from saved object
         int sessionId = session.getId();
-        int customerId = customer.getCustomerId();
+        int customerId = customer.getId();
         int registartionId = registration.getId();
 
         // read from database
@@ -78,6 +78,6 @@ public class RegistrationRepositoryTests {
 
         assertEquals(aDate, registrationFromDb.getDate());
         assertEquals(sessionId, registrationFromDb.getSession().getId());
-        assertEquals(customerId, registrationFromDb.getCustomer().getCustomerId());
+        assertEquals(customerId, registrationFromDb.getCustomer().getId());
     }
 }

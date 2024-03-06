@@ -56,7 +56,7 @@ public class SessionRepositoryTests {
         // getId from saved object
         int sessionId = session.getId();
         int fitnessClassId = fitnessClass.getId();
-        int instructorId = instructor.getInstructorId();
+        int instructorId = instructor.getId();
 
         // read back object from database
         Session sessionFromDB = sessionRepository.findSessionById(sessionId);
@@ -68,6 +68,6 @@ public class SessionRepositoryTests {
         assertEquals(aStartTime, sessionFromDB.getStartTime());
         assertEquals(aDate, sessionFromDB.getDate());
         assertEquals(fitnessClassId, sessionFromDB.getFitnessClass().getId());
-        assertEquals(instructorId, sessionFromDB.getInstructor().getInstructorId());
+        assertEquals(instructorId, sessionFromDB.getInstructor().getId());
     }
 }

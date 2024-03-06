@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OwnerRepository extends CrudRepository<Owner, Integer> {
-    Owner findByOwnerId(int ownerId);
+    Owner findById(int id);
 }
