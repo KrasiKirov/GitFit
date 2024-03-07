@@ -28,7 +28,7 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter getSportCenter() {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(1);
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         return sportCenter;
     }
 
@@ -40,7 +40,7 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter setSportCenterName(String name) {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(1);
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setName(name);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
@@ -57,7 +57,7 @@ public class SportCenterService {
         if (maxCapacity < 0) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Max capacity cannot be negative");
         }
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(1);
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setMaxCapacity(maxCapacity);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
@@ -78,7 +78,7 @@ public class SportCenterService {
         if (newOpeningTime.after(newClosingTime)) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be after closing time");
         }
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(1);
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setOpeningTime(newOpeningTime);
         sportCenter.setClosingTime(newClosingTime);
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -93,7 +93,7 @@ public class SportCenterService {
      */
     @Transactional
     public List<Time> getOpeningHours() {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(1);
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         List<Time> openingHours = new ArrayList<>();
         openingHours.add(sportCenter.getOpeningTime());
         openingHours.add(sportCenter.getClosingTime());
