@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.gitfit.model;
 
 import java.sql.Time;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
