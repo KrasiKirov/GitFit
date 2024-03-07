@@ -1,10 +1,13 @@
 package ca.mcgill.ecse321.gitfit.model;
 
+import java.sql.Time;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Owner extends Account {
@@ -14,12 +17,12 @@ public class Owner extends Account {
   // ------------------------
 
   // Owner Attributes
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Id // No need for @GeneratedValue because the id is mapped to the sportCenter
   private int id;
 
   // Owner Associations
-  @ManyToOne(optional = false)
+  @OneToOne(optional = false)
+  @MapsId
   private SportCenter sportCenter;
 
   // ------------------------
@@ -33,11 +36,19 @@ public class Owner extends Account {
   public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
       SportCenter aSportCenter) {
     super(aUsername, aEmail, aPassword, aLastName, aFirstName);
-    boolean didAddSportCenter = setSportCenter(aSportCenter);
-    if (!didAddSportCenter) {
+    if (aSportCenter == null || aSportCenter.getOwner() != null) {
       throw new RuntimeException(
-          "Unable to create owner due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+          "Unable to create Owner due to aSportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    sportCenter = aSportCenter;
+  }
+
+  public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String aNameForSportCenter, int aMaxCapacityForSportCenter,
+      Time aOpeningTimeForSportCenter, Time aClosingTimeForSportCenter) {
+    super(aUsername, aEmail, aPassword, aLastName, aFirstName);
+    sportCenter = new SportCenter(aNameForSportCenter, aMaxCapacityForSportCenter,
+        aOpeningTimeForSportCenter, aClosingTimeForSportCenter, this);
   }
 
   // ------------------------
@@ -60,28 +71,11 @@ public class Owner extends Account {
     return sportCenter;
   }
 
-  /* Code from template association_SetOneToMany */
-  public boolean setSportCenter(SportCenter aSportCenter) {
-    boolean wasSet = false;
-    if (aSportCenter == null) {
-      return wasSet;
-    }
-
-    SportCenter existingSportCenter = sportCenter;
-    sportCenter = aSportCenter;
-    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter)) {
-      existingSportCenter.removeOwner(this);
-    }
-    sportCenter.addOwner(this);
-    wasSet = true;
-    return wasSet;
-  }
-
   public void delete() {
-    SportCenter placeholderSportCenter = sportCenter;
-    this.sportCenter = null;
-    if (placeholderSportCenter != null) {
-      placeholderSportCenter.removeOwner(this);
+    SportCenter existingSportCenter = sportCenter;
+    sportCenter = null;
+    if (existingSportCenter != null) {
+      existingSportCenter.delete();
     }
     super.delete();
   }

@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 
 @Entity
@@ -28,8 +29,8 @@ public class SportCenter {
     private Time closingTime;
 
     // SportCenter Associations
-    @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
-    private List<Owner> owners;
+    @OneToOne(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
+    private Owner owner;
     @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
     private List<Instructor> instructors;
     @OneToMany(mappedBy = "sportCenter", cascade = { CascadeType.ALL })
@@ -46,7 +47,6 @@ public class SportCenter {
     // ------------------------
 
     public SportCenter() {
-        this.owners = new ArrayList<Owner>();
         this.instructors = new ArrayList<Instructor>();
         this.customers = new ArrayList<Customer>();
         this.registrations = new ArrayList<Registration>();
@@ -54,12 +54,32 @@ public class SportCenter {
         this.fitnessClasses = new ArrayList<FitnessClass>();
     }
 
-    public SportCenter(String aName, int aMaxCapacity, Time aOpeningTime, Time aClosingTime) {
+    public SportCenter(String aName, int aMaxCapacity, Time aOpeningTime, Time aClosingTime, Owner aOwner) {
         name = aName;
         maxCapacity = aMaxCapacity;
         openingTime = aOpeningTime;
         closingTime = aClosingTime;
-        owners = new ArrayList<Owner>();
+        if (aOwner == null || aOwner.getSportCenter() != null) {
+            throw new RuntimeException(
+                    "Unable to create SportCenter due to aOwner. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+        }
+        owner = aOwner;
+        instructors = new ArrayList<Instructor>();
+        customers = new ArrayList<Customer>();
+        registrations = new ArrayList<Registration>();
+        sessions = new ArrayList<Session>();
+        fitnessClasses = new ArrayList<FitnessClass>();
+    }
+
+    public SportCenter(String aName, int aMaxCapacity, Time aOpeningTime, Time aClosingTime,
+            String aUsernameForOwner, String aEmailForOwner, String aPasswordForOwner, String aLastNameForOwner,
+            String aFirstNameForOwner) {
+        name = aName;
+        maxCapacity = aMaxCapacity;
+        openingTime = aOpeningTime;
+        closingTime = aClosingTime;
+        owner = new Owner(aUsernameForOwner, aEmailForOwner, aPasswordForOwner, aLastNameForOwner, aFirstNameForOwner,
+                this);
         instructors = new ArrayList<Instructor>();
         customers = new ArrayList<Customer>();
         registrations = new ArrayList<Registration>();
@@ -126,30 +146,9 @@ public class SportCenter {
         return closingTime;
     }
 
-    /* Code from template association_GetMany */
-    public Owner getOwner(int index) {
-        Owner aOwner = owners.get(index);
-        return aOwner;
-    }
-
-    public List<Owner> getOwners() {
-        List<Owner> newOwners = Collections.unmodifiableList(owners);
-        return newOwners;
-    }
-
-    public int numberOfOwners() {
-        int number = owners.size();
-        return number;
-    }
-
-    public boolean hasOwners() {
-        boolean has = owners.size() > 0;
-        return has;
-    }
-
-    public int indexOfOwner(Owner aOwner) {
-        int index = owners.indexOf(aOwner);
-        return index;
+    /* Code from template association_GetOne */
+    public Owner getOwner() {
+        return owner;
     }
 
     /* Code from template association_GetMany */
@@ -280,77 +279,6 @@ public class SportCenter {
     public int indexOfFitnessClass(FitnessClass aFitnessClass) {
         int index = fitnessClasses.indexOf(aFitnessClass);
         return index;
-    }
-
-    /* Code from template association_MinimumNumberOfMethod */
-    public static int minimumNumberOfOwners() {
-        return 0;
-    }
-
-    /* Code from template association_AddManyToOne */
-    public Owner addOwner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName) {
-        return new Owner(aUsername, aEmail, aPassword, aLastName, aFirstName, this);
-    }
-
-    public boolean addOwner(Owner aOwner) {
-        boolean wasAdded = false;
-        if (owners.contains(aOwner)) {
-            return false;
-        }
-        SportCenter existingSportCenter = aOwner.getSportCenter();
-        boolean isNewSportCenter = existingSportCenter != null && !this.equals(existingSportCenter);
-        if (isNewSportCenter) {
-            aOwner.setSportCenter(this);
-        } else {
-            owners.add(aOwner);
-        }
-        wasAdded = true;
-        return wasAdded;
-    }
-
-    public boolean removeOwner(Owner aOwner) {
-        boolean wasRemoved = false;
-        // Unable to remove aOwner, as it must always have a sportCenter
-        if (!this.equals(aOwner.getSportCenter())) {
-            owners.remove(aOwner);
-            wasRemoved = true;
-        }
-        return wasRemoved;
-    }
-
-    /* Code from template association_AddIndexControlFunctions */
-    public boolean addOwnerAt(Owner aOwner, int index) {
-        boolean wasAdded = false;
-        if (addOwner(aOwner)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfOwners()) {
-                index = numberOfOwners() - 1;
-            }
-            owners.remove(aOwner);
-            owners.add(index, aOwner);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveOwnerAt(Owner aOwner, int index) {
-        boolean wasAdded = false;
-        if (owners.contains(aOwner)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfOwners()) {
-                index = numberOfOwners() - 1;
-            }
-            owners.remove(aOwner);
-            owners.add(index, aOwner);
-            wasAdded = true;
-        } else {
-            wasAdded = addOwnerAt(aOwner, index);
-        }
-        return wasAdded;
     }
 
     /* Code from template association_MinimumNumberOfMethod */
@@ -712,12 +640,11 @@ public class SportCenter {
     }
 
     public void delete() {
-        while (owners.size() > 0) {
-            Owner aOwner = owners.get(owners.size() - 1);
-            aOwner.delete();
-            owners.remove(aOwner);
+        Owner existingOwner = owner;
+        owner = null;
+        if (existingOwner != null) {
+            existingOwner.delete();
         }
-
         while (instructors.size() > 0) {
             Instructor aInstructor = instructors.get(instructors.size() - 1);
             aInstructor.delete();
@@ -763,6 +690,9 @@ public class SportCenter {
                 "  " + "closingTime" + "="
                 + (getClosingTime() != null
                         ? !getClosingTime().equals(this) ? getClosingTime().toString().replaceAll("  ", "    ") : "this"
-                        : "null");
+                        : "null")
+                + System.getProperties().getProperty("line.separator") +
+                "  " + "owner = "
+                + (getOwner() != null ? Integer.toHexString(System.identityHashCode(getOwner())) : "null");
     }
 }
