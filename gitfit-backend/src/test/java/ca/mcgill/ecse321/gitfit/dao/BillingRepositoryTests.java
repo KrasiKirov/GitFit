@@ -43,7 +43,7 @@ public class BillingRepositoryTests {
 
         // getId from saved billing object and customer object
         int billingId = billing.getId();
-        int customerId = customer.getCustomerId();
+        int customerId = customer.getId();
 
         // read back billing from database
         Billing billingFromDB = billingRepository.findBillingById(billingId);
@@ -56,7 +56,7 @@ public class BillingRepositoryTests {
         assertEquals(postalCode, billingFromDB.getPostalCode());
         assertEquals(cardNumber, billingFromDB.getCardNumber());
         assertEquals(address, billingFromDB.getAddress());
-        assertEquals(customerId, customer.getCustomerId());
+        assertEquals(customerId, customer.getId());
 
 
     }
