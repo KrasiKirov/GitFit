@@ -8,13 +8,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class BillingService {
     @Autowired
     BillingRepository  billingRepository;
     @Autowired
     CustomerRepository customerRepository;
-
     @Transactional
     public Billing createBilling(String country, String state, String postalCode, String cardNumber, String address, int customerId) {
         String error = "";
@@ -61,6 +61,19 @@ public class BillingService {
         billing.setCardNumber(cardNumber);
         billing.setAddress(address);
         return billingRepository.save(billing);
+    }
+
+    @Transactional
+    public Billing getBilling(int customerId) {
+        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+        if (customer==null) {
+            throw new IllegalArgumentException("The customer does not exist.");
+        }
+        Billing billing = billingRepository.findBillingByCustomer(customer);
+        if (billing==null) {
+            throw new IllegalArgumentException("The customer does not have billing set up.");
+        }
+        return billing;
     }
 
     @Transactional

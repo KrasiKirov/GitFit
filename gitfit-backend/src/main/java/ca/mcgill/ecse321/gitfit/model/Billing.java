@@ -111,6 +111,11 @@ public class Billing
     return cardNumber;
   }
 
+  public String getCardNumberEnd()
+  {
+    return cardNumber.substring(cardNumber.length()-4);
+  }
+
   public String getAddress()
   {
     return address;
