@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import java.util.Iterator;
 
 @Service
 public class SportCenterService {
@@ -28,7 +29,14 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter getSportCenter() {
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
+        Iterator<SportCenter> sportCenterIterator = sportCenterRepository.findAll().iterator();
+        if (sportCenterIterator.hasNext()) {
+            return sportCenterIterator.next(); // Returns only sport center
+        }
+        // If no sport center exists, create SportCenter and Owner singleton with default values
+        SportCenter sportCenter = new SportCenter("GitFit", 30, Time.valueOf("09:00:00"),
+                Time.valueOf("22:00:00"), "admin", "admin@gitfit.com", "uwu", "Joe", "Biden");
+        sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
     }
 
@@ -40,7 +48,7 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter setSportCenterName(String name) {
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
+        SportCenter sportCenter = getSportCenter();
         sportCenter.setName(name);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
@@ -57,7 +65,7 @@ public class SportCenterService {
         if (maxCapacity < 0) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Max capacity cannot be negative");
         }
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
+        SportCenter sportCenter = getSportCenter();
         sportCenter.setMaxCapacity(maxCapacity);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
@@ -78,7 +86,7 @@ public class SportCenterService {
         if (newOpeningTime.after(newClosingTime)) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be after closing time");
         }
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
+        SportCenter sportCenter = getSportCenter();
         sportCenter.setOpeningTime(newOpeningTime);
         sportCenter.setClosingTime(newClosingTime);
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -93,7 +101,7 @@ public class SportCenterService {
      */
     @Transactional
     public List<Time> getOpeningHours() {
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
+        SportCenter sportCenter = getSportCenter();
         List<Time> openingHours = new ArrayList<>();
         openingHours.add(sportCenter.getOpeningTime());
         openingHours.add(sportCenter.getClosingTime());
