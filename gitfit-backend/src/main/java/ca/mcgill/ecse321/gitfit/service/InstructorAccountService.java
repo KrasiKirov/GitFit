@@ -6,21 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 
 import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
-import ca.mcgill.ecse321.gitfit.model.Owner;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import ca.mcgill.ecse321.gitfit.service.SportCenterService;
-
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 
 public class InstructorAccountService {
 
@@ -35,14 +26,18 @@ public class InstructorAccountService {
 
     @Transactional
     public Instructor getInstructor(String username) {
-        return instructorRepository.findInstructorByUsername(username);
+        Instructor instructor = instructorRepository.findInstructorByUsername(username);
+        if (instructor == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Instructor not found.");
+        }
+        return instructor;
     }
 
     @Transactional
     public List<Instructor> getAllInstructors() {
         List<Instructor> list = toList(instructorRepository.findAll());
         if (list.isEmpty()) {
-            return null;
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "No current instructors.");
         } else {
             return list;
         }
