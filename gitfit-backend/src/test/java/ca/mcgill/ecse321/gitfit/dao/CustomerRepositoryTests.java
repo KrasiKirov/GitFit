@@ -37,7 +37,7 @@ public class CustomerRepositoryTests {
         customerRepository.save(customer);
 
         // Read customer from database
-        customer = customerRepository.findCustomerById(customer.getId());
+        customer = customerRepository.findCustomerByUsername(customer.getUsername());
 
         // Assert that the customer is not null and has correct attributes
         assertNotNull(customer);
