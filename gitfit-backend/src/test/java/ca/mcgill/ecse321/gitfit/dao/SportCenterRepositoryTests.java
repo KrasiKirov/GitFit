@@ -23,13 +23,15 @@ public class SportCenterRepositoryTests {
     }
 
     @Test
-    public void testPersistAndLoadSportCenter() {
+    public void testSportCenterPersistence() {
         // Create sport center
+        String name = "McGill Gym";
         int maxCapacity = 100;
         Time openingTime = Time.valueOf("08:00:00");
         Time closingTime = Time.valueOf("20:00:00");
 
         SportCenter sportCenter = new SportCenter();
+        sportCenter.setName(name);
         sportCenter.setMaxCapacity(maxCapacity);
         sportCenter.setOpeningTime(openingTime);
         sportCenter.setClosingTime(closingTime);
@@ -42,6 +44,7 @@ public class SportCenterRepositoryTests {
 
         // Assert sport center is not null and has correct attributes
         assertNotNull(sportCenter);
+        assertEquals(name, sportCenter.getName());
         assertEquals(maxCapacity, sportCenter.getMaxCapacity());
         assertEquals(openingTime, sportCenter.getOpeningTime());
         assertEquals(closingTime, sportCenter.getClosingTime());
