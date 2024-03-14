@@ -47,7 +47,7 @@ public class InstructorAccountService {
     public Instructor createInstructor(String username, String email, String password, String lastName,
             String firstName) {
 
-        validatorService.validate(new AccountCreationDto());
+        validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
         validatorService.validate(new PasswordCheckDto(password));
 
         Instructor instructor = new Instructor(username, email, password, lastName, firstName,
