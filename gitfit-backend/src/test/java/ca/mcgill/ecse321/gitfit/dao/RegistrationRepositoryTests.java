@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
 import ca.mcgill.ecse321.gitfit.model.Registration;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 import java.sql.Date;
 
@@ -28,6 +29,8 @@ public class RegistrationRepositoryTests {
     private FitnessClassRepository fitnessClassRepository;
     @Autowired
     private InstructorRepository instructorRepository;
+    @Autowired
+    private SportCenterRepository sportCenterRepository;
 
     @AfterEach
     public void clearDatabase() {
@@ -36,24 +39,37 @@ public class RegistrationRepositoryTests {
         customerRepository.deleteAll();
         fitnessClassRepository.deleteAll();
         instructorRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     @Test
-    public void testSessionPersistence() {
+    public void testRegistrationPersistence() {
+        // create sport center
+        SportCenter sportCenter = new SportCenter();
+        sportCenter = sportCenterRepository.save(sportCenter);
+
         // create customer
         Customer customer = new Customer();
-        customerRepository.save(customer);
+        customer.setUsername("Jimmy Johnson");
+        customer.setSportCenter(sportCenter);
+        customer = customerRepository.save(customer);
 
-        // create instructor and fitness class
+        // create instructor
         Instructor instructor = new Instructor();
+        instructor.setUsername("Jimmy Jimz");
+        instructor.setSportCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
+
+        // create fitness class
         FitnessClass fitnessClass = new FitnessClass();
+        fitnessClass.setSportCenter(sportCenter);
         fitnessClass = fitnessClassRepository.save(fitnessClass);
 
         // create session
         Session session = new Session();
         session.setInstructor(instructor);
         session.setFitnessClass(fitnessClass);
+        session.setSportCenter(sportCenter);
         sessionRepository.save(session);
 
         // create registration
@@ -62,6 +78,7 @@ public class RegistrationRepositoryTests {
         registration.setDate(aDate);
         registration.setSession(session);
         registration.setCustomer(customer);
+        registration.setSportCenter(sportCenter);
         registrationRepository.save(registration);
 
         // getId from saved object
@@ -72,7 +89,7 @@ public class RegistrationRepositoryTests {
         // read from database
         Registration registrationFromDb = registrationRepository.findRegistrationById(registartionId);
 
-        // check if the object from the database is the same as the object that was saved
+        // check if the object from the db is the same as the object that was saved
         assertNotNull(registrationFromDb);
         assertNotNull(registrationFromDb.getId());
 
