@@ -71,7 +71,7 @@ public class SportCenterService {
      * @param newClosingTime
      * @return
      */
-    public SportCenter setOpeningHours(Time newOpeningTime, Time newClosingTime) {
+    public SportCenter setOpenHours(Time newOpeningTime, Time newClosingTime) {
         if (newOpeningTime == null || newClosingTime == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening and closing time cannot be null");
         }
@@ -92,7 +92,7 @@ public class SportCenterService {
      * @return
      */
     @Transactional
-    public List<Time> getOpeningHours() {
+    public List<Time> getOpenHours() {
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         List<Time> openingHours = new ArrayList<>();
         openingHours.add(sportCenter.getOpeningTime());
