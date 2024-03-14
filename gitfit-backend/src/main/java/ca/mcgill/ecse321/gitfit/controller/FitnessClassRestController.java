@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import ca.mcgill.ecse321.gitfit.service.SportCenterService;
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class FitnessClassRestController {
     @Autowired
@@ -34,13 +36,13 @@ public class FitnessClassRestController {
         return fitnessClassService.findApprovedClasses().stream().map(fc -> convertToDto(fc)).collect(Collectors.toList());
     }
 
-    @GetMapping("/fitnessclasses/{fcid}")
+    @GetMapping(value = { "/fitnessclasses/{fcid}", "/fitnessclasses/{fcid}/" })
     public FitnessClassDto findFitnessClassById(@PathVariable int fcid) {
         FitnessClass fitnessClass = fitnessClassService.findFitnessClassById(fcid);
         return convertToDto(fitnessClass);
     }
 
-    @GetMapping("/fitnessclasses/{name}")
+    @GetMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto findFitnessClassByName(@PathVariable String name) {
         FitnessClass fitnessClass = fitnessClassService.findFitnessClassByName(name);
         return convertToDto(fitnessClass);
@@ -57,7 +59,7 @@ public class FitnessClassRestController {
         return convertToDto(createdFitnessClass);
     }
 
-    @PutMapping("/fitnessclasses/{name}")
+    @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto approveFitnessClass(@PathVariable String name) {
         FitnessClass fitnessClass = fitnessClassService.approveFitnessClass(name);
         return convertToDto(fitnessClass);
