@@ -40,6 +40,9 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter setSportCenterName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Name cannot be null or empty");
+        }
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setName(name);
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -77,6 +80,9 @@ public class SportCenterService {
         }
         if (newOpeningTime.after(newClosingTime)) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be after closing time");
+        }
+        if (newOpeningTime.equals(newClosingTime)) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be same as closing time");
         }
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setOpeningTime(newOpeningTime);

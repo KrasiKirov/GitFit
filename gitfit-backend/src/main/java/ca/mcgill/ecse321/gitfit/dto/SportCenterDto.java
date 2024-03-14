@@ -2,17 +2,27 @@ package ca.mcgill.ecse321.gitfit.dto;
 
 import java.sql.Time;
 
-public class SportCenterRequestDto {
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
+
+public class SportCenterDto {
+
     private String name;
     private int maxCapacity;
     private Time openingTime;
     private Time closingTime;
 
-    public SportCenterRequestDto(String name, int maxCapacity, Time openingTime, Time closingTime) {
+    public SportCenterDto(String name, int maxCapacity, Time openingTime, Time closingTime) {
         this.name = name;
         this.maxCapacity = maxCapacity;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
+    }
+
+    public SportCenterDto(SportCenter model) {
+        this.name = model.getName();
+        this.maxCapacity = model.getMaxCapacity();
+        this.openingTime = model.getOpeningTime();
+        this.closingTime = model.getClosingTime();
     }
 
     public String getName() {
