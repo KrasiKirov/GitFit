@@ -42,7 +42,7 @@ public class InstructorRepositoryTests {
 
         // Read instructor from database
         // After save
-        instructor = instructorRepository.findInstructorById(instructor.getId());
+        instructor = instructorRepository.findInstructorByUsername(instructor.getUsername());
 
         // Assert that instructor is not null and has correct attributes
         assertNotNull(instructor);
