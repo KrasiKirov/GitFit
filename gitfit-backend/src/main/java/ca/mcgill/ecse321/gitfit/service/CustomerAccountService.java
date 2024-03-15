@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
+import ca.mcgill.ecse321.gitfit.dto.PasswordChangeDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Customer;
@@ -50,7 +51,7 @@ public class CustomerAccountService {
     public Customer createCustomer(String username, String email, String password, String lastName,
             String firstName, String country, String state, String postalCode, String cardNumber, String address) {
 
-        validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
+        validatorService.validate(new AccountCreationDto(username, email, firstName, lastName));
         validatorService.validate(new PasswordCheckDto(password));
 
         if (country != null && state != null && postalCode != null && cardNumber != null && address != null) {
@@ -72,7 +73,7 @@ public class CustomerAccountService {
     public Customer updateCustomerPassword(String username, String newPassword) {
         Customer customer = customerRepository.findCustomerByUsername(username);
 
-        validatorService.validate(new PasswordCheckDto(newPassword));
+        validatorService.validate(new PasswordChangeDto(newPassword));
 
         customer.setPassword(newPassword);
         customerRepository.save(customer);
