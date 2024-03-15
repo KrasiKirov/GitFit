@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordChangeDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import jakarta.validation.Valid;
 
 @Service
 public class CustomerAccountService {
@@ -48,33 +51,40 @@ public class CustomerAccountService {
     }
 
     @Transactional
+    @Valid
     public Customer createCustomer(String username, String email, String password, String lastName,
             String firstName, String country, String state, String postalCode, String cardNumber, String address) {
 
         validatorService.validate(new AccountCreationDto(username, email, firstName, lastName));
         validatorService.validate(new PasswordCheckDto(password));
 
-        if (country != null && state != null && postalCode != null && cardNumber != null && address != null) {
+        Customer customer = new Customer(username, email, password, lastName, firstName,
+                country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());
 
+        if (StringUtils.hasText(country) && StringUtils.hasText(state) && StringUtils.hasText(postalCode)
+                && StringUtils.hasText(cardNumber) && StringUtils.hasText(address)) {
+            Billing billing = new Billing();
+            billing.setCountry(country);
+            billing.setState(state);
+            billing.setPostalCode(postalCode);
+            billing.setCardNumber(cardNumber);
+            billing.setAddress(address);
+            customer.setBilling(billing);
             validatorService.validate(new BillingInfoCheckDto(country, state, postalCode, cardNumber, address));
-            Customer customer = new Customer(username, email, password, lastName, firstName,
-                    country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());
-            customerRepository.save(customer);
-            return customer;
-        } else {
-            Customer customer = new Customer(username, email, password, lastName, firstName,
-                    sportCenterService.getSportCenter());
-            customerRepository.save(customer);
-            return customer;
         }
+        customerRepository.save(customer);
+        return customer;
     }
 
     @Transactional
     public Customer updateCustomerPassword(String username, String newPassword) {
         Customer customer = customerRepository.findCustomerByUsername(username);
 
-        validatorService.validate(new PasswordChangeDto(newPassword));
+        if (customer == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Customer not found.");
+        }
 
+        validatorService.validate(new PasswordChangeDto(newPassword));
         customer.setPassword(newPassword);
         customerRepository.save(customer);
         return customer;

@@ -31,7 +31,7 @@ public class ValidatorService {
                 errorMessage.append("\n");
             }
 
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, errorMessage.toString().trim());
         }
     }
 }
