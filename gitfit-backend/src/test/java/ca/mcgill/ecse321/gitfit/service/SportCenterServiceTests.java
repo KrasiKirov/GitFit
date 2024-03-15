@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.Arrays;
-import java.time.LocalDate;
+
+import org.springframework.http.HttpStatus;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +41,11 @@ public class SportCenterServiceTests {
     private static final Time CENTER_OPEN_TIME = Time.valueOf("08:00:00");
     private static final Time CENTER_CLOSE_TIME = Time.valueOf("22:00:00");
 
+    private static final String CENTER_NAME_NEW = "UWU-Town";
+    private static final int CENTER_MAX_CAPACITY_NEW = 200;
+    private static final Time CENTER_OPEN_TIME_NEW = Time.valueOf("07:00:00");
+    private static final Time CENTER_CLOSE_TIME_NEW = Time.valueOf("23:00:00");
+
     @BeforeEach
     public void setMockOutput() {
         lenient().when(sportCenterRepository.findAll()).thenReturn(Arrays.asList(
@@ -54,6 +59,7 @@ public class SportCenterServiceTests {
     public void testGetSportCenter() {
         // Act
         SportCenter readSportCenter = sportCenterService.getSportCenter();
+        System.out.println(readSportCenter.toString());
 
         // Assert
         assertNotNull(readSportCenter);
@@ -62,110 +68,110 @@ public class SportCenterServiceTests {
         assertEquals(CENTER_MAX_CAPACITY, readSportCenter.getMaxCapacity());
         assertEquals(CENTER_OPEN_TIME, readSportCenter.getOpeningTime());
         assertEquals(CENTER_CLOSE_TIME, readSportCenter.getClosingTime());
+        verify(sportCenterRepository, times(1)).findAll();
     }
 
     @Test
     public void testSetSportCenterName() {
+        SportCenter sportCenter = null;
         try {
-            sportCenterService.setSportCenterName("UWU-Town");
+            sportCenter = sportCenterService.setSportCenterName(CENTER_NAME_NEW);
         } catch (SportCenterException e) {
             fail();
         }
+        assertNotNull(sportCenter);
+        assertEquals(CENTER_NAME_NEW, sportCenter.getName());
+        verify(sportCenterRepository, times(1)).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetSportCenterNameNull() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setSportCenterName(null);
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Name cannot be null or empty", error);
+        }, "Name cannot be null or empty");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetSportCenterNameEmpty() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setSportCenterName("");
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Name cannot be null or empty", error);
+        }, "Name cannot be null or empty");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetSportCenterNameSpaces() {
-        String error = "";
-        try {
-            sportCenterService.setSportCenterName("   ");
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Name cannot be null or empty", error);
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
+            sportCenterService.setSportCenterName("     ");
+        }, "Name cannot be null or empty");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetSportCenterMaxCapacity() {
+        SportCenter sportCenter = null;
         try {
-            sportCenterService.setSportCenterMaxCapacity(200);
+            sportCenter = sportCenterService.setSportCenterMaxCapacity(CENTER_MAX_CAPACITY_NEW);
         } catch (SportCenterException e) {
             fail();
         }
+        assertNotNull(sportCenter);
+        assertEquals(CENTER_MAX_CAPACITY_NEW, sportCenter.getMaxCapacity());
+        verify(sportCenterRepository, times(1)).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetSportCenterMaxCapacityNegative() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setSportCenterMaxCapacity(-1);
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Max capacity cannot be negative", error);
+        }, "Max capacity cannot be negative");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetOpenHours() {
+        SportCenter sportCenter = null;
         try {
-            sportCenterService.setOpenHours(Time.valueOf("07:00:00"), Time.valueOf("23:00:00"));
+            sportCenter = sportCenterService.setOpenHours(CENTER_OPEN_TIME_NEW, CENTER_CLOSE_TIME_NEW);
         } catch (SportCenterException e) {
             fail();
         }
+        assertNotNull(sportCenter);
+        assertEquals(CENTER_OPEN_TIME_NEW, sportCenter.getOpeningTime());
+        assertEquals(CENTER_CLOSE_TIME_NEW, sportCenter.getClosingTime());
+        verify(sportCenterRepository, times(1)).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetOpenHoursNull() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setOpenHours(null, null);
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Opening and closing time cannot be null", error);
+        }, "Opening and closing time cannot be null");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetOpenHoursClosingBeforeOpening() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setOpenHours(Time.valueOf("23:00:00"), Time.valueOf("07:00:00"));
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Opening time cannot be after closing time", error);
+        }, "Opening and closing time cannot be null");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     @Test
     public void testSetOpenHoursClosingEqualsOpening() {
-        String error = "";
-        try {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             sportCenterService.setOpenHours(Time.valueOf("07:00:00"), Time.valueOf("07:00:00"));
-        } catch (SportCenterException e) {
-            error = e.getMessage();
-        }
-        assertEquals("Opening time cannot be same as closing time", error);
+        }, "Opening time cannot be same as closing time");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sportCenterRepository, never()).save(any(SportCenter.class));
     }
 
     private static SportCenter createSportCenter(int id, String name, int maxCapacity, Time openingTime,
@@ -173,6 +179,7 @@ public class SportCenterServiceTests {
         SportCenter sportCenter = new SportCenter();
         sportCenter.setId(id);
         sportCenter.setName(name);
+        sportCenter.setMaxCapacity(maxCapacity);
         sportCenter.setOpeningTime(openingTime);
         sportCenter.setClosingTime(closingTime);
         return sportCenter;
