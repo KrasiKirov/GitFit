@@ -45,6 +45,17 @@ public class Customer extends Account {
     }
   }
 
+  public Customer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String country, String state, String postalCode, String cardNumber, String address,
+      SportCenter aSportCenter) {
+    super(aUsername, aEmail, aPassword, aLastName, aFirstName);
+    boolean didAddSportCenter = setSportCenter(aSportCenter);
+    if (!didAddSportCenter) {
+      throw new RuntimeException(
+          "Unable to create customer due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------
