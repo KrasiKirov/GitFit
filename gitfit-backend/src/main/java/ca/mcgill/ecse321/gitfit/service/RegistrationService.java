@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.gitfit.dao.RegistrationRepository;
 import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
-import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.Registration;
@@ -72,10 +71,10 @@ public class RegistrationService {
      * @return a registration object
      */
     @Transactional
-    public Registration createRegistration(Date date, Session sessionDto, CustomerAccountDto customerDto) {
+    public Registration createRegistration(Date date, int sessionId, String customerName) {
         Registration registration = new Registration();
-        Session session = sessionRepository.findSessionById(sessionDto.getId());
-        Customer customer = customerService.getCustomer(customerDto.getUsername());
+        Session session = sessionRepository.findSessionById(sessionId);
+        Customer customer = customerService.getCustomer(customerName);
 
         if (session == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Session not found.");
