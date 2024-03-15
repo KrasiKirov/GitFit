@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.gitfit.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 
+@Service
 public class CustomerAccountService {
 
     @Autowired
@@ -46,16 +48,24 @@ public class CustomerAccountService {
 
     @Transactional
     public Customer createCustomer(String username, String email, String password, String lastName,
-            String firstName) {
+            String firstName, String country, String state, String postalCode, String cardNumber, String address) {
 
-        validatorService.validate(new AccountCreationDto());
-        validatorService.validate(new BillingInfoCheckDto());
+        validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
         validatorService.validate(new PasswordCheckDto(password));
 
-        Customer customer = new Customer(username, email, password, lastName, firstName,
-                sportCenterService.getSportCenter());
-        customerRepository.save(customer);
-        return customer;
+        if (country != null && state != null && postalCode != null && cardNumber != null && address != null) {
+
+            validatorService.validate(new BillingInfoCheckDto(country, state, postalCode, cardNumber, address));
+            Customer customer = new Customer(username, email, password, lastName, firstName,
+                    country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());
+            customerRepository.save(customer);
+            return customer;
+        } else {
+            Customer customer = new Customer(username, email, password, lastName, firstName,
+                    sportCenterService.getSportCenter());
+            customerRepository.save(customer);
+            return customer;
+        }
     }
 
     @Transactional

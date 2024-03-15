@@ -18,4 +18,11 @@ public class AccountCreationDto {
 
     @NotNull(message = "Last name cannot be null")
     private String LastName;
+
+    public AccountCreationDto(String username, String email, String firstName, String LastName) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.LastName = LastName;
+    }
 }

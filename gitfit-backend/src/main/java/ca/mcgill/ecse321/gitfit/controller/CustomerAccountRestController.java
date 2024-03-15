@@ -37,17 +37,19 @@ public class CustomerAccountRestController {
 
     @PutMapping(value = { "/customer/updatePassword", "/customer/updatePassword/" })
     public CustomerAccountDto updateCustomerPassword(@RequestBody String newPassword,
-            @PathVariable("username") String username) {
+            @RequestBody String username) {
         Customer customer = customerAccountService.getCustomer(username);
         customer = customerAccountService.updateCustomerPassword(username, newPassword);
         return convertToDto(customer);
     }
 
     @PostMapping(value = { "/customer/create", "/customer/create/" })
-    public CustomerAccountDto createCustomer(@RequestBody CustomerAccountDto customerAccountDto) {
-        Customer customer = customerAccountService.createCustomer(customerAccountDto.getUsername(),
-                customerAccountDto.getEmail(), customerAccountDto.getPassword(), customerAccountDto.getLastName(),
-                customerAccountDto.getFirstName());
+    public CustomerAccountDto createCustomer(@RequestBody String username, @RequestBody String email,
+            @RequestBody String password, @RequestBody String lastName, @RequestBody String firstName,
+            @RequestBody String country, @RequestBody String state, @RequestBody String postalCode,
+            @RequestBody String cardNumber, @RequestBody String address) {
+        Customer customer = customerAccountService.createCustomer(username, email, password, lastName, firstName,
+                country, state, postalCode, cardNumber, address);
         return convertToDto(customer);
     }
 

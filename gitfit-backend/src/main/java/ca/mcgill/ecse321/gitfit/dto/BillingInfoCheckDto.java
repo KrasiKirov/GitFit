@@ -20,4 +20,12 @@ public class BillingInfoCheckDto {
 
     @NotNull(message = "Address cannot be Null")
     private String address;
+
+    public BillingInfoCheckDto(String country, String state, String postalCode, String cardNumber, String address) {
+        this.country = country;
+        this.state = state;
+        this.postalCode = postalCode;
+        this.cardNumber = cardNumber;
+        this.address = address;
+    }
 }

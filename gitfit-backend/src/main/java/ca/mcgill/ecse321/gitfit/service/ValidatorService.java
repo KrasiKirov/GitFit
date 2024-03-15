@@ -1,8 +1,9 @@
-package main.java.ca.mcgill.ecse321.gitfit.service;
+package ca.mcgill.ecse321.gitfit.service;
 
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import jakarta.validation.ConstraintViolation;
@@ -10,6 +11,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
+@Service
 public class ValidatorService {
 
     private Validator validator;
