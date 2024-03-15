@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.gitfit.dao.RegistrationRepository;
@@ -15,6 +16,7 @@ import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.Registration;
 import ca.mcgill.ecse321.gitfit.model.Session;
 
+@Service
 public class RegistrationService {
 
     @Autowired
