@@ -1,15 +1,15 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
-public class BillingDto {
+public class BillingResponseDto {
     private String country;
     private String state;
     private String postalCode;
     private String cardNumberEnd;
 
-    private BillingDto() {
+    private BillingResponseDto() {
     }
 
-    public BillingDto(String country, String state, String postalCode, String cardNumberEnd) {
+    public BillingResponseDto(String country, String state, String postalCode, String cardNumberEnd) {
         this.country = country;
         this.state = state;
         this.postalCode = postalCode;
