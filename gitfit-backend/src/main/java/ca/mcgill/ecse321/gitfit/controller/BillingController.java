@@ -18,15 +18,15 @@ public class BillingController {
     //VERIFY IF THE ENDPOINT IS CORRECT
     //VERIFY IF THE ENDPOINT IS CORRECT
     // /customers/{customerId}/billing/{billingId}
-    @GetMapping("/customers/{customerId}/billing")
-    public BillingResponseDto getBilling(@PathVariable("customerId") Integer customerId) {
-        Billing billing = billingService.getBilling(customerId);
+    @GetMapping("/customers/{username}/billing")
+    public BillingResponseDto getBilling(@PathVariable("username") String username) {
+        Billing billing = billingService.getBilling(username);
         return convertToResponseDto(billing);
     }
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/customers/{customerId}/billing")
-    public BillingResponseDto createBilling(@RequestBody Billing billing, @PathVariable("customerId") Integer customerId) {
-        Billing createdBilling = billingService.createBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), customerId);
+    @PostMapping("/customers/{username}/billing")
+    public BillingResponseDto createBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
+        Billing createdBilling = billingService.createBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(createdBilling);
     }
 
@@ -34,16 +34,16 @@ public class BillingController {
     //VERIFY IF THE ENDPOINT IS CORRECT
     //VERIFY IF THE ENDPOINT IS CORRECT
     //VERIFY IF THE ENDPOINT IS CORRECT
-    ///customers/{customerId}/billing/{billingId} ?????
-    @PutMapping("/customers/{customerId}/billing")
-    public BillingResponseDto updateBilling(@RequestBody Billing billing, @PathVariable("customerId") Integer customerId) {
-        Billing updatedBilling = billingService.updateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), customerId);
+    ///customers/{username}/billing/{billingId} ?????
+    @PutMapping("/customers/{username}/billing")
+    public BillingResponseDto updateBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
+        Billing updatedBilling = billingService.updateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(updatedBilling);
     }
 
-    @DeleteMapping("/customers/{customerId}/billing")
-    public void deleteBilling(@PathVariable("customerId") Integer customerId) {
-        billingService.deleteBilling(customerId);
+    @DeleteMapping("/customers/{username}/billing")
+    public void deleteBilling(@PathVariable("username") String username) {
+        billingService.deleteBilling(username);
     }
 
     public BillingResponseDto convertToResponseDto(Billing billing) {
@@ -52,7 +52,7 @@ public class BillingController {
     }
 
     public BillingRequestDto convertToRequestDto(Billing billing) {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), billing.getCustomer().getCustomerId());
+        BillingRequestDto billingRequestDto = new BillingRequestDto(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), billing.getCustomer().getUsername());
         return billingRequestDto;
     }
 }

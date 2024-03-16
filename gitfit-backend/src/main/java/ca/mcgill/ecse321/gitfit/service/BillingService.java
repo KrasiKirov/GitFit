@@ -16,7 +16,7 @@ public class BillingService {
     @Autowired
     CustomerRepository customerRepository;
     @Transactional
-    public Billing createBilling(String country, String state, String postalCode, String cardNumber, String address, int customerId) {
+    public Billing createBilling(String country, String state, String postalCode, String cardNumber, String address, String username) {
         String error = "";
 
         //input validation
@@ -26,7 +26,7 @@ public class BillingService {
         if (error.length()!=0) {
             throw new IllegalArgumentException(error);
         }
-        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+        Customer customer = customerRepository.findCustomerByUsername(username);
         if (customer==null) {
             throw new IllegalArgumentException("The customer does not exist.");
         }
@@ -39,14 +39,14 @@ public class BillingService {
     }
 
     @Transactional
-    public Billing updateBilling(String country, String state, String postalCode, String cardNumber, String address,int customerId) {
+    public Billing updateBilling(String country, String state, String postalCode, String cardNumber, String address,String username) {
         String error = "";
 
         //input validation
         if (country==null || state==null || postalCode==null || cardNumber==null || address==null ||country=="" || state=="" || postalCode=="" || cardNumber=="" || address=="") {
             throw new IllegalArgumentException("The billing information fields must be completed.");
         }
-        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+        Customer customer = customerRepository.findCustomerByUsername(username);
         if (customer==null) {
             throw new IllegalArgumentException("The customer does not exist.");
         }
@@ -64,8 +64,8 @@ public class BillingService {
     }
 
     @Transactional
-    public Billing getBilling(int customerId) {
-        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+    public Billing getBilling(String username) {
+        Customer customer = customerRepository.findCustomerByUsername(username);
         if (customer==null) {
             throw new IllegalArgumentException("The customer does not exist.");
         }
@@ -77,8 +77,8 @@ public class BillingService {
     }
 
     @Transactional
-    public void deleteBilling(int customerId){
-        Customer customer = customerRepository.findCustomerByCustomerId(customerId);
+    public void deleteBilling(String username){
+        Customer customer = customerRepository.findCustomerByUsername(username);
         if (customer==null) {
             throw new IllegalArgumentException("The customer does not exist.");
         }

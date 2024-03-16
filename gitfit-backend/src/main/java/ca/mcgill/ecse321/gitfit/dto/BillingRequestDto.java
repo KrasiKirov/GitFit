@@ -7,18 +7,18 @@ public class BillingRequestDto {
     private String postalCode;
     private String cardNumber;
     private String address;
-    private int customerId;
+    private String username;
 
     private BillingRequestDto() {
     }
 
-    public BillingRequestDto(String country, String state, String postalCode, String cardNumber, String address, int customerId) {
+    public BillingRequestDto(String country, String state, String postalCode, String cardNumber, String address, String username) {
         this.country = country;
         this.state = state;
         this.postalCode = postalCode;
         this.cardNumber = cardNumber;
         this.address = address;
-        this.customerId = customerId;
+        this.username = username;
     }
 
     public String getCountry() {
@@ -39,7 +39,5 @@ public class BillingRequestDto {
     public String getAddress() {
         return this.address;
     }
-    public int getCustomerId() {
-        return this.customerId;
-    }
+    public String getUsername() {return this.username;}
 }

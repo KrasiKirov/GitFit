@@ -2,8 +2,12 @@ package ca.mcgill.ecse321.gitfit.service;
 
 import ca.mcgill.ecse321.gitfit.dao.BillingRepository;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,23 +22,25 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 public class BillingServiceTests {
 
+
+
     @Mock
     private BillingRepository billingRepository;
     @Mock
     private CustomerRepository customerRepository;
+    @Mock
+    private SportCenterRepository sportCenterRepository;
 
     @InjectMocks
     private BillingService billingService;
 
     @Test
     public void createBillingTest(){
-//        // create customer object for billing
-//        String email = "bill@billing.ca";
-//        String password = "billingpass";
-//        String lastName = "Zhang";
-//        String firstName = "Richard";
-//        Customer customer = new Customer(email,password,lastName,firstName);
+        SportCenter sportCenter = new SportCenter();
+
         Customer customer = new Customer();
+        customer.setUsername("Bob");
+        customer.setSportCenter(sportCenter);
 
         // create billing object
         String country = "Canada";
@@ -42,14 +48,19 @@ public class BillingServiceTests {
         String postalCode = "H3A 0G4";
         String cardNumber = "8888 8888 8888 8888";
         String address = "666 McGill Avenue";
-        Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
+        Billing billing1 = new Billing();
+        billing1.setCountry(country);
+        billing1.setState(state);
+        billing1.setPostalCode(postalCode);
+        billing1.setCardNumber(cardNumber);
+        billing1.setAddress(address);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
-        Billing createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,1);
+        Billing createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,"Bob");
 
         // assertions
         assertNotNull(createdBilling);
@@ -65,6 +76,7 @@ public class BillingServiceTests {
     public void createExistingBillingTest() {
         // create customer object for billing
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -76,7 +88,7 @@ public class BillingServiceTests {
         Billing billing2 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing2);
 
@@ -84,7 +96,7 @@ public class BillingServiceTests {
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -97,6 +109,7 @@ public class BillingServiceTests {
     @Test
     public void createNonExistingCustomerBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -107,14 +120,14 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(null);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(null);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -127,6 +140,7 @@ public class BillingServiceTests {
     @Test
     public void createIncompleteFieldBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -137,14 +151,14 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.createBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -156,6 +170,7 @@ public class BillingServiceTests {
     @Test
     public void updateBillingTest(){
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -167,12 +182,12 @@ public class BillingServiceTests {
         String updatedState = "Ontario";
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
-        Billing createdBilling = billingService.updateBilling(country,updatedState,postalCode,cardNumber,address,1);
+        Billing createdBilling = billingService.updateBilling(country,updatedState,postalCode,cardNumber,address,"Bob");
 
         // assertions
         assertNotNull(createdBilling);
@@ -187,6 +202,7 @@ public class BillingServiceTests {
     @Test
     public void updateIncompleteFieldBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -197,7 +213,7 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
@@ -205,7 +221,7 @@ public class BillingServiceTests {
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -218,6 +234,7 @@ public class BillingServiceTests {
     @Test
     public void updateNonExistingCustomerBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -228,7 +245,7 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(null);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(null);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
@@ -236,7 +253,7 @@ public class BillingServiceTests {
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -248,6 +265,7 @@ public class BillingServiceTests {
     @Test
     public void updateNonExistingBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -258,7 +276,7 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(null);
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
@@ -266,7 +284,7 @@ public class BillingServiceTests {
         Billing createdBilling = null;
         String error = null;
         try {
-            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,1);
+            createdBilling = billingService.updateBilling(country,state,postalCode,cardNumber,address,"Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -278,6 +296,7 @@ public class BillingServiceTests {
     @Test
     public void deleteBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -289,16 +308,17 @@ public class BillingServiceTests {
         billing1.setId(1);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
 
-        billingService.deleteBilling(1);
+        billingService.deleteBilling("Bob");
 
         verify(billingRepository, times(1)).deleteById(any(Integer.class));
     }
     @Test
     public void deleteNonExistingCustomerBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -309,12 +329,12 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(null);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(null);
 
         // use the service
         String error = null;
         try {
-            billingService.deleteBilling(1);
+            billingService.deleteBilling("Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -325,6 +345,7 @@ public class BillingServiceTests {
     @Test
     public void deleteNonExistingBillingTest() {
         Customer customer = new Customer();
+        customer.setUsername("Bob");
 
         // create billing object
         String country = "Canada";
@@ -335,13 +356,13 @@ public class BillingServiceTests {
         Billing billing1 = new Billing(country,state,postalCode,cardNumber,address, customer);
 
         // mock behaviours
-        when(customerRepository.findCustomerByCustomerId(any(Integer.class))).thenReturn(customer);
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
         when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(null);
 
         // use the service
         String error = null;
         try {
-            billingService.deleteBilling(1);
+            billingService.deleteBilling("Bob");
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }

@@ -4,86 +4,135 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
-public class FitnessClass
-{
+public class FitnessClass {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //FitnessClass Attributes
+  // FitnessClass Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+  private int id;
   private String name;
   private String description;
+  private boolean isApproved;
 
-  //------------------------
+  // FitnessClass Associations
+  @ManyToOne(optional = false)
+  private SportCenter sportCenter;
+
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
 
-  public FitnessClass(String aName, String aDescription)
-  {
-    name = aName;
-    description = aDescription;
+  public FitnessClass() {
   }
 
-  public FitnessClass() {}
+  public FitnessClass(String aName, String aDescription, boolean aIsApproved, SportCenter aSportCenter) {
+    name = aName;
+    description = aDescription;
+    isApproved = aIsApproved;
+    boolean didAddSportCenter = setSportCenter(aSportCenter);
+    if (!didAddSportCenter) {
+      throw new RuntimeException(
+          "Unable to create fitnessClass due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+  }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public boolean setId(int aId)
-  {
+  public boolean setId(int aId) {
     boolean wasSet = false;
     id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setName(String aName)
-  {
+  public boolean setName(String aName) {
     boolean wasSet = false;
     name = aName;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setDescription(String aDescription)
-  {
+  public boolean setDescription(String aDescription) {
     boolean wasSet = false;
     description = aDescription;
     wasSet = true;
     return wasSet;
   }
 
-  public int getId()
-  {
+  public boolean setIsApproved(boolean aIsApproved) {
+    boolean wasSet = false;
+    isApproved = aIsApproved;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getId() {
     return id;
   }
 
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 
-  public String getDescription()
-  {
+  public String getDescription() {
     return description;
   }
 
-  public void delete()
-  {}
+  public boolean getIsApproved() {
+    return isApproved;
+  }
 
+  /* Code from template attribute_IsBoolean */
+  public boolean isIsApproved() {
+    return isApproved;
+  }
 
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
-            "name" + ":" + getName()+ "," +
-            "description" + ":" + getDescription()+ "]";
+  /* Code from template association_GetOne */
+  public SportCenter getSportCenter() {
+    return sportCenter;
+  }
+
+  /* Code from template association_SetOneToMany */
+  public boolean setSportCenter(SportCenter aSportCenter) {
+    boolean wasSet = false;
+    if (aSportCenter == null) {
+      return wasSet;
+    }
+
+    SportCenter existingSportCenter = sportCenter;
+    sportCenter = aSportCenter;
+    if (existingSportCenter != null && !existingSportCenter.equals(aSportCenter)) {
+      existingSportCenter.removeFitnessClass(this);
+    }
+    sportCenter.addFitnessClass(this);
+    wasSet = true;
+    return wasSet;
+  }
+
+  public void delete() {
+    SportCenter placeholderSportCenter = sportCenter;
+    this.sportCenter = null;
+    if (placeholderSportCenter != null) {
+      placeholderSportCenter.removeFitnessClass(this);
+    }
+  }
+
+  public String toString() {
+    return super.toString() + "[" +
+        "id" + ":" + getId() + "," +
+        "name" + ":" + getName() + "," +
+        "description" + ":" + getDescription() + "," +
+        "isApproved" + ":" + getIsApproved() + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "sportCenter = "
+        + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : "null");
   }
 }

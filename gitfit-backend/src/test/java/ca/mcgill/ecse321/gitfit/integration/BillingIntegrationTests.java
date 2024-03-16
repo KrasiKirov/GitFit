@@ -2,9 +2,12 @@ package ca.mcgill.ecse321.gitfit.integration;
 
 import ca.mcgill.ecse321.gitfit.dao.BillingRepository;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.BillingRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,39 +28,44 @@ public class BillingIntegrationTests {
     private BillingRepository billingRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private SportCenterRepository sportCenterRepository;
 
     private final String VALID_COUNTRY = "Canada";
     private final String VALID_STATE = "Quebec";
     private final String VALID_POSTAL_CODE = "H3H 1P3";
     private final String VALID_CARD_NUMBER = "8888 8888 8888 8888";
     private final String VALID_ADDRESS = "1234 Rue Sherbrooke";
-//    private int customerId;
 
-//    @BeforeEach
+    @BeforeEach
     @AfterEach
     public void cleanDatabase() {
         billingRepository.deleteAll();
         customerRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
-//    @BeforeEach
-    public Integer setUpCustomer() {
-        Customer customer = new Customer("customerEmail", "customerPassword", "customerLastName", "customerFirstName");
+    public String setUpCustomer() {
+        SportCenter sportCenter = new SportCenter();
+        sportCenter = sportCenterRepository.save(sportCenter);
+        Customer customer = new Customer();
+        customer.setUsername("Bob");
+        customer.setSportCenter(sportCenter);
         customer = customerRepository.save(customer);
-        return customer.getCustomerId();
+        return customer.getUsername();
     }
 
     @Test
     public void testCreateBilling() {
-        Integer customerId = setUpCustomer();
-        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, customerId);
+        String username = setUpCustomer();
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, username);
 
 //        HttpHeaders headers = new HttpHeaders();
 //        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-//        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + customerId + "/billing", HttpMethod.POST, entity, BillingResponseDto.class);
-        System.out.println("/customers/" + customerId + "/billing");
+//        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + username + "/billing", HttpMethod.POST, entity, BillingResponseDto.class);
+        System.out.println("/customers/" + username + "/billing");
 
-        ResponseEntity<BillingResponseDto> response = client.postForEntity("/customers/" + customerId + "/billing", billingRequestDto, BillingResponseDto.class);
+        ResponseEntity<BillingResponseDto> response = client.postForEntity("/customers/" + username + "/billing", billingRequestDto, BillingResponseDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());

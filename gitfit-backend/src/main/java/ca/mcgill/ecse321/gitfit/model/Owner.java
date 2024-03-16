@@ -1,43 +1,87 @@
 package ca.mcgill.ecse321.gitfit.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import java.sql.Time;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Owner extends Account {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int ownerId;
+  // ------------------------
+  // MEMBER VARIABLES
+  // ------------------------
 
-  public Owner(String aEmail, String aPassword, String aLastName, String aFirstName, int aOwnerId) {
-    super(aEmail, aPassword, aLastName, aFirstName);
-    ownerId = aOwnerId;
-  }
+  // Owner Attributes
+  @Id // No need for @GeneratedValue because the id is mapped to the sportCenter
+  private int id;
+
+  // Owner Associations
+  @OneToOne(optional = false)
+  @MapsId
+  private SportCenter sportCenter;
+
+  // ------------------------
+  // CONSTRUCTOR
+  // ------------------------
 
   public Owner() {
     super();
   }
 
-  public boolean setOwnerId(int aOwnerId) {
+  public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      SportCenter aSportCenter) {
+    super(aUsername, aEmail, aPassword, aLastName, aFirstName);
+    if (aSportCenter == null || aSportCenter.getOwner() != null) {
+      throw new RuntimeException(
+          "Unable to create Owner due to aSportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    sportCenter = aSportCenter;
+  }
+
+  public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String aNameForSportCenter, int aMaxCapacityForSportCenter,
+      Time aOpeningTimeForSportCenter, Time aClosingTimeForSportCenter) {
+    super(aUsername, aEmail, aPassword, aLastName, aFirstName);
+    sportCenter = new SportCenter(aNameForSportCenter, aMaxCapacityForSportCenter,
+        aOpeningTimeForSportCenter, aClosingTimeForSportCenter, this);
+  }
+
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setId(int aId) {
     boolean wasSet = false;
-    ownerId = aOwnerId;
+    id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getOwnerId() {
-    return ownerId;
+  public int getId() {
+    return id;
+  }
+
+  /* Code from template association_GetOne */
+  public SportCenter getSportCenter() {
+    return sportCenter;
   }
 
   public void delete() {
+    SportCenter existingSportCenter = sportCenter;
+    sportCenter = null;
+    if (existingSportCenter != null) {
+      existingSportCenter.delete();
+    }
     super.delete();
   }
 
   public String toString() {
     return super.toString() + "[" +
-        "ownerId" + ":" + getOwnerId() + "]";
+        "id" + ":" + getId() + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "sportCenter = "
+        + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : "null");
   }
 }
