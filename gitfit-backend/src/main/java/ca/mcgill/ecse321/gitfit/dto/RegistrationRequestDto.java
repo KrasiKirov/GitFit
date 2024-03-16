@@ -2,15 +2,15 @@ package ca.mcgill.ecse321.gitfit.dto;
 
 import java.sql.Date;
 
-public class CreateRegistrationRequest {
+public class RegistrationRequestDto {
     private Date date;
     private int sessionId;
     private String customerName;
 
-    CreateRegistrationRequest() {
+    RegistrationRequestDto() {
     }
 
-    CreateRegistrationRequest(Date date, int sessionId, String customerName) {
+    RegistrationRequestDto(Date date, int sessionId, String customerName) {
         this.date = date;
         this.sessionId = sessionId;
         this.customerName = customerName;

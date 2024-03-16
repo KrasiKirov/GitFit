@@ -41,7 +41,9 @@ public class RegistrationService {
     @Transactional
     public Registration getRegistration(int id) {
         Registration registration = registrationRepository.findRegistrationById(id);
-        if (registration == null) {
+        if (id == 0) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
+        } else if (registration == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
         }
         return registration;
@@ -64,21 +66,73 @@ public class RegistrationService {
     }
 
     /**
+     * Get all of a customer's registrations by username
+     * 
+     * @author : Vlad Arama (vladarama)
+     * @param username
+     * @return a list of registration objects
+     */
+    @Transactional
+    public List<Registration> getAllCustomerRegistrations(String username) {
+        Customer customer = customerService.getCustomer(username);
+        List<Registration> registrations = toList(registrationRepository.findAll());
+        if (username == null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
+        } else if (registrations.size() == 0) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
+        }
+        List<Registration> customerRegistrations = new ArrayList<>();
+        for (Registration registration : registrations) {
+            if (registration.getCustomer().getUsername().equals(customer.getUsername())) {
+                customerRegistrations.add(registration);
+            }
+        }
+        return customerRegistrations;
+    }
+
+    /**
+     * Get all of a session's registrations by sessionId
+     * 
+     * @author : Vlad Arama (vladarama)
+     * @param sessionId
+     * @return a list of registration objects
+     */
+    @Transactional
+    public List<Registration> getAllSessionRegistrations(int sessionId) {
+        Session session = sessionRepository.findSessionById(sessionId);
+        List<Registration> registrations = toList(registrationRepository.findAll());
+        if (sessionId == 0) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
+        } else if (registrations.size() == 0) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
+        }
+        List<Registration> sessionRegistrations = new ArrayList<>();
+        for (Registration registration : registrations) {
+            if (registration.getSession().getId() == session.getId()) {
+                sessionRegistrations.add(registration);
+            }
+        }
+        return sessionRegistrations;
+    }
+
+    /**
      * Create a registration
      * 
      * @author : Vlad Arama (vladarama)
      * @param date
-     * @param sessionDto
-     * @param customerDto
+     * @param sessionId
+     * @param username
      * @return a registration object
      */
     @Transactional
-    public Registration createRegistration(Date date, int sessionId, String customerName) {
+    public Registration createRegistration(Date date, int sessionId, String username) {
         Registration registration = new Registration();
         Session session = sessionRepository.findSessionById(sessionId);
-        Customer customer = customerService.getCustomer(customerName);
+        Customer customer = customerService.getCustomer(username);
 
-        if (session == null) {
+        if (date == null || sessionId == 0 || username == null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
+        } else if (session == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Session not found.");
         } else if (customer == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Customer not found.");
@@ -103,7 +157,9 @@ public class RegistrationService {
     @Transactional
     public Boolean deleteRegistration(int id) {
         Registration registration = registrationRepository.findRegistrationById(id);
-        if (registration == null) {
+        if (id == 0) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
+        } else if (registration == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
         }
         registrationRepository.delete(registration);

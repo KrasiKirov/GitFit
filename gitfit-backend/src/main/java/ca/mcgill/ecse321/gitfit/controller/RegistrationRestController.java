@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +9,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.gitfit.dto.CreateRegistrationRequest;
+import ca.mcgill.ecse321.gitfit.dto.RegistrationRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
-import ca.mcgill.ecse321.gitfit.dto.RegistrationDto;
-import ca.mcgill.ecse321.gitfit.dto.SportCenterDto;
+import ca.mcgill.ecse321.gitfit.dto.RegistrationResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.Registration;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.service.RegistrationService;
 
 @CrossOrigin(origins = "*")
@@ -39,8 +36,8 @@ public class RegistrationRestController {
      * @return a list of registration DTOs
      */
     @GetMapping(value = { "/registrations", "/registrations/" })
-    public List<RegistrationDto> getAllRegistrations() {
-        List<RegistrationDto> registrationDtos = new ArrayList<>();
+    public List<RegistrationResponseDto> getAllRegistrations() {
+        List<RegistrationResponseDto> registrationDtos = new ArrayList<>();
         for (Registration registration : registrationService.getAllRegistrations()) {
             registrationDtos.add(registrationConvertToDto(registration));
         }
@@ -55,8 +52,40 @@ public class RegistrationRestController {
      * @return a registration DTO
      */
     @GetMapping(value = { "/registrations/{id}", "/registrations/{id}/" })
-    public RegistrationDto getRegistrationById(@PathVariable("id") int id) {
+    public RegistrationResponseDto getRegistrationById(@PathVariable("id") int id) {
         return registrationConvertToDto(registrationService.getRegistration(id));
+    }
+
+    /**
+     * Get all registrations by customer
+     * 
+     * @author : Vlad Arama (vladarama)
+     * @param customer
+     * @return a list of registration DTOs linked to the given customer
+     */
+    @GetMapping(value = { "/registrations/customer", "/registrations/customer/" })
+    public List<RegistrationResponseDto> getAllRegistrationsByCustomer(@RequestBody CustomerAccountDto customer) {
+        List<RegistrationResponseDto> registrationDtos = new ArrayList<>();
+        for (Registration registration : registrationService.getAllCustomerRegistrations(customer.getUsername())) {
+            registrationDtos.add(registrationConvertToDto(registration));
+        }
+        return registrationDtos;
+    }
+
+    /**
+     * Get all registrations by session
+     * 
+     * @author : Vlad Arama (vladarama)
+     * @param session
+     * @return a list of registration DTOs linked to the given session
+     */
+    @GetMapping(value = { "/registrations/session", "/registrations/session/" })
+    public List<RegistrationResponseDto> getAllRegistrationsBySession(@RequestBody Session session) {
+        List<RegistrationResponseDto> registrationDtos = new ArrayList<>();
+        for (Registration registration : registrationService.getAllSessionRegistrations(session.getId())) {
+            registrationDtos.add(registrationConvertToDto(registration));
+        }
+        return registrationDtos;
     }
 
     /**
@@ -78,7 +107,7 @@ public class RegistrationRestController {
      * @return a registration DTO
      */
     @PostMapping(value = { "/registrations", "/registrations/" })
-    public RegistrationDto createRegistration(@RequestBody CreateRegistrationRequest request) {
+    public RegistrationResponseDto createRegistration(@RequestBody RegistrationRequestDto request) {
         Registration registration = registrationService.createRegistration(request.getDate(), request.getSessionId(),
                 request.getCustomerName());
         return registrationConvertToDto(registration);
@@ -91,13 +120,13 @@ public class RegistrationRestController {
      * @param registration
      * @return
      */
-    private RegistrationDto registrationConvertToDto(Registration registration) {
+    private RegistrationResponseDto registrationConvertToDto(Registration registration) {
         if (registration == null) {
             throw new IllegalArgumentException("There is no such registration!");
         }
-        RegistrationDto registrationDto = new RegistrationDto(registration.getId(), registration.getDate(),
-                registration.getSession(), customerConvertToDto(registration.getCustomer()),
-                sportCenterConvertToDto(registration.getSportCenter()));
+        RegistrationResponseDto registrationDto = new RegistrationResponseDto(registration.getId(),
+                registration.getDate(),
+                registration.getSession(), customerConvertToDto(registration.getCustomer()));
 
         return registrationDto;
     }
@@ -105,10 +134,6 @@ public class RegistrationRestController {
     private CustomerAccountDto customerConvertToDto(Customer c) {
         return new CustomerAccountDto(c.getUsername(), c.getEmail(), c.getFirstName(), c.getLastName(),
                 c.getPassword());
-    }
-
-    private SportCenterDto sportCenterConvertToDto(SportCenter s) {
-        return new SportCenterDto(s.getName(), s.getMaxCapacity(), s.getOpeningTime(), s.getClosingTime());
     }
 
 }

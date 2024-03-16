@@ -4,23 +4,20 @@ import java.sql.Date;
 
 import ca.mcgill.ecse321.gitfit.model.Session;
 
-public class RegistrationDto {
+public class RegistrationResponseDto {
     private int id;
     private Date date;
     private Session session;
     private CustomerAccountDto customer;
-    private SportCenterDto sportCenter;
 
-    public RegistrationDto() {
+    public RegistrationResponseDto() {
     }
 
-    public RegistrationDto(int id, Date date, Session session, CustomerAccountDto customer,
-            SportCenterDto sportCenter) {
+    public RegistrationResponseDto(int id, Date date, Session session, CustomerAccountDto customer) {
         this.id = id;
         this.date = date;
         this.session = session;
         this.customer = customer;
-        this.sportCenter = sportCenter;
     }
 
     public int getId() {
@@ -39,10 +36,6 @@ public class RegistrationDto {
         return this.customer;
     }
 
-    public SportCenterDto getSportCenter() {
-        return this.sportCenter;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -57,10 +50,6 @@ public class RegistrationDto {
 
     public void setCustomer(CustomerAccountDto customer) {
         this.customer = customer;
-    }
-
-    public void setSportCenter(SportCenterDto sportCenter) {
-        this.sportCenter = sportCenter;
     }
 
 }
