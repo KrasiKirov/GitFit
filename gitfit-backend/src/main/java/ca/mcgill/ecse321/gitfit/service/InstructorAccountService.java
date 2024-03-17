@@ -115,6 +115,17 @@ public class InstructorAccountService {
     }
 
     /**
+     * Deletes an instructor
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     */
+    public void deleteInstructor(String username) {
+        Instructor instructor = getInstructor(username);
+        instructorRepository.delete(instructor);
+    }
+
+    /**
      * Update an instructor's email
      * 
      * @author Jatin Patel (Jatin-Pat)

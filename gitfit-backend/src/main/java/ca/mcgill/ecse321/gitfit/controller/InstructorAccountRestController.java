@@ -92,6 +92,17 @@ public class InstructorAccountRestController {
     }
 
     /**
+     * Delete an instructor
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     */
+    @DeleteMapping(value = { "/instructor/delete", "/instructor/delete/" })
+    public void deleteInstructor(@RequestBody String username) {
+        instructorAccountService.deleteInstructor(username);
+    }
+
+    /**
      * Convert model instance to DTO instance
      * 
      * @author Jatin Patel (Jatin-Pat)
