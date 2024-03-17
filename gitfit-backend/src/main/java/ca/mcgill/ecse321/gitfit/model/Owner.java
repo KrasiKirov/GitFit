@@ -52,7 +52,6 @@ public class Owner extends Account {
   // ------------------------
   // INTERFACE
   // ------------------------
-
   public boolean setId(int aId) {
     boolean wasSet = false;
     id = aId;

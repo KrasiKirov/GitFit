@@ -90,7 +90,6 @@ public class SportCenter {
     // ------------------------
     // INTERFACE
     // ------------------------
-
     public boolean setId(int aId) {
         boolean wasSet = false;
         id = aId;
