@@ -17,6 +17,7 @@ import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
 import jakarta.validation.Valid;
 
 @Service
@@ -45,9 +46,9 @@ public class CustomerAccountService {
         List<Customer> list = toList(customerRepository.findAll());
         if (list.isEmpty()) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "No current customers.");
-        } else {
-            return list;
         }
+
+        return list;
     }
 
     @Transactional
@@ -78,16 +79,18 @@ public class CustomerAccountService {
 
     @Transactional
     public Customer updateCustomerPassword(String username, String newPassword) {
-        Customer customer = customerRepository.findCustomerByUsername(username);
-
-        if (customer == null) {
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "Customer not found.");
-        }
+        Customer customer = getCustomer(username);
 
         validatorService.validate(new PasswordChangeDto(newPassword));
+
         customer.setPassword(newPassword);
         customerRepository.save(customer);
         return customer;
+    }
+
+    public void deleteCustomer(String username) {
+        Customer customer = getCustomer(username);
+        customerRepository.delete(customer);
     }
 
     private <T> List<T> toList(Iterable<T> iterable) {

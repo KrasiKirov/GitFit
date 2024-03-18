@@ -17,12 +17,12 @@ public class AccountCreationDto {
     private String firstName;
 
     @NotBlank(message = "Last name cannot be empty")
-    private String lastName;
+    private String LastName;
 
-    public AccountCreationDto(String username, String email, String firstName, String lastName) {
+    public AccountCreationDto(String username, String email, String firstName, String LastName) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.LastName = LastName;
     }
 }

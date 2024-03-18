@@ -1,80 +1,52 @@
 package ca.mcgill.ecse321.gitfit.service;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
-
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
-import ca.mcgill.ecse321.gitfit.dto.PasswordChangeDto;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class TestCustomerAccountService {
 
     @Mock
     private CustomerRepository customerRepository;
-    @InjectMocks
-    private CustomerAccountService customerAccountService;
 
     @Mock
     private ValidatorService validatorService;
 
     @Mock
     private SportCenterService sportCenterService;
+
+    @InjectMocks
+    private CustomerAccountService customerAccountService;
 
     private static final String CUSTOMER_KEY = "TestCustomer";
     private static final String NONEXISTING_KEY = "NotACustomer";
@@ -108,11 +80,9 @@ public class TestCustomerAccountService {
             Object argument = invocation.getArgument(0);
             Set<ConstraintViolation<Object>> violations = validator.validate(argument);
             if (!violations.isEmpty()) {
-                StringBuilder errorMessage = new StringBuilder();
-                for (ConstraintViolation<?> violation : violations) {
-                    errorMessage.append(violation.getMessage()).append("\n");
-                }
-                throw new SportCenterException(HttpStatus.BAD_REQUEST, errorMessage.toString().trim());
+                ConstraintViolation<?> firstViolation = violations.iterator().next();
+                throw new SportCenterException(HttpStatus.BAD_REQUEST,
+                        firstViolation.getMessage());
             }
             return null;
         }).when(validatorService).validate(any());

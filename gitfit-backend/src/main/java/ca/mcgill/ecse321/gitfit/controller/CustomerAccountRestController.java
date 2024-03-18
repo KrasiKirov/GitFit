@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import ca.mcgill.ecse321.gitfit.service.CustomerAccountService;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
+import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
+import ca.mcgill.ecse321.gitfit.dto.CustomerAccountRequestDto;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
 public class CustomerAccountRestController {
 
     @Autowired
     private CustomerAccountService customerAccountService;
 
     @GetMapping(value = { "/customer", "/customer/" })
-    public CustomerAccountDto getCustomer(@PathVariable("username") String username) {
+    public CustomerAccountDto getCustomer(@RequestBody String username) {
         Customer customer = customerAccountService.getCustomer(username);
         return convertToDto(customer);
     }
@@ -36,25 +37,32 @@ public class CustomerAccountRestController {
     }
 
     @PutMapping(value = { "/customer/updatePassword", "/customer/updatePassword/" })
-    public CustomerAccountDto updateCustomerPassword(@RequestBody String newPassword,
-            @RequestBody String username) {
-        Customer customer = customerAccountService.getCustomer(username);
-        customer = customerAccountService.updateCustomerPassword(username, newPassword);
+    public CustomerAccountDto updateCustomerPassword(@RequestBody PasswordRequestDto passwordRequestDto) {
+        Customer customer = customerAccountService.getCustomer(passwordRequestDto.getUsername());
+        customer = customerAccountService.updateCustomerPassword(passwordRequestDto.getUsername(),
+                passwordRequestDto.getPassword());
         return convertToDto(customer);
     }
 
     @PostMapping(value = { "/customer/create", "/customer/create/" })
-    public CustomerAccountDto createCustomer(@RequestBody String username, @RequestBody String email,
-            @RequestBody String password, @RequestBody String lastName, @RequestBody String firstName,
-            @RequestBody String country, @RequestBody String state, @RequestBody String postalCode,
-            @RequestBody String cardNumber, @RequestBody String address) {
-        Customer customer = customerAccountService.createCustomer(username, email, password, lastName, firstName,
-                country, state, postalCode, cardNumber, address);
+    public CustomerAccountDto createCustomer(@RequestBody CustomerAccountRequestDto customerAccountRequestDto) {
+        Customer customer = customerAccountService.createCustomer(customerAccountRequestDto.getUsername(),
+                customerAccountRequestDto.getEmail(), customerAccountRequestDto.getPassword(),
+                customerAccountRequestDto.getLastName(), customerAccountRequestDto.getFirstName(),
+                customerAccountRequestDto.getCountry(), customerAccountRequestDto.getState(),
+                customerAccountRequestDto.getPostalCode(), customerAccountRequestDto.getCardNumber(),
+                customerAccountRequestDto.getAddress());
         return convertToDto(customer);
     }
 
-    private CustomerAccountDto convertToDto(Customer c) {
-        return new CustomerAccountDto(c.getUsername(), c.getEmail(), c.getFirstName(), c.getLastName(),
-                c.getPassword());
+    @DeleteMapping(value = { "/customer/delete", "/customer/delete/" })
+    public void deleteCustomer(@RequestBody String username) {
+        customerAccountService.deleteCustomer(username);
+    }
+
+    private CustomerAccountDto convertToDto(Customer customer) {
+        return new CustomerAccountDto(customer.getUsername(), customer.getEmail(), customer.getFirstName(),
+                customer.getLastName(),
+                customer.getPassword());
     }
 }
