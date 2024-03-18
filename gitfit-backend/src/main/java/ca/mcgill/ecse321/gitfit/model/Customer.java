@@ -22,7 +22,7 @@ public class Customer extends Account {
   private int id;
 
   // Customer Associations
-  @OneToOne(mappedBy = "customer", optional = true, cascade = { CascadeType.ALL })
+  @OneToOne(mappedBy = "customer", optional = true, cascade = { CascadeType.ALL }, orphanRemoval = true)
   private Billing billing;
   @ManyToOne(optional = false)
   private SportCenter sportCenter;

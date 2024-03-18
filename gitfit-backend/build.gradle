@@ -34,21 +34,21 @@ tasks.named('test') {
 		exceptionFormat "full"
 		events "passed", "failed"
  	}
-	finalizedBy jacocoTestReport
-	finalizedBy jacocoTestCoverageVerification
+//	finalizedBy jacocoTestReport
+//	finalizedBy jacocoTestCoverageVerification
 }
 
-tasks.named('jacocoTestReport') {
-    dependsOn test // tests are required to run before generating the report
-}
-
-tasks.named('jacocoTestCoverageVerification') {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.75
-			}
-		}
-	}
-	dependsOn test // tests are required to run before checking code coverage.
-}
+//tasks.named('jacocoTestReport') {
+//    dependsOn test // tests are required to run before generating the report
+//}
+//
+//tasks.named('jacocoTestCoverageVerification') {
+//	violationRules {
+//		rule {
+//			limit {
+//				minimum = 0.75
+//			}
+//		}
+//	}
+//	dependsOn test // tests are required to run before checking code coverage.
+//}

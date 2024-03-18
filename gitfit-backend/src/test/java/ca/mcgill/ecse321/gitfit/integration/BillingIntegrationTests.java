@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class BillingIntegrationTests {
     @Autowired
     private TestRestTemplate client;
-
     @Autowired
     private BillingRepository billingRepository;
     @Autowired
@@ -37,7 +36,7 @@ public class BillingIntegrationTests {
     private final String VALID_CARD_NUMBER = "8888 8888 8888 8888";
     private final String VALID_ADDRESS = "1234 Rue Sherbrooke";
 
-    @BeforeEach
+    //@BeforeEach
     @AfterEach
     public void cleanDatabase() {
         billingRepository.deleteAll();
@@ -60,23 +59,18 @@ public class BillingIntegrationTests {
         String username = setUpCustomer();
         BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, username);
 
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-//        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + username + "/billing", HttpMethod.POST, entity, BillingResponseDto.class);
-        System.out.println("/customers/" + username + "/billing");
-
-        ResponseEntity<BillingResponseDto> response = client.postForEntity("/customers/" + username + "/billing", billingRequestDto, BillingResponseDto.class);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
+        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + username + "/billing", HttpMethod.PUT, entity, BillingResponseDto.class);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         BillingResponseDto createdBilling = response.getBody();
         assertNotNull(createdBilling);
         assertEquals(VALID_COUNTRY, createdBilling.getCountry());
         assertEquals(VALID_STATE, createdBilling.getState());
         assertEquals(VALID_POSTAL_CODE, createdBilling.getPostalCode());
         assertEquals("8888", createdBilling.getCardNumberEnd());
-
-
     }
 
 }

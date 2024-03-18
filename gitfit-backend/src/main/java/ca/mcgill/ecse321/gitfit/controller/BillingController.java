@@ -23,12 +23,12 @@ public class BillingController {
         Billing billing = billingService.getBilling(username);
         return convertToResponseDto(billing);
     }
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/customers/{username}/billing")
-    public BillingResponseDto createBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
-        Billing createdBilling = billingService.createBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
-        return convertToResponseDto(createdBilling);
-    }
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PostMapping("/customers/{username}/billing")
+//    public BillingResponseDto createBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
+//        Billing createdBilling = billingService.createBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
+//        return convertToResponseDto(createdBilling);
+//    }
 
     //VERIFY IF THE ENDPOINT IS CORRECT
     //VERIFY IF THE ENDPOINT IS CORRECT
@@ -36,8 +36,8 @@ public class BillingController {
     //VERIFY IF THE ENDPOINT IS CORRECT
     ///customers/{username}/billing/{billingId} ?????
     @PutMapping("/customers/{username}/billing")
-    public BillingResponseDto updateBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
-        Billing updatedBilling = billingService.updateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
+    public BillingResponseDto createOrUpdateBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
+        Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(updatedBilling);
     }
 
