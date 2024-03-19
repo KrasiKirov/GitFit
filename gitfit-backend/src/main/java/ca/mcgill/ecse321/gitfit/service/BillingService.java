@@ -17,6 +17,20 @@ public class BillingService {
     BillingRepository  billingRepository;
     @Autowired
     CustomerRepository customerRepository;
+
+    /**
+     * Create or update billing information for a customer
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param country
+     * @param state
+     * @param postalCode
+     * @param cardNumber
+     * @param address
+     * @param username
+     * @throws SportCenterException if the customer does not exist or the billing information fields are not completed
+     * @return persisted billing object
+     */
     @Transactional
     public Billing createOrUpdateBilling(String country, String state, String postalCode, String cardNumber, String address, String username) {
 
@@ -42,30 +56,13 @@ public class BillingService {
         }
     }
 
-//    @Transactional
-//    public Billing updateBilling(String country, String state, String postalCode, String cardNumber, String address,String username) {
-//        String error = "";
-//
-//        //input validation
-//        if (country==null || state==null || postalCode==null || cardNumber==null || address==null ||country=="" || state=="" || postalCode=="" || cardNumber=="" || address=="") {
-//            throw new IllegalArgumentException("The billing information fields must be completed.");
-//        }
-//        Customer customer = customerRepository.findCustomerByUsername(username);
-//        if (customer==null) {
-//            throw new IllegalArgumentException("The customer does not exist.");
-//        }
-//        Billing billing = billingRepository.findBillingByCustomer(customer);
-//        if (billing==null) {
-//            throw new IllegalArgumentException("The customer does not have billing set up.");
-//        }
-//
-//        billing.setCountry(country);
-//        billing.setState(state);
-//        billing.setPostalCode(postalCode);
-//        billing.setCardNumber(cardNumber);
-//        billing.setAddress(address);
-//        return billingRepository.save(billing);
-//    }
+    /**
+     * Get billing information for a customer
+     * @author Li Yang Lei (LeiLiYang)
+     * @param username
+     * @throws SportCenterException if the customer does not exist or the customer does not have billing set up
+     * @return billing object
+     */
 
     @Transactional
     public Billing getBilling(String username) {
@@ -80,6 +77,14 @@ public class BillingService {
         }
         return billing;
     }
+
+    /**
+     * Delete billing information for a customer
+     *
+     * @auther Li Yang Lei (LeiLiYang)
+     * @param username
+     * @throws SportCenterException if the customer does not exist or the customer does not have billing set up
+     */
 
     @Transactional
     public void deleteBilling(String username){

@@ -13,46 +13,53 @@ public class BillingController {
     @Autowired
     private BillingService billingService;
 
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    // /customers/{customerId}/billing/{billingId}
+    /**
+     * Get billing information for a customer
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param username
+     * @return billing information for given customer
+     */
     @GetMapping("/customers/{username}/billing")
     public BillingResponseDto getBilling(@PathVariable("username") String username) {
         Billing billing = billingService.getBilling(username);
         return convertToResponseDto(billing);
     }
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping("/customers/{username}/billing")
-//    public BillingResponseDto createBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
-//        Billing createdBilling = billingService.createBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
-//        return convertToResponseDto(createdBilling);
-//    }
 
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    //VERIFY IF THE ENDPOINT IS CORRECT
-    ///customers/{username}/billing/{billingId} ?????
+
+    /**
+     * Create or update billing information for a customer
+     * @author Li Yang Lei (LeiLiYang)
+     * @param billing
+     * @param username
+     * @return persisted billing information for given customer
+     */
     @PutMapping("/customers/{username}/billing")
     public BillingResponseDto createOrUpdateBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
         Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(updatedBilling);
     }
 
+    /**
+     * Delete billing information for a customer
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param username
+     */
     @DeleteMapping("/customers/{username}/billing")
     public void deleteBilling(@PathVariable("username") String username) {
         billingService.deleteBilling(username);
     }
 
+    /**
+     * Convert billing to response dto
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param billing
+     * @return billing response dto
+     */
     public BillingResponseDto convertToResponseDto(Billing billing) {
         BillingResponseDto billingResponseDto = new BillingResponseDto(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumberEnd());
         return billingResponseDto;
-    }
-
-    public BillingRequestDto convertToRequestDto(Billing billing) {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), billing.getCustomer().getUsername());
-        return billingRequestDto;
     }
 }

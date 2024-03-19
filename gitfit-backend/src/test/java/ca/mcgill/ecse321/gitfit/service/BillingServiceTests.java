@@ -35,6 +35,7 @@ public class BillingServiceTests {
     @InjectMocks
     private BillingService billingService;
 
+
     @Test
     public void createOrUpdateBillingTest(){
         SportCenter sportCenter = new SportCenter();
@@ -73,40 +74,6 @@ public class BillingServiceTests {
         verify(billingRepository, times(1)).save(any(Billing.class));
     }
 
-//    @Test
-//    public void createExistingBillingTest() {
-//        // create customer object for billing
-//        Customer customer = new Customer();
-//        customer.setUsername("Bob");
-//
-//        // create billing object
-//        String country = "Canada";
-//        String state = "Quebec";
-//        String postalCode = "H3A 0G4";
-//        String cardNumber = "8888 8888 8888 8888";
-//        String address = "666 McGill Avenue";
-//        Billing billing1 = new Billing();
-//        Billing billing2 = new Billing(country,state,postalCode,cardNumber,address, customer);
-//
-//        // mock behaviours
-//        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
-//        when(billingRepository.findBillingByCustomer(any(Customer.class))).thenReturn(billing1);
-//        when(billingRepository.save(any(Billing.class))).thenReturn(billing2);
-//
-//        // use the service
-//        Billing createdBilling = null;
-//        String error = null;
-//        try {
-//            createdBilling = billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
-//        } catch (IllegalArgumentException e) {
-//            error = e.getMessage();
-//        }
-//
-//        // assertions
-//        assertNull(createdBilling);
-//        assertEquals(error, "The customer has an existing billing set up.");
-//    }
-
     @Test
     public void createOrUpdateNonExistingCustomerBillingTest() {
         SportCenter sportCenter = new SportCenter();
@@ -141,7 +108,6 @@ public class BillingServiceTests {
         });
 
         assertEquals("The customer does not exist.", exception.getMessage());
-
     }
 
 
