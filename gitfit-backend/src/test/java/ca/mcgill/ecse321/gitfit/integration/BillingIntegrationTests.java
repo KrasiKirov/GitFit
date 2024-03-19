@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.BillingRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingResponseDto;
+import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
@@ -39,34 +40,67 @@ public class BillingIntegrationTests {
     private final String VALID_CARD_NUMBER = "8888 8888 8888 8888";
     private final String VALID_ADDRESS = "1234 Rue Sherbrooke";
     private final String VALID_USERNAME = "Bob";
+    private final String CUSTOMER_WITHOUT_BILLING = "customerWithoutBilling";
 
-//    @BeforeAll
-//    @AfterAll
-//    public void cleanDatabase() {
-//        billingRepository.deleteAll();
-//        customerRepository.deleteAll();
-//        sportCenterRepository.deleteAll();
-//    }
-
-    public String setUpCustomer() {
+    @BeforeAll
+    public void setUpCustomers() {
         SportCenter sportCenter = new SportCenter();
         sportCenter = sportCenterRepository.save(sportCenter);
         Customer customer = new Customer();
         customer.setUsername(VALID_USERNAME);
         customer.setSportCenter(sportCenter);
-        customer = customerRepository.save(customer);
-        return customer.getUsername();
+        customerRepository.save(customer);
+
+        Customer customerWithoutBilling = new Customer();
+        customerWithoutBilling.setUsername(CUSTOMER_WITHOUT_BILLING);
+        customerWithoutBilling.setSportCenter(sportCenter);
+        customerRepository.save(customerWithoutBilling);
     }
 
     @Test
     @Order(1)
-    public void testCreateBilling() {
-        String username = setUpCustomer();
-        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, username);
+    public void testCreateNonExistingCustomerBilling() {
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, "NonExistingCustomer");
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + username + "/billing", HttpMethod.PUT, entity, BillingResponseDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.PUT, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The customer does not exist.", body.getErrors().get(0));
+
+    }
+
+
+    @Test
+    @Order(2)
+    public void testCreateIncompleteFieldBilling() {
+        BillingRequestDto billingRequestDto = new BillingRequestDto(null, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The billing information fields must be completed.", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(3)
+    public void testCreateValidBilling() {
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
+        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, BillingResponseDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -79,14 +113,38 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(2)
-    public void testGetBilling() {
-//        String username = setUpCustomer();
-//        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, username);
-//      HttpHeaders headers = new HttpHeaders();    HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-//        Billing billing = billingRepository.findAll().iterator().next();
-//        System.out.println(billing.getCountry());
+    @Order(4)
+    public void testGetNonExistingCustomerBilling() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.GET, entity, ErrorDto.class);
 
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The customer does not exist.", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(5)
+    public void testGetNonExistingBilling() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing", HttpMethod.GET, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The customer does not have billing set up.", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(6)
+    public void testGetBilling() {
         ResponseEntity<BillingResponseDto> response = client.getForEntity("/customers/" + VALID_USERNAME + "/billing", BillingResponseDto.class);
 
         assertNotNull(response);
@@ -100,7 +158,37 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(7)
+    public void testDeleteNonExistingCustomerBilling() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.DELETE, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The customer does not exist.", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(8)
+    public void testDeleteNonExistingBilling() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing", HttpMethod.DELETE, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("The customer does not have billing set up.", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(7)
     public void testDeleteBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
