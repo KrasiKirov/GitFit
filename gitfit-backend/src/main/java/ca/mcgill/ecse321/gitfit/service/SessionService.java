@@ -42,8 +42,8 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public Session createSession(Instructor instructor, FitnessClass fitnessClass, int price, Time endTime,
-            Time startTime, Date date) {
+    public Session createSession(Instructor instructor, FitnessClass fitnessClass, int price, Time startTime,
+            Time endTime, Date date) {
         if (instructor == null || fitnessClass == null || endTime == null || startTime == null || date == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "All fields must be filled in to create a session");
         }
@@ -54,15 +54,16 @@ public class SessionService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "End time must be after start time");
         }
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
-        if (sportCenter == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "No sport center found");
+        if (endTime.after(sportCenter.getClosingTime()) || startTime.before(sportCenter.getOpeningTime())) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time must be within sport center hours");
         }
-        if (endTime.after(sportCenter.getClosingTime())) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "End time must be before closing time");
+        List<Session> sessions = findAllSessions();
+        for (Session session : sessions) {
+            if (isSlotTakenByExistingSession(session, startTime, endTime, date)) {
+                throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time slot is already taken");
+            }
         }
-        if (startTime.before(sportCenter.getOpeningTime())) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start time must be after opening time");
-        }
+
         Session session = new Session();
         session.setInstructor(instructor);
         session.setFitnessClass(fitnessClass);
@@ -208,8 +209,8 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public Session updateSession(int newPrice, Time newStartTime, Time newEndTime, Date newDate) {
-        if (newStartTime == null || newEndTime == null || newDate == null) {
+    public Session updateSession(Session session, int newPrice, Time newStartTime, Time newEndTime, Date newDate) {
+        if (session == null ||newStartTime == null || newEndTime == null || newDate == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "All fields must be filled in to update a session");
         }
         if (newPrice < 0) {
@@ -222,13 +223,16 @@ public class SessionService {
         if (sportCenter == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "No sport center found");
         }
-        if (newEndTime.after(sportCenter.getClosingTime())) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "End time must be before closing time");
+        if (newEndTime.after(sportCenter.getClosingTime()) || newStartTime.before(sportCenter.getOpeningTime())) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time must be within sport center hours");
         }
-        if (newStartTime.before(sportCenter.getOpeningTime())) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start time must be after opening time");
+        List<Session> sessions = findAllSessions();
+        for (Session other : sessions) {
+            if (isSlotTakenByExistingSession(other, newStartTime, newEndTime, newDate) && !other.equals(session)) {
+                System.out.println(other);
+                throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time slot is already taken");
+            }
         }
-        Session session = new Session();
         session.setPrice(newPrice);
         session.setStartTime(newStartTime);
         session.setEndTime(newEndTime);
@@ -246,5 +250,19 @@ public class SessionService {
             resultList.add(t);
         }
         return resultList;
+    }
+
+    private Boolean isSlotTakenByExistingSession(Session existingSession, Time startTime, Time endTime, Date date) {
+        if (existingSession.getDate().equals(date)) {
+            Time existingStartTime = existingSession.getStartTime();
+            Time existingEndTime = existingSession.getEndTime();
+            if (existingStartTime.equals(startTime) || existingEndTime.equals(endTime) ||
+                (existingStartTime.before(startTime) && existingEndTime.after(startTime)) ||
+                (existingStartTime.before(endTime) && existingEndTime.after(endTime)) ||
+                (existingStartTime.after(startTime) && existingEndTime.before(endTime))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
