@@ -35,7 +35,7 @@ public class BillingController {
      * @return persisted billing information for given customer
      */
     @PutMapping("/customers/{username}/billing")
-    public BillingResponseDto createOrUpdateBilling(@RequestBody Billing billing, @PathVariable("username") String username) {
+    public BillingResponseDto createOrUpdateBilling(@RequestBody BillingRequestDto billing, @PathVariable("username") String username) {
         Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(updatedBilling);
     }
