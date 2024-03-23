@@ -36,7 +36,7 @@ public class InstructorAccountService {
      * 
      * @author Jatin Patel (Jatin-Pat)
      * @param username
-     * @return Instructor object
+     * @return Instructor
      * @throws SportCenterException if instructor not found
      */
     @Transactional
@@ -94,8 +94,8 @@ public class InstructorAccountService {
     }
 
     /**
-     * Update an instructor's email. Calls the validator service to validate the
-     * input for AccountCreationDto
+     * Update an instructor's password. Calls the validator service to validate the
+     * input for PasswordCheckDto
      * 
      * @author Jatin Patel (Jatin-Pat)
      * @param username
@@ -126,7 +126,7 @@ public class InstructorAccountService {
     }
 
     /**
-     * Update an instructor's email
+     * Converts an iterable to a list
      * 
      * @author Jatin Patel (Jatin-Pat)
      * @param iterable

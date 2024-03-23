@@ -64,7 +64,7 @@ public class InstructorAccountRestController {
      * @param username
      * @return InstructorAccountDto
      */
-    @PutMapping(value = { "/instructor/updatePassword", "/instructor/updatePassword/" })
+    @PutMapping(value = { "/instructor/password/", "/instructor/password/" })
     public InstructorAccountDto updateInstructorPassword(@RequestBody PasswordRequestDto passwordRequestDto) {
         Instructor instructor = instructorAccountService.getInstructor(passwordRequestDto.getUsername());
         instructor = instructorAccountService.updateInstructorPassword(passwordRequestDto.getUsername(),
@@ -83,7 +83,7 @@ public class InstructorAccountRestController {
      * @param firstName
      * @return InstructorAccountDto
      */
-    @PostMapping(value = { "/instructor/create", "/instructor/create/" })
+    @PostMapping(value = { "/instructor/", "/instructor/" })
     public InstructorAccountDto createInstructor(@RequestBody AccountRequestDto accountRequestDto) {
         Instructor instructor = instructorAccountService.createInstructor(accountRequestDto.getUsername(),
                 accountRequestDto.getEmail(), accountRequestDto.getPassword(), accountRequestDto.getLastName(),
@@ -97,7 +97,7 @@ public class InstructorAccountRestController {
      * @author Jatin Patel (Jatin-Pat)
      * @param username
      */
-    @DeleteMapping(value = { "/instructor/delete", "/instructor/delete/" })
+    @DeleteMapping(value = { "/instructor/", "/instructor/" })
     public void deleteInstructor(@RequestBody String username) {
         instructorAccountService.deleteInstructor(username);
     }
