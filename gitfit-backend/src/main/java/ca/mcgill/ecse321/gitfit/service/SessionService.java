@@ -242,6 +242,21 @@ public class SessionService {
     }
 
     /**
+     * Delete session
+     * 
+     * @author William Wang (wangwiza)
+     * @param session
+     * @return
+     */
+    @Transactional
+    public void deleteSession(Session session) {
+        if (session == null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Session must be filled in to delete");
+        }
+        sessionRepository.delete(session);
+    }
+
+    /**
      * toList helper method (@author eventRegistration authors)
      */
     private <T> List<T> toList(Iterable<T> iterable) {

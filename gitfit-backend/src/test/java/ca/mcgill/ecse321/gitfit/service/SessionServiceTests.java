@@ -555,4 +555,23 @@ public class SessionServiceTests {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);
     }
+
+    @Test
+    public void testDeleteSession() {
+        try {
+            sessionService.deleteSession(SESSION);
+        } catch (SportCenterException e) {
+            fail();
+        }
+        verify(sessionRepository, times(1)).delete(SESSION);
+    }
+
+    @Test
+    public void testDeleteSessionNullSession() {
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
+            sessionService.deleteSession(null);
+        }, "Session must be filled in to delete");
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        verify(sessionRepository, never()).delete(null);
+    }
 }
