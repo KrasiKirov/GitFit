@@ -16,17 +16,18 @@ import jakarta.transaction.Transactional;
 @Service
 public class FitnessClassService {
     @Autowired
-    private FitnessClassRepository fitnessClassRepo;
-
+    private FitnessClassRepository fitnessClassRepository;
+    @Autowired
+    private SportCenterService sportCenterService;
     @Transactional
     public List<FitnessClass> findAllFitnessClasses() {
-        return toList(fitnessClassRepo.findAll());
+        return toList(fitnessClassRepository.findAll());
     }
 
     @Transactional
     public List<FitnessClass> findApprovedClasses() {
         List<FitnessClass> approvedClasses = new ArrayList<FitnessClass>();
-        for (FitnessClass fitnessClass : fitnessClassRepo.findAll()) {
+        for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
             if (fitnessClass.isIsApproved()) {
                 approvedClasses.add(fitnessClass);
             }
@@ -36,7 +37,7 @@ public class FitnessClassService {
 
     @Transactional
     public FitnessClass findFitnessClassById(int id) {
-        FitnessClass fitnessClass = fitnessClassRepo.findFitnessClassById(id);
+        FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
         if (fitnessClass == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "There is no fitness class with ID " + id + ".");
         }
@@ -45,7 +46,7 @@ public class FitnessClassService {
 
     @Transactional
     public FitnessClass findFitnessClassByName(String name) {
-        FitnessClass fitnessClass = fitnessClassRepo.findFitnessClassByName(name);
+        FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "There is no fitness class called " + name + ".");
         }
@@ -53,22 +54,40 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public FitnessClass createFitnessClass(String name, String description, boolean isApproved, SportCenter sportCenter) {
+    public FitnessClass createFitnessClass(String name, String description) {
         if (name == null || description == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
         }
-        
+
         // if there is no existing fitness class with the given name, then create a new fitness class
         try {
             findFitnessClassByName(name);
         } catch (SportCenterException e) {
-            FitnessClass toCreate = new FitnessClass(name, description, isApproved, sportCenter);
-            return fitnessClassRepo.save(toCreate);
+            FitnessClass toCreate = new FitnessClass(name, description,sportCenterService.getSportCenter());
+            return fitnessClassRepository.save(toCreate);
         }
 
         // otherwise, the fitness class already exists
         throw new SportCenterException(HttpStatus.BAD_REQUEST, "There is already a fitness class called " + name + ".");
     }
+
+//    @Transactional
+//    public FitnessClass createFitnessClassOLD(String name, String description, boolean isApproved, SportCenter sportCenter) {
+//        if (name == null || description == null) {
+//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
+//        }
+//
+//        // if there is no existing fitness class with the given name, then create a new fitness class
+//        try {
+//            findFitnessClassByName(name);
+//        } catch (SportCenterException e) {
+//            FitnessClass toCreate = new FitnessClass(name, description, isApproved, sportCenter);
+//            return fitnessClassRepository.save(toCreate);
+//        }
+//
+//        // otherwise, the fitness class already exists
+//        throw new SportCenterException(HttpStatus.BAD_REQUEST, "There is already a fitness class called " + name + ".");
+//    }
 
     @Transactional
     public FitnessClass approveFitnessClass(String name) {
