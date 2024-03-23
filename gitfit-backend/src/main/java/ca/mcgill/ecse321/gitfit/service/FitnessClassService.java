@@ -112,39 +112,54 @@ public class FitnessClassService {
 //        throw new SportCenterException(HttpStatus.BAD_REQUEST, "There is already a fitness class called " + name + ".");
 //    }
 
-    @Transactional
-    public FitnessClass approveFitnessClass(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
-        }
-        
-        FitnessClass fitnessClass = findFitnessClassByName(name);
-        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
-        return fitnessClassRepository.save(fitnessClass);
-    }
+//    @Transactional
+//    public FitnessClass approveFitnessClass(String name) {
+//        if (name == null || name.isEmpty()) {
+//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+//        }
+//
+//        FitnessClass fitnessClass = findFitnessClassByName(name);
+//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
+//        return fitnessClassRepository.save(fitnessClass);
+//    }
+//
+//    @Transactional
+//    public FitnessClass pendingFitnessClass(String name) {
+//        if (name == null || name.isEmpty()) {
+//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+//        }
+//
+//        FitnessClass fitnessClass = findFitnessClassByName(name);
+//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.PENDING);
+//        return fitnessClassRepository.save(fitnessClass);
+//    }
+//
+//    @Transactional
+//    public FitnessClass rejectFitnessClass(String name) {
+//        if (name == null || name.isEmpty()) {
+//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+//        }
+//
+//        FitnessClass fitnessClass = findFitnessClassByName(name);
+//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.REJECTED);
+//        return fitnessClassRepository.save(fitnessClass);
+//    }
 
     @Transactional
-    public FitnessClass pendingFitnessClass(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+    public FitnessClass updateApprovalStatus(String name, String status) {
+        if (name == null || name.isEmpty() || status == null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a status.");
         }
-
+        try {
+            FitnessClassApprovalStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid status.");
+        }
+        FitnessClassApprovalStatus approvalStatus = FitnessClassApprovalStatus.valueOf(status);
         FitnessClass fitnessClass = findFitnessClassByName(name);
-        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.PENDING);
+        fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
-
-    @Transactional
-    public FitnessClass rejectFitnessClass(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
-        }
-
-        FitnessClass fitnessClass = findFitnessClassByName(name);
-        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.REJECTED);
-        return fitnessClassRepository.save(fitnessClass);
-    }
-
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
