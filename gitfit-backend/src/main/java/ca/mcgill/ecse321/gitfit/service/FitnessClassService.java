@@ -48,6 +48,17 @@ public class FitnessClassService {
     }
 
     @Transactional
+    public List<FitnessClass> findRejectedClasses() {
+        List<FitnessClass> rejectedClasses = new ArrayList<FitnessClass>();
+        for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
+            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.REJECTED) {
+                rejectedClasses.add(fitnessClass);
+            }
+        }
+        return rejectedClasses;
+    }
+
+    @Transactional
     public FitnessClass findFitnessClassById(int id) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
         if (fitnessClass == null) {
@@ -113,6 +124,17 @@ public class FitnessClassService {
     }
 
     @Transactional
+    public FitnessClass pendingFitnessClass(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+        }
+
+        FitnessClass fitnessClass = findFitnessClassByName(name);
+        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.PENDING);
+        return fitnessClassRepository.save(fitnessClass);
+    }
+
+    @Transactional
     public FitnessClass rejectFitnessClass(String name) {
         if (name == null || name.isEmpty()) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
@@ -132,6 +154,15 @@ public class FitnessClassService {
         FitnessClass fitnessClass = findFitnessClassByName(name);
         fitnessClass.setDescription(description);
         return fitnessClassRepository.save(fitnessClass);
+    }
+
+    @Transactional
+    public void deleteRejectedFitnessClasses() {
+        for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
+            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.REJECTED) {
+                fitnessClassRepository.delete(fitnessClass);
+            }
+        }
     }
 
     @Transactional
