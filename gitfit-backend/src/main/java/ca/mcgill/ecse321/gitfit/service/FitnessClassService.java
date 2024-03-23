@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.gitfit.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,22 @@ public class FitnessClassService {
     public List<FitnessClass> findApprovedClasses() {
         List<FitnessClass> approvedClasses = new ArrayList<FitnessClass>();
         for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
-            if (fitnessClass.isIsApproved()) {
+            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.APPROVED) {
                 approvedClasses.add(fitnessClass);
             }
         }
         return approvedClasses;
+    }
+
+    @Transactional
+    public List<FitnessClass> findPendingClasses() {
+        List<FitnessClass> pendingClasses = new ArrayList<FitnessClass>();
+        for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
+            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.PENDING) {
+                pendingClasses.add(fitnessClass);
+            }
+        }
+        return pendingClasses;
     }
 
     @Transactional
@@ -91,13 +103,45 @@ public class FitnessClassService {
 
     @Transactional
     public FitnessClass approveFitnessClass(String name) {
-        if (name == null) {
+        if (name == null || name.isEmpty()) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
         }
         
         FitnessClass fitnessClass = findFitnessClassByName(name);
-        fitnessClass.setIsApproved(true);
-        return fitnessClass;
+        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
+        return fitnessClassRepository.save(fitnessClass);
+    }
+
+    @Transactional
+    public FitnessClass rejectFitnessClass(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+        }
+
+        FitnessClass fitnessClass = findFitnessClassByName(name);
+        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.REJECTED);
+        return fitnessClassRepository.save(fitnessClass);
+    }
+
+    @Transactional
+    public FitnessClass updateFitnessClass(String name, String description) {
+        if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
+        }
+
+        FitnessClass fitnessClass = findFitnessClassByName(name);
+        fitnessClass.setDescription(description);
+        return fitnessClassRepository.save(fitnessClass);
+    }
+
+    @Transactional
+    public void deleteFitnessClass(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
+        }
+
+        FitnessClass fitnessClass = findFitnessClassByName(name);
+        fitnessClassRepository.delete(fitnessClass);
     }
 
     private <T> List<T> toList(Iterable<T> iterable) {
