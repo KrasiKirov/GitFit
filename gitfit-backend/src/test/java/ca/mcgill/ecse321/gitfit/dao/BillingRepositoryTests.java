@@ -38,7 +38,8 @@ public class BillingRepositoryTests {
         String postalCode = "H3A 0G4";
         String cardNumber = "8888 8888 8888 8888";
         String address = "McGill Avenue";
-        Billing billing = new Billing(country, state, postalCode, cardNumber, address, customer);
+        Billing billing = new Billing(country, state, postalCode, cardNumber,
+                address, customer);
         billing = billingRepository.save(billing);
 
         // getId from saved billing object and customer object
@@ -57,7 +58,6 @@ public class BillingRepositoryTests {
         assertEquals(cardNumber, billingFromDB.getCardNumber());
         assertEquals(address, billingFromDB.getAddress());
         assertEquals(customerId, customer.getId());
-
 
     }
 
