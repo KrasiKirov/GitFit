@@ -38,7 +38,7 @@ public class OwnerAccountRestController {
      * @param newPassword
      * @return OwnerAccountDto
      */
-    @PutMapping(value = { "/owner/updatePassword", "/owner/updatePassword/" })
+    @PutMapping(value = { "/owner/Password", "/owner/Password/" })
     public OwnerAccountDto updateOwnerPassword(@RequestBody String newPassword) {
         Owner owner = ownerAccountService.getOwner();
         owner = ownerAccountService.updateOwnerPassword(newPassword);
@@ -46,6 +46,7 @@ public class OwnerAccountRestController {
     }
 
     private OwnerAccountDto convertToDto(Owner owner) {
-        return new OwnerAccountDto(owner.getFirstName(), owner.getLastName(), owner.getEmail(), owner.getPassword());
+        return new OwnerAccountDto(owner.getUsername(), owner.getFirstName(), owner.getLastName(), owner.getEmail(),
+                owner.getPassword());
     }
 }

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
 public class OwnerAccountDto {
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -9,7 +10,8 @@ public class OwnerAccountDto {
     public OwnerAccountDto() {
     }
 
-    public OwnerAccountDto(String firstName, String lastName, String email, String password) {
+    public OwnerAccountDto(String username, String firstName, String lastName, String email, String password) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -26,6 +28,10 @@ public class OwnerAccountDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
