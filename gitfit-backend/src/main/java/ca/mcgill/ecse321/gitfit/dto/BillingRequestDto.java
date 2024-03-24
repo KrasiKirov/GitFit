@@ -39,5 +39,7 @@ public class BillingRequestDto {
     public String getAddress() {
         return this.address;
     }
-    public String getUsername() {return this.username;}
+    public String getUsername() {
+        return this.username;
+    }
 }
