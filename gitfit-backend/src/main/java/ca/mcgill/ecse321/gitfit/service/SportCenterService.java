@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.gitfit.service;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +50,7 @@ public class SportCenterService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Name cannot be null or empty");
         }
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
-        sportCenter.setName(name);
+        sportCenter.setName(name.trim());
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
     }
@@ -97,20 +95,5 @@ public class SportCenterService {
         sportCenter.setClosingTime(newClosingTime);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
-    }
-
-    /**
-     * Get the opening hours of the sport center
-     * 
-     * @author William Wang (wangwiza)
-     * @return
-     */
-    @Transactional
-    public List<Time> getOpenHours() {
-        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
-        List<Time> openingHours = new ArrayList<>();
-        openingHours.add(sportCenter.getOpeningTime());
-        openingHours.add(sportCenter.getClosingTime());
-        return openingHours;
     }
 }
