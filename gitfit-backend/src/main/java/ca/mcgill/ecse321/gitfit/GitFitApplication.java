@@ -38,5 +38,4 @@ public class GitFitApplication {
 		}
 		return "Hello world!";
 	}
-
 }
