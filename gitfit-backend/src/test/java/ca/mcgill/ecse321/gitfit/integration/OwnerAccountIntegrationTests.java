@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
-
-import ca.mcgill.ecse321.gitfit.model.Owner;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;

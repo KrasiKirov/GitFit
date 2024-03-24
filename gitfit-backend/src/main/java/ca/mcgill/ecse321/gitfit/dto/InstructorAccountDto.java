@@ -5,15 +5,17 @@ public class InstructorAccountDto {
     private String email;
     private String firstName;
     private String lastName;
+    private String password;
 
     public InstructorAccountDto() {
     }
 
-    public InstructorAccountDto(String username, String email, String fistName, String lastName) {
+    public InstructorAccountDto(String username, String email, String fistName, String lastName, String password) {
         this.username = username;
         this.email = email;
         this.firstName = fistName;
         this.lastName = lastName;
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -30,5 +32,9 @@ public class InstructorAccountDto {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

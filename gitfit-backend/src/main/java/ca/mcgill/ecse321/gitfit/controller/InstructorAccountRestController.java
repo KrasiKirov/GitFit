@@ -33,8 +33,8 @@ public class InstructorAccountRestController {
      * @param username
      * @return InstructorAccountDto
      */
-    @GetMapping(value = { "/instructor", "/instructor/" })
-    public InstructorAccountDto getInstructor(@RequestBody String username) {
+    @GetMapping(value = { "/instructor/{username}" })
+    public InstructorAccountDto getInstructor(@PathVariable String username) {
         Instructor instructor = instructorAccountService.getInstructor(username);
         return convertToDto(instructor);
     }
@@ -111,6 +111,6 @@ public class InstructorAccountRestController {
      */
     private InstructorAccountDto convertToDto(Instructor instructor) {
         return new InstructorAccountDto(instructor.getUsername(), instructor.getEmail(), instructor.getFirstName(),
-                instructor.getLastName());
+                instructor.getLastName(), instructor.getPassword());
     }
 }
