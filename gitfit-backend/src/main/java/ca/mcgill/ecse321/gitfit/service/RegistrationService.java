@@ -80,6 +80,8 @@ public class RegistrationService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
         } else if (registrations.size() == 0) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
+        } else if (customer == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Customer not found.");
         }
         List<Registration> customerRegistrations = new ArrayList<>();
         for (Registration registration : registrations) {
@@ -105,6 +107,8 @@ public class RegistrationService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid input.");
         } else if (registrations.size() == 0) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Registration not found.");
+        } else if (session == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Session not found.");
         }
         List<Registration> sessionRegistrations = new ArrayList<>();
         for (Registration registration : registrations) {
@@ -142,7 +146,7 @@ public class RegistrationService {
         registration.setSession(session);
         registration.setCustomer(customer);
         registration.setSportCenter(sportCenterService.getSportCenter());
-        registration = registrationRepository.save(registration);
+        registrationRepository.save(registration);
 
         return registration;
     }
