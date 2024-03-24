@@ -16,6 +16,7 @@ import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
 import jakarta.validation.Valid;
 
 /**
@@ -104,6 +105,12 @@ public class CustomerAccountService {
         validatorService.validate(new AccountCreationDto(username, email, firstName, lastName));
 
         validatorService.validate(new PasswordCheckDto(password));
+
+        Customer checkExistenceCustomer = customerRepository.findCustomerByUsername(username);
+
+        if (checkExistenceCustomer != null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists.");
+        }
 
         Customer customer = new Customer(username, email, password, lastName, firstName,
                 country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());
