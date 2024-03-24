@@ -48,7 +48,10 @@ public class SportCenterService {
      */
     @Transactional
     public SportCenter setSportCenterName(String name) {
-        SportCenter sportCenter = getSportCenter();
+        if (name == null || name.trim().isEmpty()) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Name cannot be null or empty");
+        }
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setName(name);
         sportCenter = sportCenterRepository.save(sportCenter);
         return sportCenter;
@@ -79,14 +82,17 @@ public class SportCenterService {
      * @param newClosingTime
      * @return
      */
-    public SportCenter setOpeningHours(Time newOpeningTime, Time newClosingTime) {
+    public SportCenter setOpenHours(Time newOpeningTime, Time newClosingTime) {
         if (newOpeningTime == null || newClosingTime == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening and closing time cannot be null");
         }
         if (newOpeningTime.after(newClosingTime)) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be after closing time");
         }
-        SportCenter sportCenter = getSportCenter();
+        if (newOpeningTime.equals(newClosingTime)) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Opening time cannot be same as closing time");
+        }
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         sportCenter.setOpeningTime(newOpeningTime);
         sportCenter.setClosingTime(newClosingTime);
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -100,8 +106,8 @@ public class SportCenterService {
      * @return
      */
     @Transactional
-    public List<Time> getOpeningHours() {
-        SportCenter sportCenter = getSportCenter();
+    public List<Time> getOpenHours() {
+        SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         List<Time> openingHours = new ArrayList<>();
         openingHours.add(sportCenter.getOpeningTime());
         openingHours.add(sportCenter.getClosingTime());
