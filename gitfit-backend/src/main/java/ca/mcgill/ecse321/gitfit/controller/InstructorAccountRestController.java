@@ -45,7 +45,7 @@ public class InstructorAccountRestController {
      * @author Jatin Patel (Jatin-Pat)
      * @return List of all InstructorAccountDto
      */
-    @GetMapping(value = { "/instructor/all", "/instructor/all/" })
+    @GetMapping(value = { "/instructors/", "/instructors/" })
     public List<InstructorAccountDto> getAllInstructors() {
         List<InstructorAccountDto> dtoList = new ArrayList<>();
 
