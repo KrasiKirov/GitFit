@@ -24,4 +24,3 @@ public class PasswordRequestDto {
     public void setPassword(String Password) {
         this.password = Password;
     }
-}
