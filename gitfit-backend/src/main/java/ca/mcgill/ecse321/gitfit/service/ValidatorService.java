@@ -1,3 +1,4 @@
+
 package ca.mcgill.ecse321.gitfit.service;
 
 import java.util.Set;
@@ -46,8 +47,11 @@ public class ValidatorService {
         Set<ConstraintViolation<T>> violations = validator.validate(dto);
 
         if (!violations.isEmpty()) {
-            ConstraintViolation<T> firstViolation = violations.iterator().next();
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, firstViolation.getMessage());
+            StringBuilder combinedViolations = new StringBuilder();
+            for (ConstraintViolation<T> violation : violations) {
+                combinedViolations.append(violation.getMessage()).append("; ");
+            }
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, combinedViolations.toString());
         }
     }
 }

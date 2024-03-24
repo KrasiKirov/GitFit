@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
+import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
@@ -39,7 +40,7 @@ public class CustomerAccountService {
      * 
      * @author Krasimir Kirov (KrasiKirov)
      * @param username
-     * @return Customer object
+     * @return Customer
      * @throws SportCenterException if customer not found or empty username
      */
     @Transactional
@@ -102,16 +103,7 @@ public class CustomerAccountService {
 
         validatorService.validate(new AccountCreationDto(username, email, firstName, lastName));
 
-        if (password == null || password.trim().isEmpty()) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Password cannot be empty");
-        }
-        if (password.length() < 8) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Password must be at least 8 characters long");
-        }
-        if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$")) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST,
-                    "Password must contain at least one digit, one lowercase letter, and one uppercase letter");
-        }
+        validatorService.validate(new PasswordCheckDto(password));
 
         Customer customer = new Customer(username, email, password, lastName, firstName,
                 country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());
@@ -144,16 +136,7 @@ public class CustomerAccountService {
     public Customer updateCustomerPassword(String username, String newPassword) {
         Customer customer = getCustomer(username);
 
-        if (newPassword == null || newPassword.trim().isEmpty()) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "New password cannot be empty");
-        }
-        if (newPassword.length() < 8) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "New password must be at least 8 characters long");
-        }
-        if (!newPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$")) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST,
-                    "Password must contain at least one digit, one lowercase letter, and one uppercase letter");
-        }
+        validatorService.validate(new PasswordCheckDto(newPassword));
 
         customer.setPassword(newPassword);
         customerRepository.save(customer);

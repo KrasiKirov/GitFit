@@ -202,7 +202,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "Last name cannot be empty";
+        String expectedErrorMessage = "Last name cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -229,7 +229,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "First name cannot be empty";
+        String expectedErrorMessage = "First name cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -380,7 +380,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "Username cannot be empty";
+        String expectedErrorMessage = "Username cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -436,7 +436,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "Password cannot be empty";
+        String expectedErrorMessage = "Password cannot be Blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -509,19 +509,13 @@ public class TestCustomerAccountService {
         String postalCode = "H3A 1B1";
         String cardNumber = "1234567890123456";
         String address = "845 Sherbrooke St W, Montreal";
-        Customer customer = null;
-        String error = null;
 
-        try {
-            customer = customerAccountService.createCustomer(username, email, password, lastName,
+        assertThrows(SportCenterException.class, () -> {
+            customerAccountService.createCustomer(username, email, password, lastName,
                     firstName, country, state, postalCode, cardNumber, address);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
+        });
 
-        assertNull(customer);
-        String expectedErrorMessage = "Password cannot be empty";
-        assertEquals(expectedErrorMessage, error);
+        verify(customerRepository, times(0)).save(any(Customer.class));
     }
 
     @Test
@@ -547,7 +541,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "Email cannot be empty";
+        String expectedErrorMessage = "Email cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -602,7 +596,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "First name cannot be empty";
+        String expectedErrorMessage = "First name cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -629,7 +623,7 @@ public class TestCustomerAccountService {
         }
 
         assertNull(customer);
-        String expectedErrorMessage = "Last name cannot be empty";
+        String expectedErrorMessage = "Last name cannot be blank";
         assertEquals(expectedErrorMessage, error);
     }
 
@@ -723,29 +717,6 @@ public class TestCustomerAccountService {
     }
 
     @Test
-    public void testUpdateCustomerPasswordWithEmptyPassword() {
-        String username = "kirka";
-        String oldPassword = "oldPassword123";
-        String newPassword = "";
-
-        Customer mockCustomer = new Customer();
-        mockCustomer.setUsername(username);
-        mockCustomer.setPassword(oldPassword);
-
-        when(customerRepository.findCustomerByUsername(username)).thenReturn(mockCustomer);
-        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Exception exception = assertThrows(SportCenterException.class, () -> {
-            customerAccountService.updateCustomerPassword(username, newPassword);
-        });
-
-        String expectedMessage = "New password cannot be empty";
-        String actualMessage = exception.getMessage();
-
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
     public void testUpdateCustomerPasswordWithNullPassword() {
         String username = "kirka";
         String oldPassword = "oldPassword123";
@@ -762,7 +733,7 @@ public class TestCustomerAccountService {
             customerAccountService.updateCustomerPassword(username, newPassword);
         });
 
-        String expectedMessage = "New password cannot be empty";
+        String expectedMessage = "Password cannot be Blank";
         String actualMessage = exception.getMessage();
 
         assertEquals(expectedMessage, actualMessage);
@@ -785,10 +756,30 @@ public class TestCustomerAccountService {
             customerAccountService.updateCustomerPassword(username, newPassword);
         });
 
-        String expectedMessage = "New password must be at least 8 characters long";
+        String expectedMessage = "Password must be at least 8 characters long";
         String actualMessage = exception.getMessage();
 
         assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void testUpdateCustomerPasswordWithEmptyPassword() {
+        String username = "kirka";
+        String oldPassword = "oldPassword123";
+        String newPassword = "";
+
+        Customer mockCustomer = new Customer();
+        mockCustomer.setUsername(username);
+        mockCustomer.setPassword(oldPassword);
+
+        when(customerRepository.findCustomerByUsername(username)).thenReturn(mockCustomer);
+        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        assertThrows(SportCenterException.class, () -> {
+            customerAccountService.updateCustomerPassword(username, newPassword);
+        });
+
+        verify(customerRepository, times(0)).save(any(Customer.class));
     }
 
     @Test

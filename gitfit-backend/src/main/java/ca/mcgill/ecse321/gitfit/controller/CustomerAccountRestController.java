@@ -33,8 +33,8 @@ public class CustomerAccountRestController {
      * @param username
      * @return CustomerAccountDto
      */
-    @GetMapping(value = { "/customer", "/customer/" })
-    public CustomerAccountDto getCustomer(@RequestBody String username) {
+    @GetMapping(value = { "/customer/{username}" })
+    public CustomerAccountDto getCustomer(@PathVariable String username) {
         Customer customer = customerAccountService.getCustomer(username);
         return convertToDto(customer);
     }
@@ -45,7 +45,7 @@ public class CustomerAccountRestController {
      * @author Krasimir Kirov (KrasiKirov)
      * @return List of all CustomerAccountDto
      */
-    @GetMapping(value = { "/customer/all", "/customer/all/" })
+    @GetMapping(value = { "/customers/", "/customers/" })
     public List<CustomerAccountDto> getAllCustomers() {
         List<Customer> list = customerAccountService.getAllCustomers();
 
@@ -63,7 +63,7 @@ public class CustomerAccountRestController {
      * @param passwordRequestDto
      * @return CustomerAccountDto
      */
-    @PutMapping(value = { "/customer/password", "/customer/password/" })
+    @PutMapping(value = { "/customer/password/", "/customer/password/" })
     public CustomerAccountDto updateCustomerPassword(@RequestBody PasswordRequestDto passwordRequestDto) {
         Customer customer = customerAccountService.getCustomer(passwordRequestDto.getUsername());
         customer = customerAccountService.updateCustomerPassword(passwordRequestDto.getUsername(),
@@ -78,7 +78,7 @@ public class CustomerAccountRestController {
      * @param customerAccountRequestDto
      * @return CustomerAccountDto
      */
-    @PostMapping(value = { "/customer/new", "/customer/new/" })
+    @PostMapping(value = { "/customer/", "/customer/" })
     public CustomerAccountDto createCustomer(@RequestBody CustomerAccountRequestDto customerAccountRequestDto) {
         Customer customer = customerAccountService.createCustomer(customerAccountRequestDto.getUsername(),
                 customerAccountRequestDto.getEmail(), customerAccountRequestDto.getPassword(),
@@ -95,7 +95,7 @@ public class CustomerAccountRestController {
      * @author Krasimir Kirov (KrasiKirov)
      * @param username
      */
-    @DeleteMapping(value = { "/customer/remove", "/customer/remove/" })
+    @DeleteMapping(value = { "/customer/", "/customer/" })
     public void deleteCustomer(@RequestBody String username) {
         customerAccountService.deleteCustomer(username);
     }
