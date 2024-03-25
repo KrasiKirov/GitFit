@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.dto.DatesDto;
 import ca.mcgill.ecse321.gitfit.dto.HoursDto;
 import ca.mcgill.ecse321.gitfit.dto.SessionDto;
+import ca.mcgill.ecse321.gitfit.dto.SessionListDto;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,13 +64,13 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions", "/sessions/" })
-    public List<SessionDto> getAllSessions() {
+    public SessionListDto getAllSessions() {
         List<Session> sessions = sessionService.findAllSessions();
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -93,14 +94,14 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-instructor", "/sessions/by-instructor/" })
-    public List<SessionDto> getSessionsByInstructor(@RequestBody String instructorUsername) {
+    public SessionListDto getSessionsByInstructor(@RequestBody String instructorUsername) {
         Instructor instructor = instructorService.getInstructor(instructorUsername);
         List<Session> sessions = sessionService.findSessionsByInstructor(instructor);
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -111,14 +112,14 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-class", "/sessions/by-class/" })
-    public List<SessionDto> getSessionsByFitnessClass(@RequestBody String fitnessClassName) {
+    public SessionListDto getSessionsByFitnessClass(@RequestBody String fitnessClassName) {
         FitnessClass fitnessClass = fitnessClassService.getFitnessClass(fitnessClassName);
         List<Session> sessions = sessionService.findSessionsByFitnessClass(fitnessClass);
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -130,7 +131,7 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-instructor-and-class", "/sessions/by-instructor-and-class/" })
-    public List<SessionDto> getSessionsByInstructorAndFitnessClass(@RequestBody SessionDto sessionDto) {
+    public SessionListDto getSessionsByInstructorAndFitnessClass(@RequestBody SessionDto sessionDto) {
         Instructor instructor = instructorService.getInstructor(sessionDto.getInstructorUsername());
         FitnessClass fitnessClass = fitnessClassService.getFitnessClass(sessionDto.getFitnessClassName());
         List<Session> sessions = sessionService.findSessionsByInstructorAndFitnessClass(instructor, fitnessClass);
@@ -138,7 +139,7 @@ public class SessionRestController {
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -149,13 +150,13 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-price", "/sessions/by-price/" })
-    public List<SessionDto> getSessionsByMaxPrice(@RequestBody int maxPrice) {
+    public SessionListDto getSessionsByMaxPrice(@RequestBody int maxPrice) {
         List<Session> sessions = sessionService.findSessionsByMaxPrice(maxPrice);
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -167,14 +168,14 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-dates", "/sessions/by-dates/" })
-    public List<SessionDto> getSessionsByDate(@RequestBody DatesDto datesDto) {
+    public SessionListDto getSessionsByDate(@RequestBody DatesDto datesDto) {
         List<Session> sessions = sessionService.findSessionsBetweenDates(Date.valueOf(datesDto.getStartDate()),
                 Date.valueOf(datesDto.getEndDate()));
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
@@ -186,14 +187,14 @@ public class SessionRestController {
      * @return
      */
     @GetMapping(value = { "/sessions/by-times", "/sessions/by-times/" })
-    public List<SessionDto> getSessionsByTime(@RequestBody HoursDto hoursDto) {
+    public SessionListDto getSessionsByTime(@RequestBody HoursDto hoursDto) {
         List<Session> sessions = sessionService.findSessionsBetweenTimes(Time.valueOf(hoursDto.getOpeningTime()),
                 Time.valueOf(hoursDto.getClosingTime()));
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
             sessionDtos.add(convertToDto(session));
         }
-        return sessionDtos;
+        return new SessionListDto(sessionDtos);
     }
 
     /**
