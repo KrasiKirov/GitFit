@@ -78,7 +78,7 @@ public class CustomerAccountRestController {
      * @param customerAccountRequestDto
      * @return CustomerAccountDto
      */
-    @PostMapping(value = { "/customer/", "/customer/" })
+    @PostMapping(value = { "/customer/" })
     public CustomerAccountDto createCustomer(@RequestBody CustomerAccountRequestDto customerAccountRequestDto) {
         Customer customer = customerAccountService.createCustomer(customerAccountRequestDto.getUsername(),
                 customerAccountRequestDto.getEmail(), customerAccountRequestDto.getPassword(),
@@ -95,7 +95,7 @@ public class CustomerAccountRestController {
      * @author Krasimir Kirov (KrasiKirov)
      * @param username
      */
-    @DeleteMapping(value = { "/customer/", "/customer/" })
+    @DeleteMapping(value = { "/customer/" })
     public void deleteCustomer(@RequestBody String username) {
         customerAccountService.deleteCustomer(username);
     }
