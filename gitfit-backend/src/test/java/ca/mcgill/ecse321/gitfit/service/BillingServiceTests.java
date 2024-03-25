@@ -47,8 +47,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "Quebec";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
         Billing billing1 = new Billing();
         billing1.setCountry(country);
@@ -85,8 +85,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "Quebec";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
         Billing billing1 = new Billing();
         billing1.setCountry(country);
@@ -119,8 +119,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
         Billing billing1 = new Billing();
         billing1.setCountry(country);
@@ -142,6 +142,64 @@ public class BillingServiceTests {
     }
 
     @Test
+    public void createOrUpdateBillingWithInvalidPostalCodeTest() {
+        Customer customer = new Customer();
+        customer.setUsername("Bob");
+
+        // create billing object
+        String country = "Canada";
+        String state = "Quebec";
+        String postalCode = "H3A0";
+        String cardNumber = "8888888888888888";
+        String address = "666 McGill Avenue";
+        Billing billing1 = new Billing();
+        billing1.setCountry(country);
+        billing1.setState(state);
+        billing1.setPostalCode(postalCode);
+        billing1.setCardNumber(cardNumber);
+        billing1.setAddress(address);
+
+        // mock behaviours
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
+        when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
+
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
+            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+        });
+
+        assertEquals("Postal code must be between 5 and 10 alphanumeric characters", exception.getMessage());
+    }
+
+    @Test
+    public void createOrUpdateBillingWithInvalidCardNumberTest() {
+        Customer customer = new Customer();
+        customer.setUsername("Bob");
+
+        // create billing object
+        String country = "Canada";
+        String state = "Quebec";
+        String postalCode = "H3A0G4";
+        String cardNumber = "888888888888";
+        String address = "666 McGill Avenue";
+        Billing billing1 = new Billing();
+        billing1.setCountry(country);
+        billing1.setState(state);
+        billing1.setPostalCode(postalCode);
+        billing1.setCardNumber(cardNumber);
+        billing1.setAddress(address);
+
+        // mock behaviours
+        when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
+        when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
+
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
+            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+        });
+
+        assertEquals("Card number must be 15 or 16 digits", exception.getMessage());
+    }
+
+    @Test
     public void deleteBillingTest() {
         Customer customer = new Customer();
         customer.setUsername("Bob");
@@ -149,8 +207,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "Quebec";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
         Billing billing1 = new Billing();
         billing1.setCountry(country);
@@ -176,8 +234,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "Quebec";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
         Billing billing1 = new Billing();
         billing1.setCountry(country);
@@ -203,8 +261,8 @@ public class BillingServiceTests {
         // create billing object
         String country = "Canada";
         String state = "Quebec";
-        String postalCode = "H3A 0G4";
-        String cardNumber = "8888 8888 8888 8888";
+        String postalCode = "H3A0G4";
+        String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
 
         // mock behaviours
