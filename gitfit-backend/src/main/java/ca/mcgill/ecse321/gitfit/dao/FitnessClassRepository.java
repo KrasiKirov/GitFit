@@ -7,5 +7,6 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
 @Repository
 public interface FitnessClassRepository extends CrudRepository<FitnessClass, Integer> {
-    FitnessClass findFitnessClassById(Integer id);
+    FitnessClass findFitnessClassById(int id);
+    FitnessClass findFitnessClassByName(String name);
 }
