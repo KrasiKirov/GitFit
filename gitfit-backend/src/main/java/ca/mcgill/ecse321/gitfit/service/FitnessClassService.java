@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -61,6 +64,7 @@ public class FitnessClassService {
     public FitnessClass findFitnessClassById(int id) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
         if (fitnessClass == null) {
+
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
         }
         return fitnessClass;
@@ -71,6 +75,7 @@ public class FitnessClassService {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
+
         }
         return fitnessClass;
     }
