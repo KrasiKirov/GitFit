@@ -217,7 +217,7 @@ public class SessionIntegrationTests {
     @Test
     @Order(7)
     public void testGetSessionById() {
-        ResponseEntity<SessionDto> response = client.getForEntity("/sessions/"+session1.getId(), SessionDto.class);
+        ResponseEntity<SessionDto> response = client.getForEntity("/sessions/" + session1.getId(), SessionDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -255,8 +255,6 @@ public class SessionIntegrationTests {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorDto body = response.getBody();
         assertNotNull(body);
-        // assertEquals(1, body.getErrors().size());
-        // assertEquals("Start date cannot be after end date", body.getErrors().get(0));
     }
 
     @Test
@@ -269,15 +267,13 @@ public class SessionIntegrationTests {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorDto body = response.getBody();
         assertNotNull(body);
-        // assertEquals(1, body.getErrors().size());
-        // assertEquals("Start time cannot be after end time", body.getErrors().get(0));
     }
-
 
     @Test
     @Order(17)
     public void testUpdateSessionInvalidPrice() {
-        SessionDto sessionDto = new SessionDto(session1.getId(), INVALID_PRICE, VALID_START_TIME, VALID_END_TIME, VALID_DATE,
+        SessionDto sessionDto = new SessionDto(session1.getId(), INVALID_PRICE, VALID_START_TIME, VALID_END_TIME,
+                VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
 
         HttpEntity<SessionDto> entity = new HttpEntity<>(sessionDto);
@@ -294,7 +290,8 @@ public class SessionIntegrationTests {
     @Test
     @Order(18)
     public void testUpdateSessionInvalidTimes() {
-        SessionDto sessionDto = new SessionDto(session1.getId(), PRICE1, INVALID_END_TIME, INVALID_START_TIME, VALID_DATE,
+        SessionDto sessionDto = new SessionDto(session1.getId(), PRICE1, INVALID_END_TIME, INVALID_START_TIME,
+                VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
 
         HttpEntity<SessionDto> entity = new HttpEntity<>(sessionDto);
@@ -334,12 +331,14 @@ public class SessionIntegrationTests {
     @Test
     @Order(20)
     public void testDeleteSession() {
-        ResponseEntity<Void> response = client.exchange("/sessions/{id}", HttpMethod.DELETE, null, Void.class, session1.getId());
+        ResponseEntity<Void> response = client.exchange("/sessions/{id}", HttpMethod.DELETE, null, Void.class,
+                session1.getId());
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        ResponseEntity<SessionDto> recheckResponse = client.exchange("/sessions/" + session1.getId(), HttpMethod.GET, null,
+        ResponseEntity<SessionDto> recheckResponse = client.exchange("/sessions/" + session1.getId(), HttpMethod.GET,
+                null,
                 SessionDto.class);
         assertEquals(HttpStatus.NOT_FOUND, recheckResponse.getStatusCode());
     }

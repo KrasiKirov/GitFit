@@ -48,7 +48,6 @@ public class OwnerAccountServiceTests {
     @InjectMocks
     private OwnerAccountService ownerAccountService;
 
-    private static final int CENTER_ID = 1360;
     private static final String CENTER_NAME = "McGill Gym";
     private static final int CENTER_MAX_CAPACITY = 100;
     private static final Time CENTER_OPEN_TIME = Time.valueOf("08:00:00");
