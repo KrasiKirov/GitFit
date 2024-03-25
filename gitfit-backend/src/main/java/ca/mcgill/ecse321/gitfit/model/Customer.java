@@ -22,7 +22,7 @@ public class Customer extends Account {
   private int id;
 
   // Customer Associations
-  @OneToOne(mappedBy = "customer", optional = true, cascade = { CascadeType.ALL })
+  @OneToOne(mappedBy = "customer", optional = true, cascade = { CascadeType.ALL }, orphanRemoval = true)
   private Billing billing;
   @ManyToOne(optional = false)
   private SportCenter sportCenter;
@@ -36,6 +36,17 @@ public class Customer extends Account {
   }
 
   public Customer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      SportCenter aSportCenter) {
+    super(aUsername, aEmail, aPassword, aLastName, aFirstName);
+    boolean didAddSportCenter = setSportCenter(aSportCenter);
+    if (!didAddSportCenter) {
+      throw new RuntimeException(
+          "Unable to create customer due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+  }
+
+  public Customer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String country, String state, String postalCode, String cardNumber, String address,
       SportCenter aSportCenter) {
     super(aUsername, aEmail, aPassword, aLastName, aFirstName);
     boolean didAddSportCenter = setSportCenter(aSportCenter);

@@ -1,10 +1,6 @@
 package ca.mcgill.ecse321.gitfit.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Billing {
@@ -24,7 +20,7 @@ public class Billing {
   private String address;
 
   // Billing Associations
-  @ManyToOne(optional = false)
+  @OneToOne(optional = false)
   private Customer customer;
 
   // ------------------------
@@ -114,7 +110,14 @@ public class Billing {
     return cardNumber;
   }
 
-  public String getAddress() {
+
+  public String getCardNumberEnd()
+  {
+    return cardNumber.substring(cardNumber.length()-4);
+  }
+
+  public String getAddress()
+  {
     return address;
   }
 
