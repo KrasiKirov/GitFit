@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -62,7 +61,7 @@ public class FitnessClassService {
     public FitnessClass findFitnessClassById(int id) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
         if (fitnessClass == null) {
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "There is no fitness class with ID " + id + ".");
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
         }
         return fitnessClass;
     }
@@ -71,7 +70,7 @@ public class FitnessClassService {
     public FitnessClass findFitnessClassByName(String name) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "There is no fitness class called " + name + ".");
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
         }
         return fitnessClass;
     }
@@ -93,57 +92,6 @@ public class FitnessClassService {
         // otherwise, the fitness class already exists
         throw new SportCenterException(HttpStatus.BAD_REQUEST, "There is already a fitness class called " + name + ".");
     }
-
-//    @Transactional
-//    public FitnessClass createFitnessClassOLD(String name, String description, boolean isApproved, SportCenter sportCenter) {
-//        if (name == null || description == null) {
-//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
-//        }
-//
-//        // if there is no existing fitness class with the given name, then create a new fitness class
-//        try {
-//            findFitnessClassByName(name);
-//        } catch (SportCenterException e) {
-//            FitnessClass toCreate = new FitnessClass(name, description, isApproved, sportCenter);
-//            return fitnessClassRepository.save(toCreate);
-//        }
-//
-//        // otherwise, the fitness class already exists
-//        throw new SportCenterException(HttpStatus.BAD_REQUEST, "There is already a fitness class called " + name + ".");
-//    }
-
-//    @Transactional
-//    public FitnessClass approveFitnessClass(String name) {
-//        if (name == null || name.isEmpty()) {
-//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
-//        }
-//
-//        FitnessClass fitnessClass = findFitnessClassByName(name);
-//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
-//        return fitnessClassRepository.save(fitnessClass);
-//    }
-//
-//    @Transactional
-//    public FitnessClass pendingFitnessClass(String name) {
-//        if (name == null || name.isEmpty()) {
-//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
-//        }
-//
-//        FitnessClass fitnessClass = findFitnessClassByName(name);
-//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.PENDING);
-//        return fitnessClassRepository.save(fitnessClass);
-//    }
-//
-//    @Transactional
-//    public FitnessClass rejectFitnessClass(String name) {
-//        if (name == null || name.isEmpty()) {
-//            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
-//        }
-//
-//        FitnessClass fitnessClass = findFitnessClassByName(name);
-//        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.REJECTED);
-//        return fitnessClassRepository.save(fitnessClass);
-//    }
 
     @Transactional
     public FitnessClass updateApprovalStatus(String name, String status) {
