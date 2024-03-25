@@ -24,6 +24,7 @@ import ca.mcgill.ecse321.gitfit.dao.RegistrationRepository;
 import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -162,6 +163,16 @@ public class RegistrationIntegrationTests {
         registration2.setSportCenter(sportCenter);
         registration2.setDate(date1);
         registrationRepository.save(registration2);
+    }
+
+    @AfterAll
+    public void tearDown() {
+        registrationRepository.deleteAll();
+        sessionRepository.deleteAll();
+        customerRepository.deleteAll();
+        fitnessClassRepository.deleteAll();
+        instructorRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     @Test

@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,10 @@ public class BillingIntegrationTests {
 
     @BeforeAll
     public void setUpCustomers() {
+        billingRepository.deleteAll();
+        customerRepository.deleteAll();
+        sportCenterRepository.deleteAll();
+
         SportCenter sportCenter = new SportCenter();
         sportCenter = sportCenterRepository.save(sportCenter);
         Customer customer = new Customer();
@@ -55,6 +60,13 @@ public class BillingIntegrationTests {
         customerWithoutBilling.setUsername(CUSTOMER_WITHOUT_BILLING);
         customerWithoutBilling.setSportCenter(sportCenter);
         customerRepository.save(customerWithoutBilling);
+    }
+
+    @AfterAll
+    public void clearDatabase() {
+        billingRepository.deleteAll();
+        customerRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     @Test

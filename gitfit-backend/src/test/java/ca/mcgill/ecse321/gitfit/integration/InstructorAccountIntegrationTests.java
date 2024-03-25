@@ -18,6 +18,7 @@ import ca.mcgill.ecse321.gitfit.dto.OwnerAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
 
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -39,207 +40,217 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class InstructorAccountIntegrationTests {
 
-    @Autowired
-    private TestRestTemplate client;
+        @Autowired
+        private TestRestTemplate client;
 
-    @Autowired
-    private InstructorRepository instructorRepository;
+        @Autowired
+        private InstructorRepository instructorRepository;
 
-    @Autowired
-    private SportCenterRepository sportCenterRepository;
+        @Autowired
+        private SportCenterRepository sportCenterRepository;
 
-    private static final String USERNAME = "AnakinInstructor";
-    private static final String EMAIL = "anakin@starwars.com";
-    private static final String PASSWORD = "theForce123";
-    private static final String LAST_NAME = "Skywalker";
-    private static final String FIRST_NAME = "Anakin";
-    private static final SportCenter SPORT_CENTER = new SportCenter();
+        private static final String USERNAME = "AnakinInstructor";
+        private static final String EMAIL = "anakin@starwars.com";
+        private static final String PASSWORD = "theForce123";
+        private static final String LAST_NAME = "Skywalker";
+        private static final String FIRST_NAME = "Anakin";
+        private static final SportCenter SPORT_CENTER = new SportCenter();
 
-    @BeforeAll
-    public void setup() {
-        instructorRepository.deleteAll();
-        sportCenterRepository.deleteAll();
-        sportCenterRepository.save(SPORT_CENTER);
-        instructorRepository.save(new Instructor(USERNAME, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, SPORT_CENTER));
-    }
+        @BeforeAll
+        public void setup() {
+                instructorRepository.deleteAll();
+                sportCenterRepository.deleteAll();
+                sportCenterRepository.save(SPORT_CENTER);
+                instructorRepository
+                                .save(new Instructor(USERNAME, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, SPORT_CENTER));
+        }
 
-    @Test
-    @Order(1)
-    public void testGetInstructor() {
-        ResponseEntity<InstructorAccountDto> response = client.getForEntity("/instructor/" + USERNAME,
-                InstructorAccountDto.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        InstructorAccountDto instructor = response.getBody();
-        assertNotNull(instructor);
-        assertEquals(USERNAME, instructor.getUsername());
-        assertEquals(EMAIL, instructor.getEmail());
-        assertEquals(FIRST_NAME, instructor.getFirstName());
-        assertEquals(LAST_NAME, instructor.getLastName());
-        assertEquals(PASSWORD, instructor.getPassword());
+        @AfterAll
+        public void clearDatabase() {
+                instructorRepository.deleteAll();
+                sportCenterRepository.deleteAll();
+        }
 
-    }
+        @Test
+        @Order(1)
+        public void testGetInstructor() {
+                ResponseEntity<InstructorAccountDto> response = client.getForEntity("/instructor/" + USERNAME,
+                                InstructorAccountDto.class);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                InstructorAccountDto instructor = response.getBody();
+                assertNotNull(instructor);
+                assertEquals(USERNAME, instructor.getUsername());
+                assertEquals(EMAIL, instructor.getEmail());
+                assertEquals(FIRST_NAME, instructor.getFirstName());
+                assertEquals(LAST_NAME, instructor.getLastName());
+                assertEquals(PASSWORD, instructor.getPassword());
 
-    @Test
-    @Order(2)
-    public void testGetInvalidInstructor() {
-        String UNKNOWN_USERNAME = "000000";
-        ResponseEntity<InstructorAccountDto> response = client.getForEntity("/instructor/" + UNKNOWN_USERNAME,
-                InstructorAccountDto.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+        }
 
-    @Test
-    @Order(3)
-    public void testGetAllInstructors() {
-        ResponseEntity<InstructorAccountDto[]> response = client.getForEntity("/instructors/",
-                InstructorAccountDto[].class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        InstructorAccountDto[] instructors = response.getBody();
-        assertNotNull(instructors);
-        assertEquals(1, instructors.length);
-    }
+        @Test
+        @Order(2)
+        public void testGetInvalidInstructor() {
+                String UNKNOWN_USERNAME = "000000";
+                ResponseEntity<InstructorAccountDto> response = client.getForEntity("/instructor/" + UNKNOWN_USERNAME,
+                                InstructorAccountDto.class);
+                assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
 
-    @Test
-    @Order(4)
-    public void testCreateValidInstructor() {
-        String newUsername = "LukeInstructor";
-        String newEmail = "luke@starwars.com";
-        String newPassword = "LukeForce456";
-        String newLastName = "Skywalker";
-        String newFirstName = "Luke";
+        @Test
+        @Order(3)
+        public void testGetAllInstructors() {
+                ResponseEntity<InstructorAccountDto[]> response = client.getForEntity("/instructors/",
+                                InstructorAccountDto[].class);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                InstructorAccountDto[] instructors = response.getBody();
+                assertNotNull(instructors);
+                assertEquals(1, instructors.length);
+        }
 
-        AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword, newLastName,
-                newFirstName);
+        @Test
+        @Order(4)
+        public void testCreateValidInstructor() {
+                String newUsername = "LukeInstructor";
+                String newEmail = "luke@starwars.com";
+                String newPassword = "LukeForce456";
+                String newLastName = "Skywalker";
+                String newFirstName = "Luke";
 
-        HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
+                AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword,
+                                newLastName,
+                                newFirstName);
 
-        ResponseEntity<InstructorAccountDto> response = client.postForEntity(
-                "/instructor/",
-                request,
-                InstructorAccountDto.class);
+                HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        InstructorAccountDto instructor = response.getBody();
-        assertNotNull(instructor);
-        assertEquals(newUsername, instructor.getUsername());
-        assertEquals(newEmail, instructor.getEmail());
-        assertEquals(newFirstName, instructor.getFirstName());
-        assertEquals(newLastName, instructor.getLastName());
-        assertEquals(newPassword, instructor.getPassword());
+                ResponseEntity<InstructorAccountDto> response = client.postForEntity(
+                                "/instructor/",
+                                request,
+                                InstructorAccountDto.class);
 
-        ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
-                InstructorAccountDto[].class);
-        InstructorAccountDto[] instructors = response2.getBody();
-        assertEquals(2, instructors.length);
-    }
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                InstructorAccountDto instructor = response.getBody();
+                assertNotNull(instructor);
+                assertEquals(newUsername, instructor.getUsername());
+                assertEquals(newEmail, instructor.getEmail());
+                assertEquals(newFirstName, instructor.getFirstName());
+                assertEquals(newLastName, instructor.getLastName());
+                assertEquals(newPassword, instructor.getPassword());
 
-    @Test
-    @Order(5)
-    public void testCreateInvalidInstructor() {
-        String newUsername = "LukeInstructor";
-        String newEmail = "luke@starwars.com";
-        String newPassword = "badPassword";
-        String newLastName = "Skywalker";
-        String newFirstName = "Luke";
+                ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
+                                InstructorAccountDto[].class);
+                InstructorAccountDto[] instructors = response2.getBody();
+                assertEquals(2, instructors.length);
+        }
 
-        AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword, newLastName,
-                newFirstName);
+        @Test
+        @Order(5)
+        public void testCreateInvalidInstructor() {
+                String newUsername = "LukeInstructor";
+                String newEmail = "luke@starwars.com";
+                String newPassword = "badPassword";
+                String newLastName = "Skywalker";
+                String newFirstName = "Luke";
 
-        HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
+                AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword,
+                                newLastName,
+                                newFirstName);
 
-        ResponseEntity<String> response = client.postForEntity(
-                "/instructor/",
-                request,
-                String.class);
+                HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody()
-                .contains("Password must contain at least one digit, one lowercase letter, and one uppercase letter;"));
+                ResponseEntity<String> response = client.postForEntity(
+                                "/instructor/",
+                                request,
+                                String.class);
 
-        ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
-                InstructorAccountDto[].class);
-        InstructorAccountDto[] instructors = response2.getBody();
-        assertEquals(2, instructors.length);
-    }
+                assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+                assertTrue(response.getBody()
+                                .contains("Password must contain at least one digit, one lowercase letter, and one uppercase letter;"));
 
-    @Test
-    @Order(6)
-    public void testCreateInvalidInstructor2() {
-        String newUsername = "AnakinInstructor";
-        String newEmail = "luke@starwars.com";
-        String newPassword = "LukeForce456878";
-        String newLastName = "Skywalker";
-        String newFirstName = "Luke";
+                ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
+                                InstructorAccountDto[].class);
+                InstructorAccountDto[] instructors = response2.getBody();
+                assertEquals(2, instructors.length);
+        }
 
-        AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword, newLastName,
-                newFirstName);
+        @Test
+        @Order(6)
+        public void testCreateInvalidInstructor2() {
+                String newUsername = "AnakinInstructor";
+                String newEmail = "luke@starwars.com";
+                String newPassword = "LukeForce456878";
+                String newLastName = "Skywalker";
+                String newFirstName = "Luke";
 
-        HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
+                AccountRequestDto accountRequestDto = new AccountRequestDto(newUsername, newEmail, newPassword,
+                                newLastName,
+                                newFirstName);
 
-        ResponseEntity<String> response = client.postForEntity(
-                "/instructor/",
-                request,
-                String.class);
+                HttpEntity<AccountRequestDto> request = new HttpEntity<>(accountRequestDto);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody()
-                .contains("Username already exists."));
+                ResponseEntity<String> response = client.postForEntity(
+                                "/instructor/",
+                                request,
+                                String.class);
 
-        ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
-                InstructorAccountDto[].class);
-        InstructorAccountDto[] instructors = response2.getBody();
-        assertEquals(2, instructors.length);
-    }
+                assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+                assertTrue(response.getBody()
+                                .contains("Username already exists."));
 
-    @Test
-    @Order(7)
-    public void testUpdateInstructorPassword() {
-        String newPassword = "LukeForce456878";
+                ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
+                                InstructorAccountDto[].class);
+                InstructorAccountDto[] instructors = response2.getBody();
+                assertEquals(2, instructors.length);
+        }
 
-        PasswordRequestDto accountRequestDto = new PasswordRequestDto(USERNAME, newPassword);
-        HttpEntity<PasswordRequestDto> request = new HttpEntity<>(accountRequestDto);
+        @Test
+        @Order(7)
+        public void testUpdateInstructorPassword() {
+                String newPassword = "LukeForce456878";
 
-        ResponseEntity<String> response = client.exchange(
-                "/instructor/password/",
-                HttpMethod.PUT,
-                request,
-                String.class);
+                PasswordRequestDto accountRequestDto = new PasswordRequestDto(USERNAME, newPassword);
+                HttpEntity<PasswordRequestDto> request = new HttpEntity<>(accountRequestDto);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(newPassword, instructorRepository.findInstructorByUsername(USERNAME).getPassword());
-    }
+                ResponseEntity<String> response = client.exchange(
+                                "/instructor/password/",
+                                HttpMethod.PUT,
+                                request,
+                                String.class);
 
-    @Test
-    @Order(8)
-    public void testUpdateInvalidInstructorPassword() {
-        String newPassword = "   ";
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(newPassword, instructorRepository.findInstructorByUsername(USERNAME).getPassword());
+        }
 
-        PasswordRequestDto accountRequestDto = new PasswordRequestDto(USERNAME, newPassword);
-        HttpEntity<PasswordRequestDto> request = new HttpEntity<>(accountRequestDto);
+        @Test
+        @Order(8)
+        public void testUpdateInvalidInstructorPassword() {
+                String newPassword = "   ";
 
-        ResponseEntity<String> response = client.exchange(
-                "/instructor/password/",
-                HttpMethod.PUT,
-                request,
-                String.class);
+                PasswordRequestDto accountRequestDto = new PasswordRequestDto(USERNAME, newPassword);
+                HttpEntity<PasswordRequestDto> request = new HttpEntity<>(accountRequestDto);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody()
-                .contains("Password cannot be Blank;"));
-    }
+                ResponseEntity<String> response = client.exchange(
+                                "/instructor/password/",
+                                HttpMethod.PUT,
+                                request,
+                                String.class);
 
-    @Test
-    @Order(9)
-    public void testDeleteInstructor() {
-        HttpEntity<String> request = new HttpEntity<>(USERNAME);
+                assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+                assertTrue(response.getBody()
+                                .contains("Password cannot be Blank;"));
+        }
 
-        ResponseEntity<String> response = client.exchange(
-                "/instructor/",
-                HttpMethod.DELETE,
-                request,
-                String.class);
+        @Test
+        @Order(9)
+        public void testDeleteInstructor() {
+                HttpEntity<String> request = new HttpEntity<>(USERNAME);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, instructorRepository.count());
-    }
+                ResponseEntity<String> response = client.exchange(
+                                "/instructor/",
+                                HttpMethod.DELETE,
+                                request,
+                                String.class);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(1, instructorRepository.count());
+        }
 }

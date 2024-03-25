@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.OwnerAccountDto;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -57,6 +58,12 @@ public class OwnerAccountIntegrationTests {
                 SPORTCENTER_CLOSING_TIME, USERNAME, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME);
         sportCenterRepository.save(sportCenter);
         ownerRepository.save(sportCenter.getOwner());
+    }
+
+    @AfterAll
+    public void clearDatabase() {
+        ownerRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     @Test
