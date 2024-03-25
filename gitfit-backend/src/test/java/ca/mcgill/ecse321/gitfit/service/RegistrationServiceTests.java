@@ -198,22 +198,6 @@ public class RegistrationServiceTests {
         verify(registrationRepository, never()).delete(any(Registration.class));
     }
 
-    // fix this
-    // @Test
-    // public void testGetAllCustomerRegistrations() {
-    // List<Registration> registrationsForUser1 =
-    // registrationService.getAllCustomerRegistrations("user1");
-    // assertEquals(1, registrationsForUser1.size());
-    // assertEquals("user1",
-    // registrationsForUser1.get(0).getCustomer().getUsername());
-
-    // List<Registration> registrationsForUser2 =
-    // registrationService.getAllCustomerRegistrations("user2");
-    // assertEquals(1, registrationsForUser2.size());
-    // assertEquals("user2",
-    // registrationsForUser2.get(0).getCustomer().getUsername());
-    // }
-
     @Test
     public void testGetAllCustomerRegistrationsForNonexistentUser() {
         Exception exception = assertThrows(SportCenterException.class, () -> {

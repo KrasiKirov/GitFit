@@ -115,10 +115,10 @@ public class RegistrationIntegrationTests {
         sportCenterRepository.save(sportCenter);
 
         // FitnessClass instances
-        fitnessClass1 = new FitnessClass("Yoga", "Yoga class", true, sportCenter);
+        fitnessClass1 = new FitnessClass("Yoga", "Yoga class", sportCenter);
         fitnessClass1.setSportCenter(sportCenter);
         fitnessClassRepository.save(fitnessClass1);
-        fitnessClass2 = new FitnessClass("Goat", "description", false, sportCenter);
+        fitnessClass2 = new FitnessClass("Goat", "description", sportCenter);
         fitnessClass2.setSportCenter(sportCenter);
         fitnessClassRepository.save(fitnessClass2);
 
