@@ -1,3 +1,4 @@
+
 package ca.mcgill.ecse321.gitfit.dto;
 
 import jakarta.validation.constraints.NotBlank;

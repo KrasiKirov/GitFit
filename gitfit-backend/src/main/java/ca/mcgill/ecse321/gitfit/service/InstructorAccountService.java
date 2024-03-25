@@ -86,6 +86,10 @@ public class InstructorAccountService {
 
         validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
         validatorService.validate(new PasswordCheckDto(password));
+        Instructor checkExistenceInstructor = instructorRepository.findInstructorByUsername(username);
+        if (checkExistenceInstructor != null) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists.");
+        }
 
         Instructor instructor = new Instructor(username, email, password, lastName, firstName,
                 sportCenterService.getSportCenter());

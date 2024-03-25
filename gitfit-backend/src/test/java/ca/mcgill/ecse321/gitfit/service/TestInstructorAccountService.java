@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
@@ -27,10 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
-import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
-import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
-import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import jakarta.validation.ConstraintViolation;

@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.gitfit.service;
 
 import ca.mcgill.ecse321.gitfit.dao.BillingRepository;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BillingService {
     @Autowired
-    BillingRepository  billingRepository;
+    private ValidatorService validatorService;
     @Autowired
-    CustomerRepository customerRepository;
+    private BillingRepository  billingRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     /**
      * Create or update billing information for a customer
@@ -41,6 +44,12 @@ public class BillingService {
         Customer customer = customerRepository.findCustomerByUsername(username);
         if (customer==null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND ,"The customer does not exist.");
+        }
+        if (!postalCode.matches("^[A-Za-z0-9 ]{5,10}$")) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Postal code must be between 5 and 10 alphanumeric characters");
+        }
+        if (!cardNumber.matches("^[0-9]{15,16}$")) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Card number must be 15 or 16 digits");
         }
         Billing ExistingBilling = billingRepository.findBillingByCustomer(customer);
         if (ExistingBilling!=null) {
