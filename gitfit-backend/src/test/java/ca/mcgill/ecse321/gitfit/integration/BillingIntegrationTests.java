@@ -36,8 +36,8 @@ public class BillingIntegrationTests {
 
     private final String VALID_COUNTRY = "Canada";
     private final String VALID_STATE = "Quebec";
-    private final String VALID_POSTAL_CODE = "H3H 1P3";
-    private final String VALID_CARD_NUMBER = "8888 8888 8888 8888";
+    private final String VALID_POSTAL_CODE = "H3H1P3";
+    private final String VALID_CARD_NUMBER = "8888888888888888";
     private final String VALID_ADDRESS = "1234 Rue Sherbrooke";
     private final String VALID_USERNAME = "Bob";
     private final String CUSTOMER_WITHOUT_BILLING = "customerWithoutBilling";
@@ -95,6 +95,23 @@ public class BillingIntegrationTests {
 
     @Test
     @Order(3)
+    public void testCreateInvalidPostalCodeBilling() {
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, "H3HP", VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("Postal code must be between 5 and 10 alphanumeric characters", body.getErrors().get(0));
+    }
+
+    @Test
+    @Order(4)
     public void testCreateValidBilling() {
         BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
 
@@ -113,7 +130,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testGetNonExistingCustomerBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
@@ -128,7 +145,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testGetNonExistingBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
@@ -143,7 +160,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void testGetBilling() {
         ResponseEntity<BillingResponseDto> response = client.getForEntity("/customers/" + VALID_USERNAME + "/billing", BillingResponseDto.class);
 
@@ -158,7 +175,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testDeleteNonExistingCustomerBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
@@ -173,7 +190,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testDeleteNonExistingBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
@@ -188,7 +205,7 @@ public class BillingIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(10)
     public void testDeleteBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
