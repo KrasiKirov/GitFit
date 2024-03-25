@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class BillingController {
+public class BillingRestController {
     @Autowired
     private BillingService billingService;
 

@@ -35,7 +35,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 @SpringBootTest
-public class TestInstructorAccountService {
+public class InstructorAccountServiceTests {
 
     @Mock
     private InstructorRepository instructorRepository;

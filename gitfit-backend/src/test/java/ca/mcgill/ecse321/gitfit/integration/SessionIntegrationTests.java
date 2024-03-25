@@ -60,7 +60,6 @@ public class SessionIntegrationTests {
     private final int INVALID_PRICE = -1;
     private final Time INVALID_START_TIME = Time.valueOf("7:00:00");
     private final Time INVALID_END_TIME = Time.valueOf("13:00:00");
-    private final Date INVALID_DATE = Date.valueOf("2022-03-03");
 
     private final String INSTRUCTOR_USERNAME = "Jimmy";
     private final String FITNESS_CLASS_NAME = "Yoga";
@@ -186,9 +185,9 @@ public class SessionIntegrationTests {
         SessionDto createdSession = response.getBody();
         assertNotNull(createdSession);
         assertEquals(VALID_PRICE, createdSession.getPrice());
-        assertEquals(VALID_START_TIME, createdSession.getStartTime());
-        assertEquals(VALID_END_TIME, createdSession.getEndTime());
-        assertEquals(VALID_DATE, createdSession.getDate());
+        assertEquals(VALID_START_TIME.toLocalTime(), createdSession.getStartTime());
+        assertEquals(VALID_END_TIME.toLocalTime(), createdSession.getEndTime());
+        assertEquals(VALID_DATE.toLocalDate(), createdSession.getDate());
         assertEquals(INSTRUCTOR_USERNAME, createdSession.getInstructorUsername());
         assertEquals(FITNESS_CLASS_NAME, createdSession.getFitnessClassName());
     }

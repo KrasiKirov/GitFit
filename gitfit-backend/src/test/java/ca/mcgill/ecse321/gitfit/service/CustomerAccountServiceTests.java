@@ -38,7 +38,7 @@ import jakarta.validation.ValidatorFactory;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 
 @SpringBootTest
-public class TestCustomerAccountService {
+public class CustomerAccountServiceTests {
 
     @Mock
     private CustomerRepository customerRepository;

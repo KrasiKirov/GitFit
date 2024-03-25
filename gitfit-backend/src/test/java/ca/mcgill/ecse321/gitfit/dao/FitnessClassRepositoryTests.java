@@ -11,7 +11,7 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest
-public class FitnessClassRepositoryTest {
+public class FitnessClassRepositoryTests {
     @Autowired
     private FitnessClassRepository fitnessClassRepository;
 

@@ -44,7 +44,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 @SpringBootTest
-public class TestOwnerAccountService {
+public class OwnerAccountServiceTests {
 
     @Mock
     private OwnerRepository ownerRepository;
