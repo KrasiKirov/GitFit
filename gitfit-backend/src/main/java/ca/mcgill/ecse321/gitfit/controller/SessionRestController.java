@@ -1,9 +1,8 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
 import ca.mcgill.ecse321.gitfit.service.SessionService;
-import ca.mcgill.ecse321.gitfit.service.InstructorService;
+import ca.mcgill.ecse321.gitfit.service.InstructorAccountService;
 import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
-import ca.mcgill.ecse321.gitfit.service.SportCenterService;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
 import ca.mcgill.ecse321.gitfit.model.Session;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -36,7 +34,7 @@ public class SessionRestController {
     @Autowired
     private SessionService sessionService;
     @Autowired
-    private InstructorService instructorService;
+    private InstructorAccountService instructorService;
     @Autowired
     private FitnessClassService fitnessClassService;
 
@@ -50,7 +48,7 @@ public class SessionRestController {
     @PostMapping(value = { "/sessions", "/sessions/" })
     public SessionDto createSession(@RequestBody SessionDto sessionDto) {
         Instructor instructor = instructorService.getInstructor(sessionDto.getInstructorUsername());
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClass(sessionDto.getFitnessClassName());
+        FitnessClass fitnessClass = fitnessClassService.findFitnessClassByName(sessionDto.getFitnessClassName());
         Session session = sessionService.createSession(instructor, fitnessClass, sessionDto.getPrice(),
                 Time.valueOf(sessionDto.getStartTime()),
                 Time.valueOf(sessionDto.getEndTime()), Date.valueOf(sessionDto.getDate()));
@@ -113,7 +111,7 @@ public class SessionRestController {
      */
     @GetMapping(value = { "/sessions/by-class", "/sessions/by-class/" })
     public SessionListDto getSessionsByFitnessClass(@RequestBody String fitnessClassName) {
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClass(fitnessClassName);
+        FitnessClass fitnessClass = fitnessClassService.findFitnessClassByName(fitnessClassName);
         List<Session> sessions = sessionService.findSessionsByFitnessClass(fitnessClass);
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
@@ -133,7 +131,7 @@ public class SessionRestController {
     @GetMapping(value = { "/sessions/by-instructor-and-class", "/sessions/by-instructor-and-class/" })
     public SessionListDto getSessionsByInstructorAndFitnessClass(@RequestBody SessionDto sessionDto) {
         Instructor instructor = instructorService.getInstructor(sessionDto.getInstructorUsername());
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClass(sessionDto.getFitnessClassName());
+        FitnessClass fitnessClass = fitnessClassService.findFitnessClassByName(sessionDto.getFitnessClassName());
         List<Session> sessions = sessionService.findSessionsByInstructorAndFitnessClass(instructor, fitnessClass);
         List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
         for (Session session : sessions) {
