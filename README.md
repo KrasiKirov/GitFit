@@ -22,7 +22,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Li Yang Lei       | Project Manager | 18    |    0     |    0      |    0      |
 | Kevin-Ruikai Li | Software Developer | 16      |    0     |    0      |    0      |
 | Vlad Arama | Software Developer | 16    |    0     |    0      |    0      |
-| Krasimir Kirov | Testing Lead |   17   |    0     |    0      |    0      |
+| Krasimir Kirov | Testing Lead |   17   |    17    |    0      |    0      |
 | Jatin Patel | Software Developer | 16     |    0     |    0      |    0      |
 
 ### Deliverable 1
@@ -48,7 +48,7 @@ The project report for this deliverable can be found [here]().
 | Li Yang Lei |  |  |
 | Kevin-Ruikai Li |  | |
 | Vlad Arama |  |  |
-| Krasimir Kirov |  |  |
+| Krasimir Kirov | <ul><li>Customer Service</li><li>Customer REST Controller</li><li>Customer Unit Tests for service layer</li><li> Integration tests for Customer REST Controller</li><li>Testing Documentation (Test Plan, Structure and Scope) for Deliverable 2</li></ul> | 17 |
 | Jatin Patel |  |  |
 
 ### Deliverable 3
