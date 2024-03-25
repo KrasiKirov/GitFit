@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.gitfit.service;
 
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
@@ -39,11 +38,9 @@ public class FitnessClassServiceTests {
         fitnessClass.setDescription(description);
         fitnessClass.setSportCenter(sportCenter);
 
-
         when(fitnessClassRepository.save(any(FitnessClass.class))).thenReturn(fitnessClass);
         when(sportCenterService.getSportCenter()).thenReturn(sportCenter);
         FitnessClass createdFitnessClass = fitnessClassService.createFitnessClass(name, description);
-
 
         assertNotNull(createdFitnessClass);
         assertEquals(name, createdFitnessClass.getName());
@@ -89,7 +86,6 @@ public class FitnessClassServiceTests {
         when(fitnessClassRepository.save(any(FitnessClass.class))).thenReturn(fitnessClass);
         when(sportCenterService.getSportCenter()).thenReturn(sportCenter);
         when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(fitnessClass);
-
 
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             fitnessClassService.createFitnessClass(name, description);

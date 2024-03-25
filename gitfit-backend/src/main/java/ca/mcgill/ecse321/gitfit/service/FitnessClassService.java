@@ -12,8 +12,6 @@ import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -113,6 +111,7 @@ public class FitnessClassService {
         fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
+    
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
