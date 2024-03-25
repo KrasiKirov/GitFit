@@ -5,7 +5,6 @@ import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.SessionDto;
-import ca.mcgill.ecse321.gitfit.dto.SessionListDto;
 import ca.mcgill.ecse321.gitfit.dto.DatesDto;
 import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
 import ca.mcgill.ecse321.gitfit.dto.HoursDto;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -64,46 +62,46 @@ public class SessionIntegrationTests {
     private final Time INVALID_END_TIME = Time.valueOf("13:00:00");
     private final Date INVALID_DATE = Date.valueOf("2022-03-03");
 
-    private final String INSTRUCTOR_USERNAME = "Bob";
+    private final String INSTRUCTOR_USERNAME = "Jimmy";
     private final String FITNESS_CLASS_NAME = "Yoga";
+
     private final Time SPORT_CENTER_OPENING_TIME = Time.valueOf("08:00:00");
     private final Time SPORT_CENTER_CLOSING_TIME = Time.valueOf("22:00:00");
 
     @BeforeAll
     public void setup() {
+        sessionRepository.deleteAll();
+        instructorRepository.deleteAll();
+        fitnessClassRepository.deleteAll();
+        sportCenterRepository.deleteAll();
+
         SportCenter sportCenter = new SportCenter();
+
         sportCenter.setOpeningTime(SPORT_CENTER_OPENING_TIME);
         sportCenter.setClosingTime(SPORT_CENTER_CLOSING_TIME);
         sportCenter = sportCenterRepository.save(sportCenter);
 
-        Instructor instructor = new Instructor();
-        instructor.setUsername(INSTRUCTOR_USERNAME);
-        instructor.setSportCenter(sportCenter);
+        Instructor instructor = new Instructor(INSTRUCTOR_USERNAME, "email@gmail.com", "password", "lastName",
+                "firstName", sportCenter);
         instructorRepository.save(instructor);
 
-        FitnessClass fitnessClass = new FitnessClass();
-        fitnessClass.setName(FITNESS_CLASS_NAME);
-        fitnessClass.setSportCenter(sportCenter);
+        FitnessClass fitnessClass = new FitnessClass(FITNESS_CLASS_NAME, "description", sportCenter);
         fitnessClassRepository.save(fitnessClass);
 
-        Session session1 = new Session();
+        Session session1 = new Session(PRICE1, START_TIME1, END_TIME1, DATE1, instructor, fitnessClass, sportCenter);
         session1.setId(ID1);
-        session1.setPrice(PRICE1);
-        session1.setStartTime(START_TIME1);
-        session1.setEndTime(END_TIME1);
-        session1.setDate(DATE1);
-        session1.setInstructor(instructor);
-        session1.setFitnessClass(fitnessClass);
         sessionRepository.save(session1);
 
-        Session session2 = new Session();
-        session2.setPrice(PRICE2);
-        session2.setStartTime(START_TIME2);
-        session2.setEndTime(END_TIME2);
-        session2.setDate(DATE2);
-        session2.setInstructor(instructor);
-        session2.setFitnessClass(fitnessClass);
+        Session session2 = new Session(PRICE2, START_TIME2, END_TIME2, DATE2, instructor, fitnessClass, sportCenter);
         sessionRepository.save(session2);
+    }
+
+    @AfterAll
+    public void clearDatabase() {
+        sessionRepository.deleteAll();
+        instructorRepository.deleteAll();
+        fitnessClassRepository.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     @Test
@@ -215,21 +213,21 @@ public class SessionIntegrationTests {
     @Test
     @Order(7)
     public void testGetAllSessions() {
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions", HttpMethod.GET, null, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions", HttpMethod.GET, null,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(3, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(8)
     public void testGetSessionById() {
-        ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.GET, null, SessionDto.class);
+        ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.GET, null,
+                SessionDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -247,52 +245,51 @@ public class SessionIntegrationTests {
     @Order(9)
     public void testGetSessionsByInstructor() {
         HttpEntity<String> entity = new HttpEntity<>(INSTRUCTOR_USERNAME);
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-instructor", HttpMethod.GET, entity, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-instructor", HttpMethod.GET, entity,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(3, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(10)
     public void testGetSessionsByFitnessClass() {
         HttpEntity<String> entity = new HttpEntity<>(FITNESS_CLASS_NAME);
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-fitness-class", HttpMethod.GET, entity, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-fitness-class", HttpMethod.GET, entity,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(3, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(11)
     public void testGetSessionsByInstructorAndFitnessClass() {
-        HttpEntity<SessionDto> entity = new HttpEntity<>(new SessionDto(0, null, null, null, INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME));
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-instructor-and-fitness-class", HttpMethod.GET, entity, SessionListDto.class);
+        HttpEntity<SessionDto> entity = new HttpEntity<>(
+                new SessionDto(0, null, null, null, INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME));
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-instructor-and-fitness-class",
+                HttpMethod.GET, entity, SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(3, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(12)
     public void testGetSessionsByInvalidMaxPrice() {
         HttpEntity<Integer> entity = new HttpEntity<>(INVALID_PRICE);
-        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity,
+                ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -306,22 +303,22 @@ public class SessionIntegrationTests {
     @Order(13)
     public void testGetSessionsByMaxPrice() {
         HttpEntity<Integer> entity = new HttpEntity<>(PRICE1);
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(2, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(14)
     public void testGetSessionsByInvalidDate() {
         HttpEntity<DatesDto> entity = new HttpEntity<>(new DatesDto(DATE2, DATE1));
-        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity,
+                ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -335,22 +332,22 @@ public class SessionIntegrationTests {
     @Order(15)
     public void testGetSessionsByDate() {
         HttpEntity<DatesDto> entity = new HttpEntity<>(new DatesDto(DATE1, DATE2));
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(2, sessions.size());
+        assertEquals(3, sessions.length);
     }
 
     @Test
     @Order(16)
     public void testGetSessionsByInvalidTime() {
         HttpEntity<HoursDto> entity = new HttpEntity<>(new HoursDto(END_TIME1, START_TIME1));
-        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity,
+                ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -364,15 +361,15 @@ public class SessionIntegrationTests {
     @Order(17)
     public void testGetSessionsByTime() {
         HttpEntity<HoursDto> entity = new HttpEntity<>(new HoursDto(START_TIME1, END_TIME2));
-        ResponseEntity<SessionListDto> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity, SessionListDto.class);
+        ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity,
+                SessionDto[].class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        SessionListDto sessionList = response.getBody();
-        assertNotNull(sessionList);
-        List<SessionDto> sessions = sessionList.getSessions();
+        SessionDto[] sessions = response.getBody();
         assertNotNull(sessions);
-        assertEquals(3, sessions.size());
+
+        assertEquals(3, sessions.length);
     }
 
     @Test
@@ -416,7 +413,8 @@ public class SessionIntegrationTests {
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
 
         HttpEntity<SessionDto> entity = new HttpEntity<>(sessionDto);
-        ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.PUT, entity, SessionDto.class);
+        ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.PUT, entity,
+                SessionDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -429,5 +427,18 @@ public class SessionIntegrationTests {
         assertEquals(VALID_DATE, updatedSession.getDate());
         assertEquals(INSTRUCTOR_USERNAME, updatedSession.getInstructorUsername());
         assertEquals(FITNESS_CLASS_NAME, updatedSession.getFitnessClassName());
+    }
+
+    @Test
+    @Order(21)
+    public void testDeleteSession() {
+        ResponseEntity<Void> response = client.exchange("/sessions/{id}", HttpMethod.DELETE, null, Void.class, ID1);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        ResponseEntity<SessionDto> recheckResponse = client.exchange("/sessions/" + ID1, HttpMethod.GET, null,
+                SessionDto.class);
+        assertEquals(HttpStatus.NOT_FOUND, recheckResponse.getStatusCode());
     }
 }

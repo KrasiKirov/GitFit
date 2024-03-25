@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import java.sql.Date;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,7 @@ public class RegistrationRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         registrationRepository.deleteAll();

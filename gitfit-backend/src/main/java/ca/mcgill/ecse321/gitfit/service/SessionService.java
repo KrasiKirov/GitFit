@@ -53,9 +53,6 @@ public class SessionService {
         if (endTime.before(startTime)) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "End time must be after start time");
         }
-        if (date.before(new Date(System.currentTimeMillis()))) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Date must be in the future");
-        }
         SportCenter sportCenter = sportCenterRepository.findAll().iterator().next();
         if (endTime.after(sportCenter.getClosingTime()) || startTime.before(sportCenter.getOpeningTime())) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time must be within sport center hours");

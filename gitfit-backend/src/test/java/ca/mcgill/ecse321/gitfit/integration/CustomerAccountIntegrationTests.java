@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
+
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
@@ -54,6 +56,12 @@ public class CustomerAccountIntegrationTests {
                 sportCenterRepository.deleteAll();
                 sportCenterRepository.save(SPORT_CENTER);
                 customerRepository.save(new Customer(USERNAME, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, SPORT_CENTER));
+        }
+
+        @AfterAll
+        public void clearDatabase() {
+                customerRepository.deleteAll();
+                sportCenterRepository.deleteAll();
         }
 
         @Test
