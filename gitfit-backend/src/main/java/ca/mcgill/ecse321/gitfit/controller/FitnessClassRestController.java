@@ -64,18 +64,6 @@ public class FitnessClassRestController {
         return convertToDto(createdFitnessClass);
     }
 
-//    @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-//    public FitnessClassDto approveFitnessClass(@PathVariable String name) {
-//        FitnessClass fitnessClass = fitnessClassService.approveFitnessClass(name);
-//        return convertToDto(fitnessClass);
-//    }
-//
-//    @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-//    public FitnessClassDto rejectFitnessClass(@PathVariable String name) {
-//        FitnessClass fitnessClass = fitnessClassService.rejectFitnessClass(name);
-//        return convertToDto(fitnessClass);
-//    }
-
     @PutMapping(value = { "/fitnessclasses/{name}/approval", "/fitnessclasses/{name}/approval/" })
     public FitnessClassDto updateApprovalStatus(@PathVariable String name, @RequestBody FitnessClassStatusDto status) {
         FitnessClass updatedFitnessClass = fitnessClassService.updateApprovalStatus(
