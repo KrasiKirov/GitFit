@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.gitfit.dto.RegistrationRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
+import ca.mcgill.ecse321.gitfit.dto.RegistrationRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.RegistrationResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Registration;
 import ca.mcgill.ecse321.gitfit.model.Session;

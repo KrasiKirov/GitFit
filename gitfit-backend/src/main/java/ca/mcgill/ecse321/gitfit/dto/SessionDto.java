@@ -1,9 +1,9 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class SessionDto {
     private int id;
@@ -17,7 +17,8 @@ public class SessionDto {
     public SessionDto() {
     }
 
-    public SessionDto(int id, int price, LocalTime startTime, LocalTime endTime, LocalDate date, String instructorUsername, String fitnessClassName) {
+    public SessionDto(int id, int price, LocalTime startTime, LocalTime endTime, LocalDate date,
+            String instructorUsername, String fitnessClassName) {
         this.id = id;
         this.price = price;
         this.startTime = startTime;

@@ -1,26 +1,33 @@
 package ca.mcgill.ecse321.gitfit.integration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import ca.mcgill.ecse321.gitfit.dao.BillingRepository;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.BillingRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingResponseDto;
 import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
-import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.aspectj.lang.annotation.After;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -72,11 +79,13 @@ public class BillingIntegrationTests {
     @Test
     @Order(1)
     public void testCreateNonExistingCustomerBilling() {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, "NonExistingCustomer");
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE,
+                VALID_CARD_NUMBER, VALID_ADDRESS, "NonExistingCustomer");
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.PUT, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.PUT,
+                entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -87,15 +96,16 @@ public class BillingIntegrationTests {
 
     }
 
-
     @Test
     @Order(2)
     public void testCreateIncompleteFieldBilling() {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(null, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+        BillingRequestDto billingRequestDto = new BillingRequestDto(null, VALID_STATE, VALID_POSTAL_CODE,
+                VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT,
+                entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -108,11 +118,13 @@ public class BillingIntegrationTests {
     @Test
     @Order(3)
     public void testCreateInvalidPostalCodeBilling() {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, "H3HP", VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, "H3HP",
+                VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT,
+                entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -125,11 +137,13 @@ public class BillingIntegrationTests {
     @Test
     @Order(4)
     public void testCreateValidBilling() {
-        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE, VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
+        BillingRequestDto billingRequestDto = new BillingRequestDto(VALID_COUNTRY, VALID_STATE, VALID_POSTAL_CODE,
+                VALID_CARD_NUMBER, VALID_ADDRESS, VALID_USERNAME);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(billingRequestDto, headers);
-        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.PUT, entity, BillingResponseDto.class);
+        ResponseEntity<BillingResponseDto> response = client.exchange("/customers/" + VALID_USERNAME + "/billing",
+                HttpMethod.PUT, entity, BillingResponseDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -146,7 +160,8 @@ public class BillingIntegrationTests {
     public void testGetNonExistingCustomerBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.GET, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.GET,
+                entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -161,7 +176,8 @@ public class BillingIntegrationTests {
     public void testGetNonExistingBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing", HttpMethod.GET, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing",
+                HttpMethod.GET, entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -174,7 +190,8 @@ public class BillingIntegrationTests {
     @Test
     @Order(7)
     public void testGetBilling() {
-        ResponseEntity<BillingResponseDto> response = client.getForEntity("/customers/" + VALID_USERNAME + "/billing", BillingResponseDto.class);
+        ResponseEntity<BillingResponseDto> response = client.getForEntity("/customers/" + VALID_USERNAME + "/billing",
+                BillingResponseDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -191,7 +208,8 @@ public class BillingIntegrationTests {
     public void testDeleteNonExistingCustomerBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.DELETE, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/NonExistingCustomer/billing", HttpMethod.DELETE,
+                entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -206,7 +224,8 @@ public class BillingIntegrationTests {
     public void testDeleteNonExistingBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing", HttpMethod.DELETE, entity, ErrorDto.class);
+        ResponseEntity<ErrorDto> response = client.exchange("/customers/" + CUSTOMER_WITHOUT_BILLING + "/billing",
+                HttpMethod.DELETE, entity, ErrorDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -221,7 +240,8 @@ public class BillingIntegrationTests {
     public void testDeleteBilling() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BillingRequestDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<Void> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = client.exchange("/customers/" + VALID_USERNAME + "/billing", HttpMethod.DELETE,
+                entity, Void.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

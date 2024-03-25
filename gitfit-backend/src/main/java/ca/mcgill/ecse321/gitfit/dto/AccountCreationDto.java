@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-
 public class AccountCreationDto {
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 5, message = "Username must be at least 5 characters long")

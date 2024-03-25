@@ -1,12 +1,17 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import ca.mcgill.ecse321.gitfit.dto.BillingRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.service.BillingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BillingRestController {
@@ -26,17 +31,19 @@ public class BillingRestController {
         return convertToResponseDto(billing);
     }
 
-
     /**
      * Create or update billing information for a customer
+     * 
      * @author Li Yang Lei (LeiLiYang)
      * @param billing
      * @param username
      * @return persisted billing information for given customer
      */
     @PutMapping("/customers/{username}/billing")
-    public BillingResponseDto createOrUpdateBilling(@RequestBody BillingRequestDto billing, @PathVariable("username") String username) {
-        Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
+    public BillingResponseDto createOrUpdateBilling(@RequestBody BillingRequestDto billing,
+            @PathVariable("username") String username) {
+        Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(),
+                billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);
         return convertToResponseDto(updatedBilling);
     }
 
@@ -59,7 +66,8 @@ public class BillingRestController {
      * @return billing response dto
      */
     public BillingResponseDto convertToResponseDto(Billing billing) {
-        BillingResponseDto billingResponseDto = new BillingResponseDto(billing.getCountry(), billing.getState(), billing.getPostalCode(), billing.getCardNumberEnd());
+        BillingResponseDto billingResponseDto = new BillingResponseDto(billing.getCountry(), billing.getState(),
+                billing.getPostalCode(), billing.getCardNumberEnd());
         return billingResponseDto;
     }
 }

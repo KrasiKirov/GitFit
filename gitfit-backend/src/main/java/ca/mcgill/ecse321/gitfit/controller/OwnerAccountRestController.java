@@ -1,11 +1,15 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
-import ca.mcgill.ecse321.gitfit.service.OwnerAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import ca.mcgill.ecse321.gitfit.dto.OwnerAccountDto;
 import ca.mcgill.ecse321.gitfit.model.Owner;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import ca.mcgill.ecse321.gitfit.service.OwnerAccountService;
 
 /**
  * This class is responsible for handling HTTP requests for owner operations

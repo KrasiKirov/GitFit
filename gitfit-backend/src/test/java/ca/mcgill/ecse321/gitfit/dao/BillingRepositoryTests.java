@@ -1,15 +1,16 @@
 package ca.mcgill.ecse321.gitfit.dao;
 
-import ca.mcgill.ecse321.gitfit.model.Billing;
-import ca.mcgill.ecse321.gitfit.model.Customer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import ca.mcgill.ecse321.gitfit.model.Billing;
+import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest
 public class BillingRepositoryTests {
@@ -21,8 +22,6 @@ public class BillingRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
-
-
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
@@ -30,6 +29,7 @@ public class BillingRepositoryTests {
         customerRepository.deleteAll();
         sportCenterRepository.deleteAll();
     }
+
     public void testBillingPersistence() {
         // create Customer object and save it to database
         SportCenter sportCenter = new SportCenter();

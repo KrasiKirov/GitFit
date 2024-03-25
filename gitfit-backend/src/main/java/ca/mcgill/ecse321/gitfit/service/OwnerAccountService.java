@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
-import ca.mcgill.ecse321.gitfit.model.Owner;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
+import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.Owner;
 
 /**
  * This class is responsible for handling owner account operations

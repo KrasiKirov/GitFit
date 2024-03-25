@@ -1,29 +1,39 @@
 package ca.mcgill.ecse321.gitfit.integration;
 
-import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
-import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
-import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
-import ca.mcgill.ecse321.gitfit.dto.SessionDto;
-import ca.mcgill.ecse321.gitfit.dto.DatesDto;
-import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
-import ca.mcgill.ecse321.gitfit.dto.HoursDto;
-import ca.mcgill.ecse321.gitfit.model.Session;
-import ca.mcgill.ecse321.gitfit.model.Instructor;
-import ca.mcgill.ecse321.gitfit.model.FitnessClass;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 import java.sql.Time;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
+import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
+import ca.mcgill.ecse321.gitfit.dto.DatesDto;
+import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
+import ca.mcgill.ecse321.gitfit.dto.HoursDto;
+import ca.mcgill.ecse321.gitfit.dto.SessionDto;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Session;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

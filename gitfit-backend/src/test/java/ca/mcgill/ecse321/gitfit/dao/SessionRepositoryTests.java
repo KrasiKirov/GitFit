@@ -38,7 +38,6 @@ public class SessionRepositoryTests {
 
     @Test
     public void testSessionPersistence() {
-        
 
         SportCenter sportCenter = new SportCenter();
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -46,12 +45,12 @@ public class SessionRepositoryTests {
         FitnessClass fitnessClass = new FitnessClass();
         fitnessClass.setSportCenter(sportCenter);
         fitnessClass = fitnessClassRepository.save(fitnessClass);
-        
+
         Instructor instructor = new Instructor();
         instructor.setUsername("Jimmy Jim");
         instructor.setSportCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
-        
+
         int aPrice = 69;
         Time aEndTime = Time.valueOf("12:00:00");
         Time aStartTime = Time.valueOf("11:00:00");

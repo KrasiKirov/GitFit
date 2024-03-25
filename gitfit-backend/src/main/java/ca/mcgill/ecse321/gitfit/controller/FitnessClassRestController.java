@@ -23,25 +23,28 @@ public class FitnessClassRestController {
 
     private SportCenterService sportCenterService;
 
-
     @GetMapping(value = { "/fitnessclasses", "/fitnessclasses/" })
     public List<FitnessClassDto> findAllFitnessClasses() {
-        return fitnessClassService.findAllFitnessClasses().stream().map(fc -> convertToDto(fc)).collect(Collectors.toList());
+        return fitnessClassService.getAllFitnessClasses().stream().map(fc -> convertToDto(fc))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = { "/fitnessclasses/approved", "/fitnessclasses/approved/" })
     public List<FitnessClassDto> findApprovedClasses() {
-        return fitnessClassService.findApprovedClasses().stream().map(fc -> convertToDto(fc)).collect(Collectors.toList());
+        return fitnessClassService.getApprovedClasses().stream().map(fc -> convertToDto(fc))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = { "/fitnessclasses/pending", "/fitnessclasses/pending/" })
     public List<FitnessClassDto> findPendingClasses() {
-        return fitnessClassService.findPendingClasses().stream().map(fc -> convertToDto(fc)).collect(Collectors.toList());
+        return fitnessClassService.getPendingClasses().stream().map(fc -> convertToDto(fc))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = { "/fitnessclasses/rejected", "/fitnessclasses/rejected/" })
     public List<FitnessClassDto> findRejectedClasses() {
-        return fitnessClassService.findRejectedClasses().stream().map(fc -> convertToDto(fc)).collect(Collectors.toList());
+        return fitnessClassService.getRejectedClasses().stream().map(fc -> convertToDto(fc))
+                .collect(Collectors.toList());
     }
 
     @DeleteMapping(value = { "/fitnessclasses/rejected", "/fitnessclasses/rejected/" })
@@ -51,13 +54,13 @@ public class FitnessClassRestController {
 
     @GetMapping(value = { "/fitnessclasses/{fcid}", "/fitnessclasses/{fcid}/" })
     public FitnessClassDto findFitnessClassById(@PathVariable int fcid) {
-        FitnessClass fitnessClass = fitnessClassService.findFitnessClassById(fcid);
+        FitnessClass fitnessClass = fitnessClassService.getFitnessClassById(fcid);
         return convertToDto(fitnessClass);
     }
 
     @GetMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto findFitnessClassByName(@PathVariable String name) {
-        FitnessClass fitnessClass = fitnessClassService.findFitnessClassByName(name);
+        FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(name);
         return convertToDto(fitnessClass);
     }
 
@@ -65,38 +68,36 @@ public class FitnessClassRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public FitnessClassDto createFitnessClass(@RequestBody FitnessClassDto fitnessClass) {
         FitnessClass createdFitnessClass = fitnessClassService.createFitnessClass(
-            fitnessClass.getName(), 
-            fitnessClass.getDescription());
+                fitnessClass.getName(),
+                fitnessClass.getDescription());
         return convertToDto(createdFitnessClass);
     }
 
-//    @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-//    public FitnessClassDto approveFitnessClass(@PathVariable String name) {
-//        FitnessClass fitnessClass = fitnessClassService.approveFitnessClass(name);
-//        return convertToDto(fitnessClass);
-//    }
-//
-//    @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-//    public FitnessClassDto rejectFitnessClass(@PathVariable String name) {
-//        FitnessClass fitnessClass = fitnessClassService.rejectFitnessClass(name);
-//        return convertToDto(fitnessClass);
-//    }
+    // @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
+    // public FitnessClassDto approveFitnessClass(@PathVariable String name) {
+    // FitnessClass fitnessClass = fitnessClassService.approveFitnessClass(name);
+    // return convertToDto(fitnessClass);
+    // }
+    //
+    // @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
+    // public FitnessClassDto rejectFitnessClass(@PathVariable String name) {
+    // FitnessClass fitnessClass = fitnessClassService.rejectFitnessClass(name);
+    // return convertToDto(fitnessClass);
+    // }
 
     @PutMapping(value = { "/fitnessclasses/{name}/approval", "/fitnessclasses/{name}/approval/" })
     public FitnessClassDto updateApprovalStatus(@PathVariable String name, @RequestBody FitnessClassStatusDto status) {
         FitnessClass updatedFitnessClass = fitnessClassService.updateApprovalStatus(
-            name,
-            status.toString());
+                name,
+                status.toString());
         return convertToDto(updatedFitnessClass);
     }
-
-
 
     @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto updateFitnessClass(@PathVariable String name, @RequestBody FitnessClassDto fitnessClass) {
         FitnessClass updatedFitnessClass = fitnessClassService.updateFitnessClass(
-            name,
-            fitnessClass.getDescription());
+                name,
+                fitnessClass.getDescription());
         return convertToDto(updatedFitnessClass);
     }
 
@@ -105,8 +106,8 @@ public class FitnessClassRestController {
         fitnessClassService.deleteFitnessClass(name);
     }
 
-    
     private FitnessClassDto convertToDto(FitnessClass fitnessClass) {
-        return new FitnessClassDto(fitnessClass.getName(), fitnessClass.getDescription(), fitnessClass.getApprovalStatus());
+        return new FitnessClassDto(fitnessClass.getName(), fitnessClass.getDescription(),
+                fitnessClass.getApprovalStatus());
     }
 }
