@@ -574,7 +574,7 @@ public class SportCenter {
     }
 
     /* Code from template association_AddManyToOne */
-    public FitnessClass addFitnessClass(String aName, String aDescription, boolean aIsApproved) {
+    public FitnessClass addFitnessClass(String aName, String aDescription) {
         return new FitnessClass(aName, aDescription, this);
     }
 
