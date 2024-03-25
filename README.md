@@ -19,7 +19,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | NAME                   | ROLE |  SPRINT 1 | SPRINT 2 | SPRINT 3 | SPRINT 4 |
 |------------------------|------|-----------|----------|----------|----------|
 | William Wang       | Documentation Lead | 20     |    0     |    0      |    0      |
-| Li Yang Lei       | Project Manager | 18    |    0     |    0      |    0      |
+| Li Yang Lei       | Project Manager | 18    |    40     |    0      |    0      |
 | Kevin-Ruikai Li | Software Developer | 16      |    0     |    0      |    0      |
 | Vlad Arama | Software Developer | 16    |    25     |    0      |    0      |
 | Krasimir Kirov | Testing Lead |   17   |    17    |    0      |    0      |
@@ -45,7 +45,7 @@ The project report for this deliverable can be found [here]().
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
 | William Wang | |  |
-| Li Yang Lei |  |  |
+| Li Yang Lei | <ul><li>Billing Class Service</li><li>Billing Class Controller</li><li>Documentation</li><li>Billing Class Service Tests</li><li>Billing Class Integration Tests</li><li>Fitness Class Service Refactoring</li><li>Fitness Class Controller Refactoring</li><li>Fitness Class Service Tests</li><li>Documentation</li></ul> | 40 |
 | Kevin-Ruikai Li | <ul><li>Fitness Class Service</li><li>Fitness Class REST Controller</li><li>Documentation</li></ul> | 15 |
 | Vlad Arama | <ul><li>Registration Service</li> <li>Registration REST Controller</li><li>Registration Unit Tests for service layer</li><li>Integration tests for Registration REST Controller</li><li>Reviewing Pull Requests and Testing the Changes</li><li>GitHub Project Management (Issues, PRs, Wikis)</li><li>Documentation</li></ul> | 25 |
 | Krasimir Kirov | <ul><li>Customer Service</li><li>Customer REST Controller</li><li>Customer Unit Tests for service layer</li><li> Integration tests for Customer REST Controller</li><li>Testing Documentation (Test Plan, Structure and Scope) for Deliverable 2</li></ul> | 17 |
