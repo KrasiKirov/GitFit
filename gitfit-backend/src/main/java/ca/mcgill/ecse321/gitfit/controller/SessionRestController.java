@@ -92,8 +92,14 @@ public class SessionRestController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time startTime, 
             @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time endTime) {
-        Instructor instructor = instructorService.getInstructor(instructorUsername);
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
+                Instructor instructor = null;
+                FitnessClass fitnessClass = null;
+                if (instructorUsername != null) {
+                    instructor = instructorService.getInstructor(instructorUsername);
+                }
+                if (fitnessClassName != null) {
+                    fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
+                }
         List<Session> sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice,
                 startDate, endDate, startTime, endTime);
         return sessions.stream().map(this::convertToDto).toList();

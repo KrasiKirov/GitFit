@@ -125,10 +125,10 @@ public class SessionService {
         if (maxPrice != null && maxPrice < 0) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Max price cannot be negative");
         }
-        if (startDate != null && endDate != null && startDate.after(endDate)) {
+        if (startDate != null && endDate != null && (startDate.after(endDate) || startDate.equals(endDate))) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start date cannot be after end date");
         }
-        if (startTime != null && endTime != null && startTime.after(endTime)) {
+        if (startTime != null && endTime != null && (startTime.after(endTime) || startTime.equals(endTime))) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start time cannot be after end time");
         }
         List<Session> sessions = getAllSessions().stream()
