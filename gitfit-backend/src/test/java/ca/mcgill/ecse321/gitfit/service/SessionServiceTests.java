@@ -65,7 +65,7 @@ public class SessionServiceTests {
     private static final int INVALID_SESSION_PRICE = -1;
     private static final Time INVALID_SESSION_START_TIME = Time.valueOf("6:00:00");
     private static final Time INVALID_SESSION_END_TIME = Time.valueOf("23:00:00");
-    
+
     private static final Time SPORT_CENTER_OPENING_TIME = Time.valueOf("08:00:00");
     private static final Time SPORT_CENTER_CLOSING_TIME = Time.valueOf("22:00:00");
 
@@ -117,7 +117,8 @@ public class SessionServiceTests {
         lenient().when(sessionRepository.findByFitnessClass(FITNESS_CLASS)).thenReturn(Arrays.asList(SESSION));
         lenient().when(sessionRepository.findByInstructorAndFitnessClass(INSTRUCTOR, FITNESS_CLASS))
                 .thenReturn(Arrays.asList(SESSION));
-        lenient().when(sessionRepository.findByPriceLessThanEqual(SESSION2_PRICE)).thenReturn(Arrays.asList(SESSION, SESSION2));
+        lenient().when(sessionRepository.findByPriceLessThanEqual(SESSION2_PRICE))
+                .thenReturn(Arrays.asList(SESSION, SESSION2));
         lenient().when(sessionRepository.findByDateBetween(SESSION_DATE, SESSION2_DATE))
                 .thenReturn(Arrays.asList(SESSION, SESSION2));
         lenient().when(sessionRepository.findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(SESSION2_START_TIME,
@@ -163,7 +164,8 @@ public class SessionServiceTests {
     @Test
     public void testCreateSessionNullStartTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, null, SESSION_END_TIME, SESSION_DATE);
+            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, null, SESSION_END_TIME,
+                    SESSION_DATE);
         }, "All fields must be filled in to create a session");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(any(Session.class));
@@ -172,7 +174,8 @@ public class SessionServiceTests {
     @Test
     public void testCreateSessionNullEndTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, SESSION_START_TIME, null, SESSION_DATE);
+            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, SESSION_START_TIME, null,
+                    SESSION_DATE);
         }, "All fields must be filled in to create a session");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(any(Session.class));
@@ -191,7 +194,8 @@ public class SessionServiceTests {
     @Test
     public void testCreateSessionNegativePrice() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, INVALID_SESSION_PRICE, SESSION_START_TIME, SESSION_END_TIME,
+            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, INVALID_SESSION_PRICE, SESSION_START_TIME,
+                    SESSION_END_TIME,
                     SESSION_DATE);
         }, "Price must be free or positive");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
@@ -211,7 +215,8 @@ public class SessionServiceTests {
     @Test
     public void testCreateSessionEndTimeAfterClosingTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, SESSION_START_TIME, INVALID_SESSION_END_TIME,
+            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, SESSION_START_TIME,
+                    INVALID_SESSION_END_TIME,
                     SESSION_DATE);
         }, "Time must be within sport center hours");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
@@ -221,7 +226,8 @@ public class SessionServiceTests {
     @Test
     public void testCreateSessionStartTimeBeforeOpeningTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, INVALID_SESSION_START_TIME, SESSION_END_TIME,
+            sessionService.createSession(INSTRUCTOR, FITNESS_CLASS, SESSION_PRICE, INVALID_SESSION_START_TIME,
+                    SESSION_END_TIME,
                     SESSION_DATE);
         }, "Time must be within sport center hours");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
@@ -240,7 +246,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindAllSessions() {
-        List<Session> sessions = sessionService.findAllSessions();
+        List<Session> sessions = sessionService.getAllSessions();
 
         assertEquals(3, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -251,7 +257,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionById() {
-        Session session = sessionService.findSessionById(SESSION_ID);
+        Session session = sessionService.getSessionById(SESSION_ID);
 
         assertNotNull(session);
         assertEquals(SESSION, session);
@@ -260,7 +266,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionByIdInvalidId() {
-        Session session = sessionService.findSessionById(INVALID_SESSION_ID);
+        Session session = sessionService.getSessionById(INVALID_SESSION_ID);
 
         assertEquals(null, session);
         verify(sessionRepository, times(1)).findSessionById(INVALID_SESSION_ID);
@@ -268,7 +274,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByInstructor() {
-        List<Session> sessions = sessionService.findSessionsByInstructor(INSTRUCTOR);
+        List<Session> sessions = sessionService.getSessionsByInstructor(INSTRUCTOR);
 
         assertEquals(1, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -278,7 +284,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsByInstructorNullInstructor() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsByInstructor(null);
+            sessionService.getSessionsByInstructor(null);
         }, "Instructor must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByInstructor(null);
@@ -286,7 +292,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByInstructorInvalidInstructor() {
-        List<Session> sessions = sessionService.findSessionsByInstructor(INVALID_INSTRUCTOR);
+        List<Session> sessions = sessionService.getSessionsByInstructor(INVALID_INSTRUCTOR);
 
         assertEquals(0, sessions.size());
         verify(sessionRepository, times(1)).findByInstructor(INVALID_INSTRUCTOR);
@@ -294,7 +300,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByFitnessClass() {
-        List<Session> sessions = sessionService.findSessionsByFitnessClass(FITNESS_CLASS);
+        List<Session> sessions = sessionService.getSessionsByFitnessClass(FITNESS_CLASS);
 
         assertEquals(1, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -304,7 +310,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsByFitnessClassNullFitnessClass() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsByFitnessClass(null);
+            sessionService.getSessionsByFitnessClass(null);
         }, "Fitness class must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByFitnessClass(null);
@@ -312,7 +318,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByFitnessClassInvalidFitnessClass() {
-        List<Session> sessions = sessionService.findSessionsByFitnessClass(INVALID_FITNESS_CLASS);
+        List<Session> sessions = sessionService.getSessionsByFitnessClass(INVALID_FITNESS_CLASS);
 
         assertEquals(0, sessions.size());
         verify(sessionRepository, times(1)).findByFitnessClass(INVALID_FITNESS_CLASS);
@@ -320,7 +326,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByInstructorAndFitnessClass() {
-        List<Session> sessions = sessionService.findSessionsByInstructorAndFitnessClass(INSTRUCTOR, FITNESS_CLASS);
+        List<Session> sessions = sessionService.getSessionsByInstructorAndFitnessClass(INSTRUCTOR, FITNESS_CLASS);
 
         assertEquals(1, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -330,7 +336,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsByInstructorAndFitnessClassNullInstructor() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsByInstructorAndFitnessClass(null, FITNESS_CLASS);
+            sessionService.getSessionsByInstructorAndFitnessClass(null, FITNESS_CLASS);
         }, "Instructor and fitness class must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByInstructorAndFitnessClass(null, FITNESS_CLASS);
@@ -339,7 +345,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsByInstructorAndFitnessClassNullFitnessClass() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsByInstructorAndFitnessClass(INSTRUCTOR, null);
+            sessionService.getSessionsByInstructorAndFitnessClass(INSTRUCTOR, null);
         }, "Instructor and fitness class must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByInstructorAndFitnessClass(INSTRUCTOR, null);
@@ -347,7 +353,8 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByInstructorAndFitnessClassInvalidInstructor() {
-        List<Session> sessions = sessionService.findSessionsByInstructorAndFitnessClass(INVALID_INSTRUCTOR, FITNESS_CLASS);
+        List<Session> sessions = sessionService.getSessionsByInstructorAndFitnessClass(INVALID_INSTRUCTOR,
+                FITNESS_CLASS);
 
         assertEquals(0, sessions.size());
         verify(sessionRepository, times(1)).findByInstructorAndFitnessClass(INVALID_INSTRUCTOR, FITNESS_CLASS);
@@ -355,7 +362,8 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByInstructorAndFitnessClassInvalidFitnessClass() {
-        List<Session> sessions = sessionService.findSessionsByInstructorAndFitnessClass(INSTRUCTOR, INVALID_FITNESS_CLASS);
+        List<Session> sessions = sessionService.getSessionsByInstructorAndFitnessClass(INSTRUCTOR,
+                INVALID_FITNESS_CLASS);
 
         assertEquals(0, sessions.size());
         verify(sessionRepository, times(1)).findByInstructorAndFitnessClass(INSTRUCTOR, INVALID_FITNESS_CLASS);
@@ -363,7 +371,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsByMaxPrice() {
-        List<Session> sessions = sessionService.findSessionsByMaxPrice(SESSION2_PRICE);
+        List<Session> sessions = sessionService.getSessionsByMaxPrice(SESSION2_PRICE);
 
         assertEquals(2, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -374,7 +382,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsByMaxPriceNegativePrice() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsByMaxPrice(-1);
+            sessionService.getSessionsByMaxPrice(-1);
         }, "Price must be free or positive");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByPriceLessThanEqual(-1);
@@ -382,7 +390,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsBetweenDates() {
-        List<Session> sessions = sessionService.findSessionsBetweenDates(SESSION_DATE, SESSION2_DATE);
+        List<Session> sessions = sessionService.getSessionsBetweenDates(SESSION_DATE, SESSION2_DATE);
 
         assertEquals(2, sessions.size());
         assertEquals(SESSION, sessions.get(0));
@@ -393,7 +401,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsBetweenDatesNullStartDate() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenDates(null, SESSION2_DATE);
+            sessionService.getSessionsBetweenDates(null, SESSION2_DATE);
         }, "Start and end date must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByDateBetween(null, SESSION2_DATE);
@@ -402,7 +410,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsBetweenDatesNullEndDate() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenDates(SESSION_DATE, null);
+            sessionService.getSessionsBetweenDates(SESSION_DATE, null);
         }, "Start and end date must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByDateBetween(SESSION_DATE, null);
@@ -411,7 +419,7 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsBetweenDatesStartDateAfterEndDate() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenDates(SESSION2_DATE, SESSION_DATE);
+            sessionService.getSessionsBetweenDates(SESSION2_DATE, SESSION_DATE);
         }, "Start date must be before end date");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByDateBetween(SESSION2_DATE, SESSION_DATE);
@@ -419,7 +427,7 @@ public class SessionServiceTests {
 
     @Test
     public void testFindSessionsBetweenTimes() {
-        List<Session> sessions = sessionService.findSessionsBetweenTimes(SESSION2_START_TIME, SESSION3_END_TIME);
+        List<Session> sessions = sessionService.getSessionsBetweenTimes(SESSION2_START_TIME, SESSION3_END_TIME);
 
         assertEquals(2, sessions.size());
         assertEquals(SESSION2, sessions.get(0));
@@ -431,25 +439,27 @@ public class SessionServiceTests {
     @Test
     public void testFindSessionsBetweenTimesNullMinTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenTimes(null, SESSION3_END_TIME);
+            sessionService.getSessionsBetweenTimes(null, SESSION3_END_TIME);
         }, "Start and end time must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        verify(sessionRepository, never()).findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(null, SESSION3_END_TIME);
+        verify(sessionRepository, never()).findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(null,
+                SESSION3_END_TIME);
     }
 
     @Test
     public void testFindSessionsBetweenTimesNullMaxTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenTimes(SESSION2_START_TIME, null);
+            sessionService.getSessionsBetweenTimes(SESSION2_START_TIME, null);
         }, "Start and end time must be filled in");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        verify(sessionRepository, never()).findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(SESSION2_START_TIME, null);
+        verify(sessionRepository, never()).findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(SESSION2_START_TIME,
+                null);
     }
 
     @Test
     public void testFindSessionsBetweenTimesMinTimeAfterMaxTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.findSessionsBetweenTimes(SESSION3_END_TIME, SESSION2_START_TIME);
+            sessionService.getSessionsBetweenTimes(SESSION3_END_TIME, SESSION2_START_TIME);
         }, "Start time must be before end time");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(SESSION3_END_TIME,
@@ -461,7 +471,8 @@ public class SessionServiceTests {
         lenient().when(sessionRepository.findAll()).thenReturn(Arrays.asList(SESSION));
         Session session = null;
         try {
-            session = sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, SESSION2_END_TIME, SESSION2_DATE);
+            session = sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, SESSION2_END_TIME,
+                    SESSION2_DATE);
         } catch (SportCenterException e) {
             fail();
         }
@@ -513,7 +524,8 @@ public class SessionServiceTests {
     @Test
     public void testUpdateSessionNegativePrice() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.updateSession(SESSION, INVALID_SESSION_PRICE, SESSION2_START_TIME, SESSION2_END_TIME, SESSION2_DATE);
+            sessionService.updateSession(SESSION, INVALID_SESSION_PRICE, SESSION2_START_TIME, SESSION2_END_TIME,
+                    SESSION2_DATE);
         }, "Price must be free or positive");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);
@@ -522,7 +534,8 @@ public class SessionServiceTests {
     @Test
     public void testUpdateSessionEndTimeBeforeStartTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_END_TIME, SESSION2_START_TIME, SESSION2_DATE);
+            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_END_TIME, SESSION2_START_TIME,
+                    SESSION2_DATE);
         }, "End time must be after start time");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);
@@ -531,7 +544,8 @@ public class SessionServiceTests {
     @Test
     public void testUpdateSessionEndTimeAfterClosingTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, INVALID_SESSION_END_TIME, SESSION2_DATE);
+            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, INVALID_SESSION_END_TIME,
+                    SESSION2_DATE);
         }, "Time must be within sport center hours");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);
@@ -540,7 +554,8 @@ public class SessionServiceTests {
     @Test
     public void testUpdateSessionStartTimeBeforeOpeningTime() {
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.updateSession(SESSION, SESSION2_PRICE, INVALID_SESSION_START_TIME, SESSION2_END_TIME, SESSION2_DATE);
+            sessionService.updateSession(SESSION, SESSION2_PRICE, INVALID_SESSION_START_TIME, SESSION2_END_TIME,
+                    SESSION2_DATE);
         }, "Time must be within sport center hours");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);
@@ -550,7 +565,8 @@ public class SessionServiceTests {
     public void testUpdateSessionTimeSlotTaken() {
         lenient().when(sessionRepository.findAll()).thenReturn(Arrays.asList(SESSION, SESSION2));
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, SESSION2_END_TIME, SESSION2_DATE);
+            sessionService.updateSession(SESSION, SESSION2_PRICE, SESSION2_START_TIME, SESSION2_END_TIME,
+                    SESSION2_DATE);
         }, "Time slot is already taken");
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         verify(sessionRepository, never()).save(SESSION);

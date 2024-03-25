@@ -6,6 +6,7 @@ public class FitnessClassDto {
     private String name;
     private String description;
     private FitnessClassStatusDto approvalStatus;
+
     public FitnessClassDto() {
     }
 

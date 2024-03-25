@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
-
 public class BillingRequestDto {
     private String country;
     private String state;
@@ -12,7 +11,8 @@ public class BillingRequestDto {
     private BillingRequestDto() {
     }
 
-    public BillingRequestDto(String country, String state, String postalCode, String cardNumber, String address, String username) {
+    public BillingRequestDto(String country, String state, String postalCode, String cardNumber, String address,
+            String username) {
         this.country = country;
         this.state = state;
         this.postalCode = postalCode;
@@ -36,9 +36,11 @@ public class BillingRequestDto {
     public String getCardNumber() {
         return this.cardNumber;
     }
+
     public String getAddress() {
         return this.address;
     }
+
     public String getUsername() {
         return this.username;
     }

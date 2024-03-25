@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.gitfit.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest
-public class FitnessClassRepositoryTest {
+public class FitnessClassRepositoryTests {
     @Autowired
     private FitnessClassRepository fitnessClassRepository;
 

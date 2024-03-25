@@ -3,48 +3,38 @@ package ca.mcgill.ecse321.gitfit.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.List;
+
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
 import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
-import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
-import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
-import ca.mcgill.ecse321.gitfit.model.Customer;
-import ca.mcgill.ecse321.gitfit.model.Instructor;
 import ca.mcgill.ecse321.gitfit.model.Owner;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ValidatorFactory;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 @SpringBootTest
-public class TestOwnerAccountService {
+public class OwnerAccountServiceTests {
 
     @Mock
     private OwnerRepository ownerRepository;

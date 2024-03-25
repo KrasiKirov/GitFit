@@ -1,6 +1,14 @@
 package ca.mcgill.ecse321.gitfit.service;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
@@ -9,16 +17,6 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
 import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
 @Service
 public class SessionService {
@@ -57,7 +55,7 @@ public class SessionService {
         if (endTime.after(sportCenter.getClosingTime()) || startTime.before(sportCenter.getOpeningTime())) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time must be within sport center hours");
         }
-        List<Session> sessions = findAllSessions();
+        List<Session> sessions = getAllSessions();
         for (Session session : sessions) {
             if (isSlotTakenByExistingSession(session, startTime, endTime, date)) {
                 throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time slot is already taken");
@@ -83,7 +81,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findAllSessions() {
+    public List<Session> getAllSessions() {
         return toList(sessionRepository.findAll());
     };
 
@@ -95,7 +93,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public Session findSessionById(int id) {
+    public Session getSessionById(int id) {
         return sessionRepository.findSessionById(id);
     };
 
@@ -107,7 +105,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsByInstructor(Instructor instructor) {
+    public List<Session> getSessionsByInstructor(Instructor instructor) {
         if (instructor == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Instructor must be filled in");
         }
@@ -122,7 +120,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsByFitnessClass(FitnessClass fitnessClass) {
+    public List<Session> getSessionsByFitnessClass(FitnessClass fitnessClass) {
         if (fitnessClass == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Fitness class must be filled in");
         }
@@ -138,7 +136,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsByInstructorAndFitnessClass(Instructor instructor, FitnessClass fitnessClass) {
+    public List<Session> getSessionsByInstructorAndFitnessClass(Instructor instructor, FitnessClass fitnessClass) {
         if (instructor == null || fitnessClass == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Instructor and fitness class must be filled in");
         }
@@ -153,7 +151,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsByMaxPrice(int price) {
+    public List<Session> getSessionsByMaxPrice(int price) {
         if (price < 0) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Price must be free or positive");
         }
@@ -169,7 +167,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsBetweenDates(Date startDate, Date endDate) {
+    public List<Session> getSessionsBetweenDates(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start and end date must be filled in");
         }
@@ -188,7 +186,7 @@ public class SessionService {
      * @return
      */
     @Transactional
-    public List<Session> findSessionsBetweenTimes(Time minTime, Time maxTime) {
+    public List<Session> getSessionsBetweenTimes(Time minTime, Time maxTime) {
         if (minTime == null || maxTime == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start and end time must be filled in");
         }
@@ -210,7 +208,7 @@ public class SessionService {
      */
     @Transactional
     public Session updateSession(Session session, int newPrice, Time newStartTime, Time newEndTime, Date newDate) {
-        if (session == null ||newStartTime == null || newEndTime == null || newDate == null) {
+        if (session == null || newStartTime == null || newEndTime == null || newDate == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "All fields must be filled in to update a session");
         }
         if (newPrice < 0) {
@@ -226,7 +224,7 @@ public class SessionService {
         if (newEndTime.after(sportCenter.getClosingTime()) || newStartTime.before(sportCenter.getOpeningTime())) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Time must be within sport center hours");
         }
-        List<Session> sessions = findAllSessions();
+        List<Session> sessions = getAllSessions();
         for (Session other : sessions) {
             if (isSlotTakenByExistingSession(other, newStartTime, newEndTime, newDate) && !other.equals(session)) {
                 System.out.println(other);
@@ -272,9 +270,9 @@ public class SessionService {
             Time existingStartTime = existingSession.getStartTime();
             Time existingEndTime = existingSession.getEndTime();
             if (existingStartTime.equals(startTime) || existingEndTime.equals(endTime) ||
-                (existingStartTime.before(startTime) && existingEndTime.after(startTime)) ||
-                (existingStartTime.before(endTime) && existingEndTime.after(endTime)) ||
-                (existingStartTime.after(startTime) && existingEndTime.before(endTime))) {
+                    (existingStartTime.before(startTime) && existingEndTime.after(startTime)) ||
+                    (existingStartTime.before(endTime) && existingEndTime.after(endTime)) ||
+                    (existingStartTime.after(startTime) && existingEndTime.before(endTime))) {
                 return true;
             }
         }

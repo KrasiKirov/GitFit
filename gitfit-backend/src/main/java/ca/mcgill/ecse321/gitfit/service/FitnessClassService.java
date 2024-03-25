@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.gitfit.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,16 +19,17 @@ public class FitnessClassService {
     private FitnessClassRepository fitnessClassRepository;
     @Autowired
     private SportCenterService sportCenterService;
+
     @Transactional
-    public List<FitnessClass> findAllFitnessClasses() {
+    public List<FitnessClass> getAllFitnessClasses() {
         return toList(fitnessClassRepository.findAll());
     }
 
     @Transactional
-    public List<FitnessClass> findApprovedClasses() {
+    public List<FitnessClass> getApprovedClasses() {
         List<FitnessClass> approvedClasses = new ArrayList<FitnessClass>();
         for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
-            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.APPROVED) {
+            if (fitnessClass.getApprovalStatus() == FitnessClassApprovalStatus.APPROVED) {
                 approvedClasses.add(fitnessClass);
             }
         }
@@ -37,10 +37,10 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public List<FitnessClass> findPendingClasses() {
+    public List<FitnessClass> getPendingClasses() {
         List<FitnessClass> pendingClasses = new ArrayList<FitnessClass>();
         for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
-            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.PENDING) {
+            if (fitnessClass.getApprovalStatus() == FitnessClassApprovalStatus.PENDING) {
                 pendingClasses.add(fitnessClass);
             }
         }
@@ -48,10 +48,10 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public List<FitnessClass> findRejectedClasses() {
+    public List<FitnessClass> getRejectedClasses() {
         List<FitnessClass> rejectedClasses = new ArrayList<FitnessClass>();
         for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
-            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.REJECTED) {
+            if (fitnessClass.getApprovalStatus() == FitnessClassApprovalStatus.REJECTED) {
                 rejectedClasses.add(fitnessClass);
             }
         }
@@ -59,7 +59,7 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public FitnessClass findFitnessClassById(int id) {
+    public FitnessClass getFitnessClassById(int id) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
         if (fitnessClass == null) {
 
@@ -69,7 +69,7 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public FitnessClass findFitnessClassByName(String name) {
+    public FitnessClass getFitnessClassByName(String name) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
@@ -84,11 +84,12 @@ public class FitnessClassService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
         }
 
-        // if there is no existing fitness class with the given name, then create a new fitness class
+        // if there is no existing fitness class with the given name, then create a new
+        // fitness class
         try {
-            findFitnessClassByName(name);
+            getFitnessClassByName(name);
         } catch (SportCenterException e) {
-            FitnessClass toCreate = new FitnessClass(name, description,sportCenterService.getSportCenter());
+            FitnessClass toCreate = new FitnessClass(name, description, sportCenterService.getSportCenter());
             return fitnessClassRepository.save(toCreate);
         }
 
@@ -107,18 +108,17 @@ public class FitnessClassService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Invalid status.");
         }
         FitnessClassApprovalStatus approvalStatus = FitnessClassApprovalStatus.valueOf(status);
-        FitnessClass fitnessClass = findFitnessClassByName(name);
+        FitnessClass fitnessClass = getFitnessClassByName(name);
         fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
-    
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
         }
 
-        FitnessClass fitnessClass = findFitnessClassByName(name);
+        FitnessClass fitnessClass = getFitnessClassByName(name);
         fitnessClass.setDescription(description);
         return fitnessClassRepository.save(fitnessClass);
     }
@@ -126,7 +126,7 @@ public class FitnessClassService {
     @Transactional
     public void deleteRejectedFitnessClasses() {
         for (FitnessClass fitnessClass : fitnessClassRepository.findAll()) {
-            if (fitnessClass.getApprovalStatus()==FitnessClassApprovalStatus.REJECTED) {
+            if (fitnessClass.getApprovalStatus() == FitnessClassApprovalStatus.REJECTED) {
                 fitnessClassRepository.delete(fitnessClass);
             }
         }
@@ -138,16 +138,16 @@ public class FitnessClassService {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name.");
         }
 
-        FitnessClass fitnessClass = findFitnessClassByName(name);
+        FitnessClass fitnessClass = getFitnessClassByName(name);
         fitnessClassRepository.delete(fitnessClass);
     }
 
     private <T> List<T> toList(Iterable<T> iterable) {
-		List<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
-		return resultList;
-	}
-    
+        List<T> resultList = new ArrayList<T>();
+        for (T t : iterable) {
+            resultList.add(t);
+        }
+        return resultList;
+    }
+
 }
