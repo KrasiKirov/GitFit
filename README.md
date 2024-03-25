@@ -23,7 +23,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Kevin-Ruikai Li | Software Developer | 16      |    0     |    0      |    0      |
 | Vlad Arama | Software Developer | 16    |    0     |    0      |    0      |
 | Krasimir Kirov | Testing Lead |   17   |    17    |    0      |    0      |
-| Jatin Patel | Software Developer | 16     |    0     |    0      |    0      |
+| Jatin Patel | Software Developer | 16     |    28     |    0      |    0      |
 
 ### Deliverable 1
 
@@ -49,7 +49,7 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li |  | |
 | Vlad Arama |  |  |
 | Krasimir Kirov | <ul><li>Customer Service</li><li>Customer REST Controller</li><li>Customer Unit Tests for service layer</li><li> Integration tests for Customer REST Controller</li><li>Testing Documentation (Test Plan, Structure and Scope) for Deliverable 2</li></ul> | 17 |
-| Jatin Patel |  |  |
+| Jatin Patel | <ul><li>Instructor Service</li><li>Instructor REST Controller</li><li>Instructor Unit Tests for service layer</li><li> Integration tests for Instructor REST Controller</li><li>Testing Controller REST endpoint documentation for Deliverable 2</li><ul><li>Owner Service</li><li>Owner REST Controller</li><li>Owner Unit Tests for service layer</li><li> Owner tests for Instructor REST Controller</li></ul> | 28 |
 
 ### Deliverable 3
 
