@@ -21,7 +21,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | William Wang       | Documentation Lead | 20     |    0     |    0      |    0      |
 | Li Yang Lei       | Project Manager | 18    |    0     |    0      |    0      |
 | Kevin-Ruikai Li | Software Developer | 16      |    0     |    0      |    0      |
-| Vlad Arama | Software Developer | 16    |    0     |    0      |    0      |
+| Vlad Arama | Software Developer | 16    |    25     |    0      |    0      |
 | Krasimir Kirov | Testing Lead |   17   |    17    |    0      |    0      |
 | Jatin Patel | Software Developer | 16     |    28     |    0      |    0      |
 
@@ -47,9 +47,9 @@ The project report for this deliverable can be found [here]().
 | William Wang | |  |
 | Li Yang Lei |  |  |
 | Kevin-Ruikai Li |  | |
-| Vlad Arama |  |  |
+| Vlad Arama | <ul><li>Registration Service</li> <li>Registration REST Controller</li><li>Registration Unit Tests for service layer</li><li>Integration tests for Registration REST Controller</li><li>Reviewing Pull Requests and Testing the Changes</li><li>GitHub Project Management (Issues, PRs, Wikis)</li><li>Documentation</li></ul> | 25 |
 | Krasimir Kirov | <ul><li>Customer Service</li><li>Customer REST Controller</li><li>Customer Unit Tests for service layer</li><li> Integration tests for Customer REST Controller</li><li>Testing Documentation (Test Plan, Structure and Scope) for Deliverable 2</li></ul> | 17 |
-| Jatin Patel | <ul><li>Instructor Service</li><li>Instructor REST Controller</li><li>Instructor Unit Tests for service layer</li><li> Integration tests for Instructor REST Controller</li><li>Testing Controller REST endpoint documentation for Deliverable 2</li><li>Owner Service</li><li>Owner REST Controller</li><li>Owner Unit Tests for service layer</li><li> Owner tests for Instructor REST Controller</li></ul> | 28 |
+| Jatin Patel | <ul><li>Instructor Service</li><li>Instructor REST Controller</li><li>Instructor Unit Tests for service layer</li><li> Integration tests for Instructor REST Controller</li><li>Testing Controller REST endpoint documentation for Deliverable 2</li><li>Owner Service</li><li>Owner REST Controller</li><li>Owner Unit Tests for service layer</li><li> Integration tests for Owner REST Controller</li></ul> | 28 |
 
 ### Deliverable 3
 
