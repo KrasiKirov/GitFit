@@ -46,7 +46,7 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | |  |
 | Li Yang Lei |  |  |
-| Kevin-Ruikai Li |  | |
+| Kevin-Ruikai Li | <ul><li>Fitness Class Service</li><li>Fitness Class REST Controller</li><li>Documentation</li></ul> | 15 |
 | Vlad Arama | <ul><li>Registration Service</li> <li>Registration REST Controller</li><li>Registration Unit Tests for service layer</li><li>Integration tests for Registration REST Controller</li><li>Reviewing Pull Requests and Testing the Changes</li><li>GitHub Project Management (Issues, PRs, Wikis)</li><li>Documentation</li></ul> | 25 |
 | Krasimir Kirov | <ul><li>Customer Service</li><li>Customer REST Controller</li><li>Customer Unit Tests for service layer</li><li> Integration tests for Customer REST Controller</li><li>Testing Documentation (Test Plan, Structure and Scope) for Deliverable 2</li></ul> | 17 |
 | Jatin Patel | <ul><li>Instructor Service</li><li>Instructor REST Controller</li><li>Instructor Unit Tests for service layer</li><li> Integration tests for Instructor REST Controller</li><li>Testing Controller REST endpoint documentation for Deliverable 2</li><li>Owner Service</li><li>Owner REST Controller</li><li>Owner Unit Tests for service layer</li><li> Integration tests for Owner REST Controller</li></ul> | 28 |
