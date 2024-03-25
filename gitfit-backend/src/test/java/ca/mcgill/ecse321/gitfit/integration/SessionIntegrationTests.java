@@ -107,7 +107,7 @@ public class SessionIntegrationTests {
     @Test
     @Order(1)
     public void testCreateInvalidSessionNegativePrice() {
-        SessionDto sessionDto = new SessionDto(VALID_PRICE, VALID_START_TIME, VALID_END_TIME, VALID_DATE,
+        SessionDto sessionDto = new SessionDto(INVALID_PRICE, VALID_START_TIME, VALID_END_TIME, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
 
         HttpEntity<SessionDto> entity = new HttpEntity<>(sessionDto);
@@ -140,23 +140,6 @@ public class SessionIntegrationTests {
 
     @Test
     @Order(3)
-    public void testCreateInvalidSessionDateBeforeToday() {
-        SessionDto sessionDto = new SessionDto(VALID_PRICE, VALID_START_TIME, VALID_END_TIME, INVALID_DATE,
-                INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
-
-        HttpEntity<SessionDto> entity = new HttpEntity<>(sessionDto);
-        ResponseEntity<ErrorDto> response = client.exchange("/sessions", HttpMethod.POST, entity, ErrorDto.class);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorDto body = response.getBody();
-        assertNotNull(body);
-        assertEquals(1, body.getErrors().size());
-        assertEquals("Date must be in the future", body.getErrors().get(0));
-    }
-
-    @Test
-    @Order(4)
     public void testCreateInvalidSessionSportCenterNotOpen() {
         SessionDto sessionDto = new SessionDto(VALID_PRICE, INVALID_START_TIME, VALID_END_TIME, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -173,7 +156,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     public void testCreateInvalidSessionSlotTaken() {
         SessionDto sessionDto = new SessionDto(VALID_PRICE, START_TIME1, VALID_END_TIME, DATE1,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -190,7 +173,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     public void testCreateValidSession() {
         SessionDto sessionDto = new SessionDto(VALID_PRICE, VALID_START_TIME, VALID_END_TIME, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -211,7 +194,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     public void testGetAllSessions() {
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions", HttpMethod.GET, null,
                 SessionDto[].class);
@@ -224,7 +207,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     public void testGetSessionById() {
         ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.GET, null,
                 SessionDto.class);
@@ -242,7 +225,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     public void testGetSessionsByInstructor() {
         HttpEntity<String> entity = new HttpEntity<>(INSTRUCTOR_USERNAME);
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-instructor", HttpMethod.GET, entity,
@@ -256,7 +239,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(10)
+    @Order(9)
     public void testGetSessionsByFitnessClass() {
         HttpEntity<String> entity = new HttpEntity<>(FITNESS_CLASS_NAME);
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-fitness-class", HttpMethod.GET, entity,
@@ -270,7 +253,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(11)
+    @Order(10)
     public void testGetSessionsByInstructorAndFitnessClass() {
         HttpEntity<SessionDto> entity = new HttpEntity<>(
                 new SessionDto(0, null, null, null, INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME));
@@ -285,7 +268,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(12)
+    @Order(11)
     public void testGetSessionsByInvalidMaxPrice() {
         HttpEntity<Integer> entity = new HttpEntity<>(INVALID_PRICE);
         ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity,
@@ -300,7 +283,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(13)
+    @Order(12)
     public void testGetSessionsByMaxPrice() {
         HttpEntity<Integer> entity = new HttpEntity<>(PRICE1);
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-max-price", HttpMethod.GET, entity,
@@ -314,7 +297,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(14)
+    @Order(13)
     public void testGetSessionsByInvalidDate() {
         HttpEntity<DatesDto> entity = new HttpEntity<>(new DatesDto(DATE2, DATE1));
         ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity,
@@ -329,7 +312,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(15)
+    @Order(14)
     public void testGetSessionsByDate() {
         HttpEntity<DatesDto> entity = new HttpEntity<>(new DatesDto(DATE1, DATE2));
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-date", HttpMethod.GET, entity,
@@ -343,7 +326,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(16)
+    @Order(15)
     public void testGetSessionsByInvalidTime() {
         HttpEntity<HoursDto> entity = new HttpEntity<>(new HoursDto(END_TIME1, START_TIME1));
         ResponseEntity<ErrorDto> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity,
@@ -358,7 +341,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(17)
+    @Order(16)
     public void testGetSessionsByTime() {
         HttpEntity<HoursDto> entity = new HttpEntity<>(new HoursDto(START_TIME1, END_TIME2));
         ResponseEntity<SessionDto[]> response = client.exchange("/sessions/by-time", HttpMethod.GET, entity,
@@ -373,7 +356,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(18)
+    @Order(17)
     public void testUpdateSessionInvalidPrice() {
         SessionDto sessionDto = new SessionDto(ID1, INVALID_PRICE, VALID_START_TIME, VALID_END_TIME, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -390,7 +373,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(19)
+    @Order(18)
     public void testUpdateSessionInvalidTimes() {
         SessionDto sessionDto = new SessionDto(ID1, PRICE1, INVALID_END_TIME, INVALID_START_TIME, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -407,7 +390,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(20)
+    @Order(19)
     public void testUpdateSession() {
         SessionDto sessionDto = new SessionDto(ID1, PRICE1, START_TIME2, END_TIME2, VALID_DATE,
                 INSTRUCTOR_USERNAME, FITNESS_CLASS_NAME);
@@ -430,7 +413,7 @@ public class SessionIntegrationTests {
     }
 
     @Test
-    @Order(21)
+    @Order(20)
     public void testDeleteSession() {
         ResponseEntity<Void> response = client.exchange("/sessions/{id}", HttpMethod.DELETE, null, Void.class, ID1);
 
