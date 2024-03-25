@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class FitnessClassServiceTests {
@@ -259,8 +261,108 @@ public class FitnessClassServiceTests {
 
     @Test
     public void deleteRejectedFitnessClassesTest() {
+        String name1 = "TestFitnessClass1";
+        String description1 = "TestDescription1";
+        String name2 = "TestFitnessClass2";
+        String description2 = "TestDescription2";
+
+        FitnessClass fitnessClass1 = new FitnessClass();
+        fitnessClass1.setName(name1);
+        fitnessClass1.setDescription(description1);
+        fitnessClass1.setApprovalStatus(FitnessClassApprovalStatus.REJECTED);
+        FitnessClass fitnessClass2 = new FitnessClass();
+        fitnessClass2.setName(name2);
+        fitnessClass2.setDescription(description2);
+        fitnessClass2.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
+
+        List<FitnessClass> fitnessClasses = new ArrayList<>();
+        fitnessClasses.add(fitnessClass1);
+        fitnessClasses.add(fitnessClass2);
+
+        when(fitnessClassRepository.findAll()).thenReturn(fitnessClasses);
+
         fitnessClassService.deleteRejectedFitnessClasses();
-        verify(fitnessClassRepository, times(1)).deleteRejectedFitnessClasses();
+
+        verify(fitnessClassRepository, times(1)).delete(fitnessClass1);
+        verify(fitnessClassRepository, never()).delete(fitnessClass2);
+
     }
+
+    @Test
+    public void deleteFitnessClassTest() {
+        String name = "TestFitnessClass";
+        String description = "TestDescription";
+
+        FitnessClass fitnessClass = new FitnessClass();
+        fitnessClass.setName(name);
+        fitnessClass.setDescription(description);
+
+        when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(fitnessClass);
+
+        fitnessClassService.deleteFitnessClass(name);
+
+        verify(fitnessClassRepository, times(1)).delete(fitnessClass);
+    }
+
+    @Test
+    public void deleteFitnessClassInvalidNameTest() {
+        String name = null;
+        String description = "TestDescription";
+
+        FitnessClass fitnessClass = new FitnessClass();
+        fitnessClass.setName(name);
+        fitnessClass.setDescription(description);
+
+        when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(fitnessClass);
+
+        SportCenterException exception = assertThrows(SportCenterException.class, () -> {
+            fitnessClassService.deleteFitnessClass(name);
+        });
+
+        assertEquals("Must provide a name.", exception.getMessage());
+    }
+
+    @Test
+    public void findAllFitnessClassesTest() {
+        FitnessClass fitnessClass = new FitnessClass();
+        fitnessClass.setName("TestFitnessClass");
+        fitnessClass.setDescription("TestDescription");
+        FitnessClass fitnessClass2 = new FitnessClass();
+        fitnessClass2.setName("TestFitnessClass2");
+        fitnessClass2.setDescription("TestDescription2");
+
+        List<FitnessClass> fitnessClasses = new ArrayList<>();
+        fitnessClasses.add(fitnessClass);
+        fitnessClasses.add(fitnessClass2);
+
+        when(fitnessClassRepository.findAll()).thenReturn(fitnessClasses);
+
+        assertEquals(2, fitnessClassService.findAllFitnessClasses().size());
+    }
+
+    @Test
+    public void findApprovedClassesTest() {
+        FitnessClass fitnessClass = new FitnessClass();
+        fitnessClass.setName("TestFitnessClass");
+        fitnessClass.setDescription("TestDescription");
+        fitnessClass.setApprovalStatus(FitnessClassApprovalStatus.APPROVED);
+        FitnessClass fitnessClass2 = new FitnessClass();
+        fitnessClass2.setName("TestFitnessClass2");
+        fitnessClass2.setDescription("TestDescription2");
+        fitnessClass2.setApprovalStatus(FitnessClassApprovalStatus.PENDING);
+
+        List<FitnessClass> fitnessClasses = new ArrayList<>();
+        fitnessClasses.add(fitnessClass);
+        fitnessClasses.add(fitnessClass2);
+
+        when(fitnessClassRepository.findAll()).thenReturn(fitnessClasses);
+
+        List<FitnessClass> approvedClasses = fitnessClassService.findApprovedClasses();
+
+        assertEquals(1, approvedClasses.size());
+        assertEquals("TestFitnessClass", approvedClasses.get(0).getName());
+        assertEquals("TestDescription", approvedClasses.get(0).getDescription());
+    }
+
 
 }
