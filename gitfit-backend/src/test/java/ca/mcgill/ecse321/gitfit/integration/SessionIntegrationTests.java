@@ -51,7 +51,6 @@ public class SessionIntegrationTests {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
-    private final int ID1 = 1;
     private final int PRICE1 = 20;
     private final Time START_TIME1 = Time.valueOf("10:00:00");
     private final Time END_TIME1 = Time.valueOf("11:00:00");
@@ -77,6 +76,9 @@ public class SessionIntegrationTests {
     private final Time SPORT_CENTER_OPENING_TIME = Time.valueOf("08:00:00");
     private final Time SPORT_CENTER_CLOSING_TIME = Time.valueOf("22:00:00");
 
+    private Session session1;
+    private Session session2;
+
     @BeforeAll
     public void setup() {
         sessionRepository.deleteAll();
@@ -97,12 +99,11 @@ public class SessionIntegrationTests {
         FitnessClass fitnessClass = new FitnessClass(FITNESS_CLASS_NAME, "description", sportCenter);
         fitnessClassRepository.save(fitnessClass);
 
-        Session session1 = new Session(PRICE1, START_TIME1, END_TIME1, DATE1, instructor, fitnessClass, sportCenter);
-        session1.setId(ID1);
-        sessionRepository.save(session1);
+        session1 = new Session(PRICE1, START_TIME1, END_TIME1, DATE1, instructor, fitnessClass, sportCenter);
+        session1 = sessionRepository.save(session1);
 
-        Session session2 = new Session(PRICE2, START_TIME2, END_TIME2, DATE2, instructor, fitnessClass, sportCenter);
-        sessionRepository.save(session2);
+        session2 = new Session(PRICE2, START_TIME2, END_TIME2, DATE2, instructor, fitnessClass, sportCenter);
+        session2 = sessionRepository.save(session2);
     }
 
     @AfterAll
@@ -218,17 +219,16 @@ public class SessionIntegrationTests {
     @Test
     @Order(7)
     public void testGetSessionById() {
-        ResponseEntity<SessionDto> response = client.exchange("/sessions/" + ID1, HttpMethod.GET, null,
-                SessionDto.class);
+        ResponseEntity<SessionDto> response = client.getForEntity("/sessions/"+session1.getId(), SessionDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         SessionDto session = response.getBody();
         assertNotNull(session);
         assertEquals(PRICE1, session.getPrice());
-        assertEquals(START_TIME1, session.getStartTime());
-        assertEquals(END_TIME1, session.getEndTime());
-        assertEquals(DATE1, session.getDate());
+        assertEquals(START_TIME1.toLocalTime(), session.getStartTime());
+        assertEquals(END_TIME1.toLocalTime(), session.getEndTime());
+        assertEquals(DATE1.toLocalDate(), session.getDate());
         assertEquals(INSTRUCTOR_USERNAME, session.getInstructorUsername());
         assertEquals(FITNESS_CLASS_NAME, session.getFitnessClassName());
     }

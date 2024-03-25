@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.gitfit.dto.DatesDto;
@@ -82,115 +84,19 @@ public class SessionRestController {
         return convertToDto(session);
     }
 
-    /**
-     * Get sessions by instructor
-     * 
-     * @author William Wang (wangwiza)
-     * @param instructorUsername
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-instructor", "/sessions/by-instructor/" })
-    public List<SessionDto> getSessionsByInstructor(@RequestBody String instructorUsername) {
+
+    @GetMapping(value = { "/sessions/filter", "/sessions/filter/"})
+    public List<SessionDto> getFilteredSessions(@RequestParam(required = false) String instructorUsername,
+            @RequestParam(required = false) String fitnessClassName, @RequestParam(required = false) Integer maxPrice,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time startTime, 
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time endTime) {
         Instructor instructor = instructorService.getInstructor(instructorUsername);
-        List<Session> sessions = sessionService.getSessionsByInstructor(instructor);
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
-    }
-
-    /**
-     * Get sessions by fitness class
-     * 
-     * @author William Wang (wangwiza)
-     * @param fitnessClassName
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-class", "/sessions/by-class/" })
-    public List<SessionDto> getSessionsByFitnessClass(@RequestBody String fitnessClassName) {
         FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
-        List<Session> sessions = sessionService.getSessionsByFitnessClass(fitnessClass);
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
-    }
-
-    /**
-     * Get sessions by instructor and fitness class
-     * 
-     * @author William Wang (wangwiza)
-     * @param instructorUsername
-     * @param fitnessClassName
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-instructor-and-class", "/sessions/by-instructor-and-class/" })
-    public List<SessionDto> getSessionsByInstructorAndFitnessClass(@RequestBody SessionDto sessionDto) {
-        Instructor instructor = instructorService.getInstructor(sessionDto.getInstructorUsername());
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(sessionDto.getFitnessClassName());
-        List<Session> sessions = sessionService.getSessionsByInstructorAndFitnessClass(instructor, fitnessClass);
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
-    }
-
-    /**
-     * Get sessions under max price
-     * 
-     * @author William Wang (wangwiza)
-     * @param maxPrice
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-price", "/sessions/by-price/" })
-    public List<SessionDto> getSessionsByMaxPrice(@RequestBody int maxPrice) {
-        List<Session> sessions = sessionService.getSessionsByMaxPrice(maxPrice);
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
-    }
-
-    /**
-     * Get sessions between two dates
-     * 
-     * @author William Wang (wangwiza)
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-dates", "/sessions/by-dates/" })
-    public List<SessionDto> getSessionsByDate(@RequestBody DatesDto datesDto) {
-        List<Session> sessions = sessionService.getSessionsBetweenDates(Date.valueOf(datesDto.getStartDate()),
-                Date.valueOf(datesDto.getEndDate()));
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
-    }
-
-    /**
-     * Get sessions between two times
-     * 
-     * @author William Wang (wangwiza)
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    @GetMapping(value = { "/sessions/by-times", "/sessions/by-times/" })
-    public List<SessionDto> getSessionsByTime(@RequestBody HoursDto hoursDto) {
-        List<Session> sessions = sessionService.getSessionsBetweenTimes(Time.valueOf(hoursDto.getOpeningTime()),
-                Time.valueOf(hoursDto.getClosingTime()));
-        List<SessionDto> sessionDtos = new ArrayList<SessionDto>();
-        for (Session session : sessions) {
-            sessionDtos.add(convertToDto(session));
-        }
-        return sessionDtos;
+        List<Session> sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice,
+                startDate, endDate, startTime, endTime);
+        return sessions.stream().map(this::convertToDto).toList();
     }
 
     /**

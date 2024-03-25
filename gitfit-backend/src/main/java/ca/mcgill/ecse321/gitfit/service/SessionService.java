@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,107 +97,55 @@ public class SessionService {
      */
     @Transactional
     public Session getSessionById(int id) {
-        return sessionRepository.findSessionById(id);
-    };
-
-    /**
-     * Get sessions by instructor
-     * 
-     * @author William Wang (wangwiza)
-     * @param instructor
-     * @return
-     */
-    @Transactional
-    public List<Session> getSessionsByInstructor(Instructor instructor) {
-        if (instructor == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Instructor must be filled in");
+        Session session = sessionRepository.findSessionById(id);
+        if (session == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "No session found with that ID");
         }
-        return toList(sessionRepository.findByInstructor(instructor));
+        return session;
     };
 
     /**
-     * Get sessions by fitness class
+     * Get sessions by various filters (price, date, time, instructor, fitness
+     * class)
      * 
      * @author William Wang (wangwiza)
-     * @param fitnessClass
-     * @return
-     */
-    @Transactional
-    public List<Session> getSessionsByFitnessClass(FitnessClass fitnessClass) {
-        if (fitnessClass == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Fitness class must be filled in");
-        }
-        return toList(sessionRepository.findByFitnessClass(fitnessClass));
-    };
-
-    /**
-     * Get sessions by instructor and fitness class
-     * 
-     * @author William Wang (wangwiza)
-     * @param instructor
-     * @param fitnessClass
-     * @return
-     */
-    @Transactional
-    public List<Session> getSessionsByInstructorAndFitnessClass(Instructor instructor, FitnessClass fitnessClass) {
-        if (instructor == null || fitnessClass == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Instructor and fitness class must be filled in");
-        }
-        return toList(sessionRepository.findByInstructorAndFitnessClass(instructor, fitnessClass));
-    };
-
-    /**
-     * Get sessions by max price
-     * 
-     * @author William Wang (wangwiza)
-     * @param price
-     * @return
-     */
-    @Transactional
-    public List<Session> getSessionsByMaxPrice(int price) {
-        if (price < 0) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Price must be free or positive");
-        }
-        return toList(sessionRepository.findByPriceLessThanEqual(price));
-    };
-
-    /**
-     * Get sessions between dates
-     * 
-     * @author William Wang (wangwiza)
+     * @param instructorUsername
+     * @param fitnessClassName
+     * @param maxPrice
      * @param startDate
      * @param endDate
-     * @return
+     * @param startTime
+     * @param endTime
+     * @return List of sessions that match the filters
      */
     @Transactional
-    public List<Session> getSessionsBetweenDates(Date startDate, Date endDate) {
-        if (startDate == null || endDate == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start and end date must be filled in");
+    public List<Session> getSessionsByFilters(Instructor instructor, FitnessClass fitnessClass,
+            Integer maxPrice, Date startDate, Date endDate, Time startTime,
+            Time endTime) {
+        if (maxPrice != null && maxPrice < 0) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Max price cannot be negative");
         }
-        if (startDate.after(endDate)) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
+        if (startDate != null && endDate != null && startDate.after(endDate)) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start date cannot be after end date");
         }
-        return toList(sessionRepository.findByDateBetween(startDate, endDate));
-    };
-
-    /**
-     * Get sessions between times
-     * 
-     * @author William Wang (wangwiza)
-     * @param minTime
-     * @param maxTime
-     * @return
-     */
-    @Transactional
-    public List<Session> getSessionsBetweenTimes(Time minTime, Time maxTime) {
-        if (minTime == null || maxTime == null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start and end time must be filled in");
+        if (startTime != null && endTime != null && startTime.after(endTime)) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start time cannot be after end time");
         }
-        if (minTime.after(maxTime)) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Start time must be before end time");
-        }
-        return toList(sessionRepository.findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(minTime, maxTime));
-    };
+        List<Session> sessions = getAllSessions().stream()
+                .filter(session -> instructor == null
+                        || session.getInstructor().equals(instructor))
+                .filter(session -> fitnessClass == null
+                        || session.getFitnessClass().equals(fitnessClass))
+                .filter(session -> maxPrice == null || session.getPrice() <= maxPrice)
+                .filter(session -> startDate == null || endDate == null
+                        || ((session.getDate().after(startDate) || session.getDate().equals(startDate))
+                                && (session.getDate().before(endDate) || session.getDate().equals(endDate))))
+                .filter(session -> startTime == null || endTime == null
+                        || ((session.getStartTime().after(startTime) || session.getStartTime().equals(startTime))
+                                && (session.getEndTime().before(endTime) || session.getEndTime().equals(endTime))))
+                .collect(Collectors.toList());
+        return sessions;
+    }
 
     /**
      * Update session
