@@ -1,28 +1,20 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
 import java.sql.Time;
-
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import java.time.LocalTime;
 
 public class SportCenterDto {
 
     private String name;
     private int maxCapacity;
-    private Time openingTime;
-    private Time closingTime;
+    private LocalTime openingTime;
+    private LocalTime closingTime;
 
     public SportCenterDto(String name, int maxCapacity, Time openingTime, Time closingTime) {
         this.name = name;
         this.maxCapacity = maxCapacity;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
-    }
-
-    public SportCenterDto(SportCenter model) {
-        this.name = model.getName();
-        this.maxCapacity = model.getMaxCapacity();
-        this.openingTime = model.getOpeningTime();
-        this.closingTime = model.getClosingTime();
+        this.openingTime = openingTime.toLocalTime();
+        this.closingTime = closingTime.toLocalTime();
     }
 
     public String getName() {
@@ -33,11 +25,11 @@ public class SportCenterDto {
         return maxCapacity;
     }
 
-    public Time getOpeningTime() {
+    public LocalTime getOpeningTime() {
         return openingTime;
     }
 
-    public Time getClosingTime() {
+    public LocalTime getClosingTime() {
         return closingTime;
     }
 
@@ -49,11 +41,11 @@ public class SportCenterDto {
         this.maxCapacity = maxCapacity;
     }
 
-    public void setOpeningTime(Time openingTime) {
+    public void setOpeningTime(LocalTime openingTime) {
         this.openingTime = openingTime;
     }
 
-    public void setClosingTime(Time closingTime) {
+    public void setClosingTime(LocalTime closingTime) {
         this.closingTime = closingTime;
     }
 }

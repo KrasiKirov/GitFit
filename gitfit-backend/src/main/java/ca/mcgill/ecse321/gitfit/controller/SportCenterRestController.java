@@ -71,7 +71,8 @@ public class SportCenterRestController {
     @PutMapping(value = { "/sportcenter/hours", "/sportcenter/hours/" })
     public SportCenterDto updateSportCenterHours(@RequestBody HoursDto hours) {
         return convertToDto(
-                sportCenterService.setOpenHours(Time.valueOf(hours.getOpeningTime()), Time.valueOf(hours.getClosingTime())));
+                sportCenterService.setOpenHours(Time.valueOf(hours.getOpeningTime()),
+                        Time.valueOf(hours.getClosingTime())));
     }
 
     /**
@@ -85,6 +86,9 @@ public class SportCenterRestController {
         if (sportCenter == null) {
             throw new IllegalArgumentException("There is no such sport center!");
         }
-        return new SportCenterDto(sportCenter);
+        SportCenterDto sportCenterDto = new SportCenterDto(sportCenter.getName(), sportCenter.getMaxCapacity(),
+                sportCenter.getOpeningTime(),
+                sportCenter.getClosingTime());
+        return sportCenterDto;
     }
 }
