@@ -25,6 +25,7 @@ public class RegistrationService {
     @Autowired
     private CustomerAccountService customerService;
 
+    // Use session service when ready
     @Autowired
     private SessionRepository sessionRepository;
 

@@ -2,22 +2,20 @@ package ca.mcgill.ecse321.gitfit.dto;
 
 import java.sql.Date;
 
-import ca.mcgill.ecse321.gitfit.model.Session;
-
 public class RegistrationResponseDto {
     private int id;
     private Date date;
-    private Session session;
-    private CustomerAccountDto customer;
+    private int sessionId;
+    private String customerUsername;
 
     public RegistrationResponseDto() {
     }
 
-    public RegistrationResponseDto(int id, Date date, Session session, CustomerAccountDto customer) {
+    public RegistrationResponseDto(int id, Date date, int sessionId, String customerUsername) {
         this.id = id;
         this.date = date;
-        this.session = session;
-        this.customer = customer;
+        this.sessionId = sessionId;
+        this.customerUsername = customerUsername;
     }
 
     public int getId() {
@@ -28,12 +26,12 @@ public class RegistrationResponseDto {
         return this.date;
     }
 
-    public Session getSession() {
-        return this.session;
+    public int getSessionId() {
+        return this.sessionId;
     }
 
-    public CustomerAccountDto getCustomer() {
-        return this.customer;
+    public String getCustomerUsername() {
+        return this.customerUsername;
     }
 
     public void setId(int id) {
@@ -44,12 +42,12 @@ public class RegistrationResponseDto {
         this.date = date;
     }
 
-    public void setSession(Session session) {
-        this.session = session;
+    public void setSessionId(int sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public void setCustomer(CustomerAccountDto customer) {
-        this.customer = customer;
+    public void setCustomerUsername(String customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
 }

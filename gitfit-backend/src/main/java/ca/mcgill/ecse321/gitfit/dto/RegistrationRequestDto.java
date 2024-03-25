@@ -5,15 +5,15 @@ import java.sql.Date;
 public class RegistrationRequestDto {
     private Date date;
     private int sessionId;
-    private String customerName;
+    private String customerUsername;
 
-    RegistrationRequestDto() {
+    public RegistrationRequestDto() {
     }
 
-    RegistrationRequestDto(Date date, int sessionId, String customerName) {
+    public RegistrationRequestDto(Date date, int sessionId, String customerUsername) {
         this.date = date;
         this.sessionId = sessionId;
-        this.customerName = customerName;
+        this.customerUsername = customerUsername;
     }
 
     public Date getDate() {
@@ -24,8 +24,8 @@ public class RegistrationRequestDto {
         return this.sessionId;
     }
 
-    public String getCustomerName() {
-        return this.customerName;
+    public String getCustomerUsername() {
+        return this.customerUsername;
     }
 
     public void setDate(Date date) {
@@ -36,8 +36,8 @@ public class RegistrationRequestDto {
         this.sessionId = sessionId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerUsername(String customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
 }

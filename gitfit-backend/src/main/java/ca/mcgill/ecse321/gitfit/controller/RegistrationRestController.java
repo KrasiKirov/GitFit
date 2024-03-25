@@ -23,7 +23,6 @@ import ca.mcgill.ecse321.gitfit.service.RegistrationService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
 public class RegistrationRestController {
 
     @Autowired
@@ -109,7 +108,7 @@ public class RegistrationRestController {
     @PostMapping(value = { "/registrations", "/registrations/" })
     public RegistrationResponseDto createRegistration(@RequestBody RegistrationRequestDto request) {
         Registration registration = registrationService.createRegistration(request.getDate(), request.getSessionId(),
-                request.getCustomerName());
+                request.getCustomerUsername());
         return registrationConvertToDto(registration);
     }
 
@@ -126,14 +125,9 @@ public class RegistrationRestController {
         }
         RegistrationResponseDto registrationDto = new RegistrationResponseDto(registration.getId(),
                 registration.getDate(),
-                registration.getSession(), customerConvertToDto(registration.getCustomer()));
+                registration.getSession().getId(), registration.getCustomer().getUsername());
 
         return registrationDto;
-    }
-
-    private CustomerAccountDto customerConvertToDto(Customer c) {
-        return new CustomerAccountDto(c.getUsername(), c.getEmail(), c.getFirstName(), c.getLastName(),
-                c.getPassword());
     }
 
 }
