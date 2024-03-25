@@ -1,20 +1,20 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
-public class InstructorAccountDto {
+public class OwnerAccountDto {
     private String username;
-    private String email;
     private String firstName;
     private String lastName;
+    private String email;
     private String password;
 
-    public InstructorAccountDto() {
+    public OwnerAccountDto() {
     }
 
-    public InstructorAccountDto(String username, String email, String fistName, String lastName, String password) {
+    public OwnerAccountDto(String username, String firstName, String lastName, String email, String password) {
         this.username = username;
-        this.email = email;
-        this.firstName = fistName;
+        this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.password = password;
     }
 

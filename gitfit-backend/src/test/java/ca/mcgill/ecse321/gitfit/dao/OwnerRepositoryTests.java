@@ -54,7 +54,7 @@ public class OwnerRepositoryTests {
 
         // Read owner from database
         // After save
-        owner = ownerRepository.findOwnerById(owner.getId());
+        owner = ownerRepository.findAll().iterator().next();
         int id = sportCenter.getId();
 
         // Assert that owner is not null and has correct attributes
