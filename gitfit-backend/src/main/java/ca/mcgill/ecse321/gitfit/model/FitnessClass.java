@@ -19,7 +19,8 @@ public class FitnessClass {
   private int id;
   private String name;
   private String description;
-  private boolean isApproved;
+  private FitnessClassApprovalStatus approvalStatus;
+//  private boolean isApproved;
 
   // FitnessClass Associations
   @ManyToOne(optional = false)
@@ -32,10 +33,10 @@ public class FitnessClass {
   public FitnessClass() {
   }
 
-  public FitnessClass(String aName, String aDescription, boolean aIsApproved, SportCenter aSportCenter) {
+  public FitnessClass(String aName, String aDescription, SportCenter aSportCenter) {
     name = aName;
     description = aDescription;
-    isApproved = aIsApproved;
+    approvalStatus = FitnessClassApprovalStatus.PENDING;
     boolean didAddSportCenter = setSportCenter(aSportCenter);
     if (!didAddSportCenter) {
       throw new RuntimeException(
@@ -68,12 +69,19 @@ public class FitnessClass {
     return wasSet;
   }
 
-  public boolean setIsApproved(boolean aIsApproved) {
+  public boolean setApprovalStatus(FitnessClassApprovalStatus aApprovalStatus) {
     boolean wasSet = false;
-    isApproved = aIsApproved;
+    approvalStatus = aApprovalStatus;
     wasSet = true;
     return wasSet;
   }
+
+//  public boolean setIsApproved(boolean aIsApproved) {
+//    boolean wasSet = false;
+//    isApproved = aIsApproved;
+//    wasSet = true;
+//    return wasSet;
+//  }
 
   public int getId() {
     return id;
@@ -87,14 +95,18 @@ public class FitnessClass {
     return description;
   }
 
-  public boolean getIsApproved() {
-    return isApproved;
+  public FitnessClassApprovalStatus getApprovalStatus() {
+    return approvalStatus;
   }
 
-  /* Code from template attribute_IsBoolean */
-  public boolean isIsApproved() {
-    return isApproved;
-  }
+//  public boolean getIsApproved() {
+//    return isApproved;
+//  }
+//
+//  /* Code from template attribute_IsBoolean */
+//  public boolean isIsApproved() {
+//    return isApproved;
+//  }
 
   /* Code from template association_GetOne */
   public SportCenter getSportCenter() {
@@ -131,7 +143,7 @@ public class FitnessClass {
         "id" + ":" + getId() + "," +
         "name" + ":" + getName() + "," +
         "description" + ":" + getDescription() + "," +
-        "isApproved" + ":" + getIsApproved() + "]" + System.getProperties().getProperty("line.separator") +
+        "isApproved" + ":" + getApprovalStatus() + "]" + System.getProperties().getProperty("line.separator") +
         "  " + "sportCenter = "
         + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : "null");
   }
