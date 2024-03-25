@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
-
+import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -80,7 +80,7 @@ public class FitnessClassService {
 
     @Transactional
     public FitnessClass createFitnessClass(String name, String description) {
-        if (name == null || description == null) {
+        if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
         }
 
