@@ -99,9 +99,6 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
-        Billing createdBilling = null;
-        String error = null;
-
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address, "Bob");
         });

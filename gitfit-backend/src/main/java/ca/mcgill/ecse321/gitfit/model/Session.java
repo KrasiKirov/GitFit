@@ -20,8 +20,8 @@ public class Session {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int price;
-  private Time endTime;
   private Time startTime;
+  private Time endTime;
   private Date date;
 
   // Session Associations
@@ -39,7 +39,7 @@ public class Session {
   public Session() {
   }
 
-  public Session(int aPrice, Time aEndTime, Time aStartTime, Date aDate, Instructor aInstructor,
+  public Session(int aPrice, Time aStartTime, Time aEndTime, Date aDate, Instructor aInstructor,
       FitnessClass aFitnessClass, SportCenter aSportCenter) {
     price = aPrice;
     endTime = aEndTime;
@@ -78,16 +78,16 @@ public class Session {
     return wasSet;
   }
 
-  public boolean setEndTime(Time aEndTime) {
+  public boolean setStartTime(Time aStartTime) {
     boolean wasSet = false;
-    endTime = aEndTime;
+    startTime = aStartTime;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setStartTime(Time aStartTime) {
+  public boolean setEndTime(Time aEndTime) {
     boolean wasSet = false;
-    startTime = aStartTime;
+    endTime = aEndTime;
     wasSet = true;
     return wasSet;
   }
@@ -107,12 +107,12 @@ public class Session {
     return price;
   }
 
-  public Time getEndTime() {
-    return endTime;
-  }
-
   public Time getStartTime() {
     return startTime;
+  }
+
+  public Time getEndTime() {
+    return endTime;
   }
 
   public Date getDate() {
@@ -185,13 +185,13 @@ public class Session {
     return super.toString() + "[" +
         "id" + ":" + getId() + "," +
         "price" + ":" + getPrice() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "endTime" + "="
-        + (getEndTime() != null ? !getEndTime().equals(this) ? getEndTime().toString().replaceAll("  ", "    ") : "this"
-            : "null")
-        + System.getProperties().getProperty("line.separator") +
         "  " + "startTime" + "="
         + (getStartTime() != null
             ? !getStartTime().equals(this) ? getStartTime().toString().replaceAll("  ", "    ") : "this"
+            : "null")
+        + System.getProperties().getProperty("line.separator") +
+        "  " + "endTime" + "="
+        + (getEndTime() != null ? !getEndTime().equals(this) ? getEndTime().toString().replaceAll("  ", "    ") : "this"
             : "null")
         + System.getProperties().getProperty("line.separator") +
         "  " + "date" + "="

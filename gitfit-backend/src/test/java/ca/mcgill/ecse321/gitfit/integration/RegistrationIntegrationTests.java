@@ -186,16 +186,16 @@ public class RegistrationIntegrationTests {
                 ResponseEntity<RegistrationResponseDto> response = client.getForEntity("/registrations/" + "2",
                                 RegistrationResponseDto.class);
                 assertEquals(HttpStatus.OK, response.getStatusCode());
-                RegistrationResponseDto registration = response.getBody();
-                assertNotNull(registration);
-                assertEquals(registration2.getId(), registration.getId());
+                RegistrationResponseDto reg = response.getBody();
+                assertNotNull(reg);
+                assertEquals(registration2.getId(), reg.getId());
 
                 ResponseEntity<RegistrationResponseDto> response2 = client.getForEntity("/registrations/" + "1",
                                 RegistrationResponseDto.class);
                 assertEquals(HttpStatus.OK, response.getStatusCode());
-                RegistrationResponseDto registration2 = response2.getBody();
-                assertNotNull(registration2);
-                assertEquals(registration1.getId(), registration2.getId());
+                RegistrationResponseDto reg2 = response2.getBody();
+                assertNotNull(reg2);
+                assertEquals(registration1.getId(), reg2.getId());
         }
 
         @Test
