@@ -5,7 +5,6 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
 public class FitnessClassDto {
     private String name;
     private String description;
-    // private boolean isApproved;
     private FitnessClassStatusDto approvalStatus;
 
     public FitnessClassDto() {

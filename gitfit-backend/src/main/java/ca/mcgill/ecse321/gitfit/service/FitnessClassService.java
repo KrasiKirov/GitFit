@@ -59,16 +59,6 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public FitnessClass getFitnessClassById(int id) {
-        FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
-        if (fitnessClass == null) {
-
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
-        }
-        return fitnessClass;
-    }
-
-    @Transactional
     public FitnessClass getFitnessClassByName(String name) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {
@@ -80,7 +70,7 @@ public class FitnessClassService {
 
     @Transactional
     public FitnessClass createFitnessClass(String name, String description) {
-        if (name == null || description == null) {
+        if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Must provide a name and a description.");
         }
 
@@ -112,7 +102,7 @@ public class FitnessClassService {
         fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
-
+    
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
 
-import ca.mcgill.ecse321.gitfit.service.SportCenterService;
-
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
@@ -20,8 +18,6 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 public class FitnessClassRestController {
     @Autowired
     private FitnessClassService fitnessClassService;
-
-    private SportCenterService sportCenterService;
 
     @GetMapping(value = { "/fitnessclasses", "/fitnessclasses/" })
     public List<FitnessClassDto> findAllFitnessClasses() {
@@ -52,12 +48,6 @@ public class FitnessClassRestController {
         fitnessClassService.deleteRejectedFitnessClasses();
     }
 
-    @GetMapping(value = { "/fitnessclasses/{fcid}", "/fitnessclasses/{fcid}/" })
-    public FitnessClassDto findFitnessClassById(@PathVariable int fcid) {
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClassById(fcid);
-        return convertToDto(fitnessClass);
-    }
-
     @GetMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto findFitnessClassByName(@PathVariable String name) {
         FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(name);
@@ -72,18 +62,6 @@ public class FitnessClassRestController {
                 fitnessClass.getDescription());
         return convertToDto(createdFitnessClass);
     }
-
-    // @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-    // public FitnessClassDto approveFitnessClass(@PathVariable String name) {
-    // FitnessClass fitnessClass = fitnessClassService.approveFitnessClass(name);
-    // return convertToDto(fitnessClass);
-    // }
-    //
-    // @PutMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
-    // public FitnessClassDto rejectFitnessClass(@PathVariable String name) {
-    // FitnessClass fitnessClass = fitnessClassService.rejectFitnessClass(name);
-    // return convertToDto(fitnessClass);
-    // }
 
     @PutMapping(value = { "/fitnessclasses/{name}/approval", "/fitnessclasses/{name}/approval/" })
     public FitnessClassDto updateApprovalStatus(@PathVariable String name, @RequestBody FitnessClassStatusDto status) {
