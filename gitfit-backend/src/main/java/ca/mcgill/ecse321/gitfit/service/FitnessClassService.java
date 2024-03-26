@@ -59,16 +59,6 @@ public class FitnessClassService {
     }
 
     @Transactional
-    public FitnessClass getFitnessClassById(int id) {
-        FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassById(id);
-        if (fitnessClass == null) {
-
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "Fitness class not found.");
-        }
-        return fitnessClass;
-    }
-
-    @Transactional
     public FitnessClass getFitnessClassByName(String name) {
         FitnessClass fitnessClass = fitnessClassRepository.findFitnessClassByName(name);
         if (fitnessClass == null) {

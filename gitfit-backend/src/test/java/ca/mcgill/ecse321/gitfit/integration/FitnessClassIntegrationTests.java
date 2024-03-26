@@ -150,9 +150,7 @@ public class FitnessClassIntegrationTests {
     @Test
     @Order(6)
     public void testFindFitnessClassByName() {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<FitnessClassDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<FitnessClassDto> response = client.exchange("/fitnessclasses/" + VALID_NAME_2, HttpMethod.GET, entity, FitnessClassDto.class);
+        ResponseEntity<FitnessClassDto> response = client.getForEntity("/fitnessclasses/" + VALID_NAME_2, FitnessClassDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

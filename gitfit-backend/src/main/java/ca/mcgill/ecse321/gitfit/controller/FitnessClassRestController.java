@@ -48,12 +48,6 @@ public class FitnessClassRestController {
         fitnessClassService.deleteRejectedFitnessClasses();
     }
 
-    @GetMapping(value = { "/fitnessclasses/{fcid}", "/fitnessclasses/{fcid}/" })
-    public FitnessClassDto findFitnessClassById(@PathVariable int fcid) {
-        FitnessClass fitnessClass = fitnessClassService.getFitnessClassById(fcid);
-        return convertToDto(fitnessClass);
-    }
-
     @GetMapping(value = { "/fitnessclasses/{name}", "/fitnessclasses/{name}/" })
     public FitnessClassDto findFitnessClassByName(@PathVariable String name) {
         FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(name);

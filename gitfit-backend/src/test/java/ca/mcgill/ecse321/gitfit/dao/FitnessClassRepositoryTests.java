@@ -41,7 +41,7 @@ public class FitnessClassRepositoryTests {
         fitnessClass = fitnessClassRepository.save(fitnessClass);
 
         // Read fitness class from database
-        fitnessClass = fitnessClassRepository.findFitnessClassById(fitnessClass.getId());
+        fitnessClass = fitnessClassRepository.findFitnessClassByName(fitnessClass.getName());
 
         // Assert fitness class is not null and has correct attributes
         assertNotNull(fitnessClass);
