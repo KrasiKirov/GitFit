@@ -24,6 +24,7 @@ import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassStatusDto;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
@@ -42,6 +43,8 @@ public class FitnessClassIntegrationTests {
 
     private final String VALID_NAME = "Yoga";
     private final String VALID_DESCRIPTION = "Yoga class";
+    private final String VALID_NAME_2 = "Pilates";
+    private final String VALID_DESCRIPTION_2 = "Pilates class";
     private final String INVALID_NAME = "";
     private final String INVALID_DESCRIPTION = "";
     private static final SportCenter SPORT_CENTER = new SportCenter();
@@ -51,6 +54,7 @@ public class FitnessClassIntegrationTests {
         fitnessClassRepository.deleteAll();
         sportCenterRepository.deleteAll();
         sportCenterRepository.save(SPORT_CENTER);
+        fitnessClassRepository.save(new FitnessClass(VALID_NAME_2, VALID_DESCRIPTION_2, SPORT_CENTER));
     }
 
     @AfterAll
@@ -120,10 +124,13 @@ public class FitnessClassIntegrationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         FitnessClassDto[] responseDto = response.getBody();
         assertNotNull(responseDto);
-        assertEquals(1, responseDto.length);
-        assertEquals(VALID_NAME, responseDto[0].getName());
-        assertEquals(VALID_DESCRIPTION, responseDto[0].getDescription());
+        assertEquals(2, responseDto.length);
+        assertEquals(VALID_NAME_2, responseDto[0].getName());
+        assertEquals(VALID_DESCRIPTION_2, responseDto[0].getDescription());
         assertEquals(FitnessClassStatusDto.PENDING, responseDto[0].getApprovalStatus());
+        assertEquals(VALID_NAME, responseDto[1].getName());
+        assertEquals(VALID_DESCRIPTION, responseDto[1].getDescription());
+        assertEquals(FitnessClassStatusDto.PENDING, responseDto[1].getApprovalStatus());
     }
 
     @Test
@@ -145,14 +152,14 @@ public class FitnessClassIntegrationTests {
     public void testFindFitnessClassByName() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<FitnessClassDto> entity = new HttpEntity<>(headers);
-        ResponseEntity<FitnessClassDto> response = client.exchange("/fitnessclasses/" + VALID_NAME, HttpMethod.GET, entity, FitnessClassDto.class);
+        ResponseEntity<FitnessClassDto> response = client.exchange("/fitnessclasses/" + VALID_NAME_2, HttpMethod.GET, entity, FitnessClassDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         FitnessClassDto responseDto = response.getBody();
         assertNotNull(responseDto);
-        assertEquals(VALID_NAME, responseDto.getName());
-        assertEquals(VALID_DESCRIPTION, responseDto.getDescription());
+        assertEquals(VALID_NAME_2, responseDto.getName());
+        assertEquals(VALID_DESCRIPTION_2, responseDto.getDescription());
         assertEquals(FitnessClassStatusDto.PENDING, responseDto.getApprovalStatus());
     }
 
@@ -172,18 +179,20 @@ public class FitnessClassIntegrationTests {
 
     @Test
     @Order(8)
-    public void testUpdateFitnessClassApprovalStatusInvalidStatus() {
-        FitnessClassStatusDto fitnessClassStatusDto = FitnessClassStatusDto.PENDING;
+    public void testUpdateFitnessClassApprovalStatus() {
+        FitnessClassStatusDto fitnessClassStatusDto = FitnessClassStatusDto.APPROVED;
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<FitnessClassStatusDto> entity = new HttpEntity<>(fitnessClassStatusDto, headers);
-        ResponseEntity<ErrorDto> response = client.exchange("/fitnessclasses/" + VALID_NAME + "/approval", HttpMethod.PUT, entity, ErrorDto.class);
+        ResponseEntity<FitnessClassDto> response = client.exchange("/fitnessclasses/" + VALID_NAME + "/approval", HttpMethod.PUT, entity, FitnessClassDto.class);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorDto responseDto = response.getBody();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        FitnessClassDto responseDto = response.getBody();
         assertNotNull(responseDto);
-        assertEquals("Invalid status.", responseDto.getErrors().get(0));
+        assertEquals(VALID_NAME, responseDto.getName());
+        assertEquals(VALID_DESCRIPTION, responseDto.getDescription());
+        assertEquals(FitnessClassStatusDto.APPROVED, responseDto.getApprovalStatus());        
     }
 
     @Test
@@ -201,7 +210,7 @@ public class FitnessClassIntegrationTests {
         assertNotNull(responseDto);
         assertEquals(VALID_NAME, responseDto.getName());
         assertEquals("Updated description", responseDto.getDescription());
-        assertEquals(FitnessClassStatusDto.PENDING, responseDto.getApprovalStatus());
+        assertEquals(FitnessClassStatusDto.APPROVED, responseDto.getApprovalStatus());
     }
 
     @Test

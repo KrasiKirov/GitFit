@@ -112,6 +112,7 @@ public class FitnessClassService {
         fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
+    
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
