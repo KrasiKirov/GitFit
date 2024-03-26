@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
 
-import ca.mcgill.ecse321.gitfit.service.SportCenterService;
-
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
@@ -20,8 +18,6 @@ import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 public class FitnessClassRestController {
     @Autowired
     private FitnessClassService fitnessClassService;
-
-    private SportCenterService sportCenterService;
 
     @GetMapping(value = { "/fitnessclasses", "/fitnessclasses/" })
     public List<FitnessClassDto> findAllFitnessClasses() {
