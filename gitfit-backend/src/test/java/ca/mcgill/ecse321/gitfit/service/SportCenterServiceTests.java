@@ -13,18 +13,17 @@ import static org.mockito.Mockito.verify;
 import java.sql.Time;
 import java.util.Arrays;
 
-import org.springframework.http.HttpStatus;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 
 @SpringBootTest
 public class SportCenterServiceTests {

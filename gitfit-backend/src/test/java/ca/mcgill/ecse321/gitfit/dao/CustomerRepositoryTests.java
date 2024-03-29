@@ -18,6 +18,7 @@ public class CustomerRepositoryTests {
     private CustomerRepository customerRepository;
     @Autowired
     private SportCenterRepository sportCenterRepository;
+
     @BeforeEach
     @AfterEach
     public void clearDatabase() {

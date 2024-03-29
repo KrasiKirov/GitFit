@@ -4,28 +4,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ca.mcgill.ecse321.gitfit.model.Customer;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpMethod;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -54,6 +55,12 @@ public class CustomerAccountIntegrationTests {
                 sportCenterRepository.deleteAll();
                 sportCenterRepository.save(SPORT_CENTER);
                 customerRepository.save(new Customer(USERNAME, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, SPORT_CENTER));
+        }
+
+        @AfterAll
+        public void clearDatabase() {
+                customerRepository.deleteAll();
+                sportCenterRepository.deleteAll();
         }
 
         @Test

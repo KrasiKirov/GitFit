@@ -1,5 +1,18 @@
 package ca.mcgill.ecse321.gitfit.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import ca.mcgill.ecse321.gitfit.dao.BillingRepository;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
@@ -7,23 +20,9 @@ import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Billing;
 import ca.mcgill.ecse321.gitfit.model.Customer;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class BillingServiceTests {
-
-
 
     @Mock
     private BillingRepository billingRepository;
@@ -35,9 +34,8 @@ public class BillingServiceTests {
     @InjectMocks
     private BillingService billingService;
 
-
     @Test
-    public void createOrUpdateBillingTest(){
+    public void createOrUpdateBillingTest() {
         SportCenter sportCenter = new SportCenter();
 
         Customer customer = new Customer();
@@ -62,15 +60,16 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
-        Billing createdBilling = billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+        Billing createdBilling = billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address,
+                "Bob");
 
         // assertions
         assertNotNull(createdBilling);
         assertEquals(country, createdBilling.getCountry());
         assertEquals(state, createdBilling.getState());
-        assertEquals(postalCode,createdBilling.getPostalCode());
-        assertEquals(cardNumber,createdBilling.getCardNumber());
-        assertEquals(address,createdBilling.getAddress());
+        assertEquals(postalCode, createdBilling.getPostalCode());
+        assertEquals(cardNumber, createdBilling.getCardNumber());
+        assertEquals(address, createdBilling.getAddress());
         verify(billingRepository, times(1)).save(any(Billing.class));
     }
 
@@ -100,16 +99,12 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         // use the service
-        Billing createdBilling = null;
-        String error = null;
-
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+            billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address, "Bob");
         });
 
         assertEquals("The customer does not exist.", exception.getMessage());
     }
-
 
     @Test
     public void createOrUpdateIncompleteFieldBillingTest() {
@@ -134,7 +129,7 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+            billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address, "Bob");
         });
 
         assertEquals("The billing information fields must be completed.", exception.getMessage());
@@ -164,7 +159,7 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+            billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address, "Bob");
         });
 
         assertEquals("Postal code must be between 5 and 10 alphanumeric characters", exception.getMessage());
@@ -193,7 +188,7 @@ public class BillingServiceTests {
         when(billingRepository.save(any(Billing.class))).thenReturn(billing1);
 
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            billingService.createOrUpdateBilling(country,state,postalCode,cardNumber,address,"Bob");
+            billingService.createOrUpdateBilling(country, state, postalCode, cardNumber, address, "Bob");
         });
 
         assertEquals("Card number must be 15 or 16 digits", exception.getMessage());
@@ -226,6 +221,7 @@ public class BillingServiceTests {
 
         verify(billingRepository, times(1)).deleteById(any(Integer.class));
     }
+
     @Test
     public void deleteNonExistingCustomerBillingTest() {
         Customer customer = new Customer();

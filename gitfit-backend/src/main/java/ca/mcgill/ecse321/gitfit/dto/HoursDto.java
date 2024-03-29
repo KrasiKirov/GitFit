@@ -6,7 +6,7 @@ import java.time.LocalTime;
 public class HoursDto {
     private LocalTime openingTime;
     private LocalTime closingTime;
-    
+
     public HoursDto() {
     }
 

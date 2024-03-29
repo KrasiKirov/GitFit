@@ -6,25 +6,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.dto.ErrorDto;
 import ca.mcgill.ecse321.gitfit.dto.HoursDto;
 import ca.mcgill.ecse321.gitfit.dto.SportCenterDto;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpMethod;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -54,12 +56,19 @@ public class SportCenterIntegrationTests {
 
     @BeforeAll
     public void setup() {
+        sportCenterRepository.deleteAll();
+
         SportCenter sportCenter = new SportCenter();
         sportCenter.setName(SPORTCENTER_NAME);
         sportCenter.setMaxCapacity(SPORTCENTER_CAPACITY);
         sportCenter.setOpeningTime(SPORTCENTER_OPENING_TIME);
         sportCenter.setClosingTime(SPORTCENTER_CLOSING_TIME);
         sportCenterRepository.save(sportCenter);
+    }
+
+    @AfterAll
+    public void clearDatabase() {
+        sportCenterRepository.deleteAll();
     }
 
     @Test

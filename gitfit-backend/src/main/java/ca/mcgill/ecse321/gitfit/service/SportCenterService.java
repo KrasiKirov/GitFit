@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.gitfit.service;
 
 import java.sql.Time;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-import java.util.Iterator;
 
 @Service
 public class SportCenterService {
@@ -31,7 +31,8 @@ public class SportCenterService {
         if (sportCenterIterator.hasNext()) {
             return sportCenterIterator.next(); // Returns only sport center
         }
-        // If no sport center exists, create SportCenter and Owner singleton with default values
+        // If no sport center exists, create SportCenter and Owner singleton with
+        // default values
         SportCenter sportCenter = new SportCenter("GitFit", 30, Time.valueOf("09:00:00"),
                 Time.valueOf("22:00:00"), "admin", "admin@gitfit.com", "uwu", "Joe", "Biden");
         sportCenter = sportCenterRepository.save(sportCenter);

@@ -1,10 +1,5 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
-import ca.mcgill.ecse321.gitfit.service.SportCenterService;
-import ca.mcgill.ecse321.gitfit.dto.HoursDto;
-import ca.mcgill.ecse321.gitfit.dto.SportCenterDto;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
-
 import java.sql.Time;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import ca.mcgill.ecse321.gitfit.dto.HoursDto;
+import ca.mcgill.ecse321.gitfit.dto.SportCenterDto;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import ca.mcgill.ecse321.gitfit.service.SportCenterService;
 
 /**
  * @author William Wang (wangwiza)

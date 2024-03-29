@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.gitfit.dto;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -15,12 +17,34 @@ public class SessionDto {
     public SessionDto() {
     }
 
-    public SessionDto(int id, int price, LocalTime startTime, LocalTime endTime, LocalDate date, String instructorUsername, String fitnessClassName) {
+    public SessionDto(int id, int price, LocalTime startTime, LocalTime endTime, LocalDate date,
+            String instructorUsername, String fitnessClassName) {
         this.id = id;
         this.price = price;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
+        this.instructorUsername = instructorUsername;
+        this.fitnessClassName = fitnessClassName;
+    }
+
+    public SessionDto(int id, int price, Time startTime, Time endTime, Date date,
+            String instructorUsername, String fitnessClassName) {
+        this.id = id;
+        this.price = price;
+        this.startTime = startTime.toLocalTime();
+        this.endTime = endTime.toLocalTime();
+        this.date = date.toLocalDate();
+        this.instructorUsername = instructorUsername;
+        this.fitnessClassName = fitnessClassName;
+    }
+
+    public SessionDto(int price, Time startTime, Time endTime, Date date,
+            String instructorUsername, String fitnessClassName) {
+        this.price = price;
+        this.startTime = startTime.toLocalTime();
+        this.endTime = endTime.toLocalTime();
+        this.date = date.toLocalDate();
         this.instructorUsername = instructorUsername;
         this.fitnessClassName = fitnessClassName;
     }

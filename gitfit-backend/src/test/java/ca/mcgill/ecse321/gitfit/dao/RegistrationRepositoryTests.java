@@ -1,21 +1,22 @@
 package ca.mcgill.ecse321.gitfit.dao;
 
-import ca.mcgill.ecse321.gitfit.model.Session;
-import ca.mcgill.ecse321.gitfit.model.Customer;
-import ca.mcgill.ecse321.gitfit.model.FitnessClass;
-import ca.mcgill.ecse321.gitfit.model.Instructor;
-import ca.mcgill.ecse321.gitfit.model.Registration;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import ca.mcgill.ecse321.gitfit.model.Customer;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Registration;
+import ca.mcgill.ecse321.gitfit.model.Session;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest
 public class RegistrationRepositoryTests {
@@ -32,6 +33,7 @@ public class RegistrationRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         registrationRepository.deleteAll();

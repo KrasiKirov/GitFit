@@ -1,22 +1,27 @@
 package ca.mcgill.ecse321.gitfit.service;
 
-import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
-import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
-import ca.mcgill.ecse321.gitfit.model.FitnessClass;
-import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
-import ca.mcgill.ecse321.gitfit.model.SportCenter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
+import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
+import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
 @SpringBootTest
 public class FitnessClassServiceTests {
@@ -39,11 +44,9 @@ public class FitnessClassServiceTests {
         fitnessClass.setDescription(description);
         fitnessClass.setSportCenter(sportCenter);
 
-
         when(fitnessClassRepository.save(any(FitnessClass.class))).thenReturn(fitnessClass);
         when(sportCenterService.getSportCenter()).thenReturn(sportCenter);
         FitnessClass createdFitnessClass = fitnessClassService.createFitnessClass(name, description);
-
 
         assertNotNull(createdFitnessClass);
         assertEquals(name, createdFitnessClass.getName());
@@ -90,7 +93,6 @@ public class FitnessClassServiceTests {
         when(sportCenterService.getSportCenter()).thenReturn(sportCenter);
         when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(fitnessClass);
 
-
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
             fitnessClassService.createFitnessClass(name, description);
         });
@@ -112,7 +114,7 @@ public class FitnessClassServiceTests {
 
         when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(fitnessClass);
 
-        FitnessClass foundFitnessClass = fitnessClassService.findFitnessClassByName(name);
+        FitnessClass foundFitnessClass = fitnessClassService.getFitnessClassByName(name);
 
         assertNotNull(foundFitnessClass);
         assertEquals(name, foundFitnessClass.getName());
@@ -125,7 +127,7 @@ public class FitnessClassServiceTests {
         when(fitnessClassRepository.findFitnessClassByName(name)).thenReturn(null);
 
         SportCenterException exception = assertThrows(SportCenterException.class, () -> {
-            fitnessClassService.findFitnessClassByName(name);
+            fitnessClassService.getFitnessClassByName(name);
         });
 
         assertEquals("Fitness class not found.", exception.getMessage());
@@ -337,7 +339,7 @@ public class FitnessClassServiceTests {
 
         when(fitnessClassRepository.findAll()).thenReturn(fitnessClasses);
 
-        assertEquals(2, fitnessClassService.findAllFitnessClasses().size());
+        assertEquals(2, fitnessClassService.getAllFitnessClasses().size());
     }
 
     @Test
@@ -357,12 +359,11 @@ public class FitnessClassServiceTests {
 
         when(fitnessClassRepository.findAll()).thenReturn(fitnessClasses);
 
-        List<FitnessClass> approvedClasses = fitnessClassService.findApprovedClasses();
+        List<FitnessClass> approvedClasses = fitnessClassService.getApprovedClasses();
 
         assertEquals(1, approvedClasses.size());
         assertEquals("TestFitnessClass", approvedClasses.get(0).getName());
         assertEquals("TestDescription", approvedClasses.get(0).getDescription());
     }
-
 
 }

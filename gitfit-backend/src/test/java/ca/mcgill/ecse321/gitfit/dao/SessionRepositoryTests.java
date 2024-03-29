@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +27,7 @@ public class SessionRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         sessionRepository.deleteAll();
@@ -36,7 +38,6 @@ public class SessionRepositoryTests {
 
     @Test
     public void testSessionPersistence() {
-        
 
         SportCenter sportCenter = new SportCenter();
         sportCenter = sportCenterRepository.save(sportCenter);
@@ -44,12 +45,12 @@ public class SessionRepositoryTests {
         FitnessClass fitnessClass = new FitnessClass();
         fitnessClass.setSportCenter(sportCenter);
         fitnessClass = fitnessClassRepository.save(fitnessClass);
-        
+
         Instructor instructor = new Instructor();
         instructor.setUsername("Jimmy Jim");
         instructor.setSportCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
-        
+
         int aPrice = 69;
         Time aEndTime = Time.valueOf("12:00:00");
         Time aStartTime = Time.valueOf("11:00:00");
