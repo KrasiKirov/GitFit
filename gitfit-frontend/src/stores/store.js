@@ -8,8 +8,12 @@ export const useStore = defineStore({
     }),
     actions: {
         async fetchAndSetFitnessClasses() {
-            const response = await fetchFitnessClasses();
-            this.fitnessClasses = response.data;
+            try {
+                const response = await fetchFitnessClasses();
+                this.fitnessClasses = response.data;
+            } catch (error) {
+                console.error(error);
+            }
         },
     },
 });
