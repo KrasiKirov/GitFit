@@ -13,4 +13,6 @@ const AXIOS = axios.create({
     }
 });
 
-export default AXIOS;
+export function fetchFitnessClasses() {
+    return AXIOS.get('/fitnessclasses');
+}
