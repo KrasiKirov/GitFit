@@ -3,10 +3,12 @@ import SigninComponent from '../components/SigninComponent.vue';
 import SignupComponent from '../components/SignupComponent.vue';
 import CreateInstructorComponent from '../components/CreateInstructorComponent.vue';
 import CustomerAccountDetails from '../components/CustomerAccountDetails.vue';
+import BillingComponent from '../components/BillingComponent.vue';
 </script>
 
 <template>
-    <CustomerAccountDetails />
+    <BillingComponent />
+    <!-- <CustomerAccountDetails /> -->
     <!-- <CreateInstructorComponent />  -->
   <!-- <div v-if = "showSignup">
     <SignupComponent @updateForm='updateForm'/>
