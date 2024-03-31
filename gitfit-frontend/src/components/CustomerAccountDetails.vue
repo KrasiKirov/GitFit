@@ -5,22 +5,13 @@
             <h2 class="mt-20 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">User Profile</h2>
         </div>
         <div class="w500 bg-white overflow-hidden shadow rounded-lg border">
-        <!-- <div class="flex flex-row">
-            
-            <div class="px-4 py-5" >
-                Edit
-            </div>
-        </div>   -->
+        
         <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl class="sm:divide-y sm:divide-gray-200">
                 <div class="flex px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Basic Information
                 </h3>
-                <div class="flex px-8 items-center">
-                    <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
-                    <div class="px-1">Edit</div>
-                </div>
             </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">

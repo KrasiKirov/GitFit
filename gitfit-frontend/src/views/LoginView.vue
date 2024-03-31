@@ -7,15 +7,15 @@ import BillingComponent from '../components/BillingComponent.vue';
 </script>
 
 <template>
-    <BillingComponent />
+    <!-- <BillingComponent /> -->
     <!-- <CustomerAccountDetails /> -->
     <!-- <CreateInstructorComponent />  -->
-  <!-- <div v-if = "showSignup">
+  <div v-if = "showSignup">
     <SignupComponent @updateForm='updateForm'/>
   </div>
   <div v-else>
     <SigninComponent @updateForm='updateForm'/>
-  </div> -->
+  </div>
 
 </template>
   
