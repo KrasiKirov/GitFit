@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+    background-color: #E1E5F8;
+    min-height: 100%;
+}
+
+html,body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Color Palette */
+.w500 {
+    width: 500px;
+}
+
+
+.custom-lightlight-blue {
+    color: #E1E5F8;
+}
+.custom-light-blue {
+    color: #BBC4EB; 
+}
+.custom-blue {
+    color: #737CCF;
+}
+.custom-dark-blue {
+    color: #2218A7;
+}
