@@ -10,7 +10,7 @@ const AXIOS = axios.create({
 
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
-    
+
 }
 
 export function fetchInstructors() {

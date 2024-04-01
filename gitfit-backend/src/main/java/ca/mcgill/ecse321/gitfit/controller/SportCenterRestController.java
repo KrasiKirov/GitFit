@@ -19,7 +19,7 @@ import ca.mcgill.ecse321.gitfit.service.SportCenterService;
  * 
  * 
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class SportCenterRestController {
 

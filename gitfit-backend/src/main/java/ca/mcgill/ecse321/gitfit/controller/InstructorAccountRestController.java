@@ -26,7 +26,7 @@ import ca.mcgill.ecse321.gitfit.service.InstructorAccountService;
  * 
  * @author Jatin Patel (Jatin-Pat)
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class InstructorAccountRestController {
 
