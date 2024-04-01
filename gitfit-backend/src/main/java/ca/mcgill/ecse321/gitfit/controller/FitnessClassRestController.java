@@ -13,7 +13,7 @@ import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
 import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class FitnessClassRestController {
     @Autowired
