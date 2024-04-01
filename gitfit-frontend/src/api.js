@@ -14,4 +14,5 @@ export function fetchFitnessClasses() {
 
 export function createSession(sessionData) {
     return AXIOS.post('/sessions/', sessionData);
-  }
+}
+

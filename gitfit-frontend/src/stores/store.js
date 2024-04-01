@@ -5,7 +5,6 @@ export const useStore = defineStore({
     id: 'main',
     state: () => ({
         fitnessClasses: [],
-        sessions: [],
     }),
     actions: {
         async fetchAndSetFitnessClasses() {
