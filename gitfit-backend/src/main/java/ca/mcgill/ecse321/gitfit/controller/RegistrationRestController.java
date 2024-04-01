@@ -17,7 +17,7 @@ import ca.mcgill.ecse321.gitfit.dto.RegistrationResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Registration;
 import ca.mcgill.ecse321.gitfit.service.RegistrationService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class RegistrationRestController {
 
