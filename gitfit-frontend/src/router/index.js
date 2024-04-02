@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import InstructorManagementView from '../views/InstructorManagementView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import InstructorManagementView from '../views/InstructorManagementView.vue';
+import RegistrationView from '../views/RegistrationView.vue';
 
 
 
@@ -24,8 +25,13 @@ const router = createRouter({
       path: '/InstructorManagementView',
       name: 'InstructorManagement',
       component: InstructorManagementView
+    },
+    {
+      path: "/registrations",
+      name: "registrations",
+      component: RegistrationView
     }
   ]
-})
+});
 
-export default router
+export default router;
