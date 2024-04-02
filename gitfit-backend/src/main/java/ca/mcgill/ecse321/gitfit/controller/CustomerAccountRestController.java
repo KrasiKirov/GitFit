@@ -26,7 +26,7 @@ import ca.mcgill.ecse321.gitfit.service.CustomerAccountService;
  * 
  * @author Krasimir Kirov (KrasiKirov)
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class CustomerAccountRestController {
 

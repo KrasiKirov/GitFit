@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.gitfit.dto.DatesDto;
-import ca.mcgill.ecse321.gitfit.dto.HoursDto;
 import ca.mcgill.ecse321.gitfit.dto.SessionDto;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
@@ -27,7 +25,7 @@ import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
 import ca.mcgill.ecse321.gitfit.service.InstructorAccountService;
 import ca.mcgill.ecse321.gitfit.service.SessionService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class SessionRestController {
 
@@ -84,22 +82,21 @@ public class SessionRestController {
         return convertToDto(session);
     }
 
-
-    @GetMapping(value = { "/sessions/filter", "/sessions/filter/"})
+    @GetMapping(value = { "/sessions/filter", "/sessions/filter/" })
     public List<SessionDto> getFilteredSessions(@RequestParam(required = false) String instructorUsername,
             @RequestParam(required = false) String fitnessClassName, @RequestParam(required = false) Integer maxPrice,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time startTime, 
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time startTime,
             @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time endTime) {
-                Instructor instructor = null;
-                FitnessClass fitnessClass = null;
-                if (instructorUsername != null) {
-                    instructor = instructorService.getInstructor(instructorUsername);
-                }
-                if (fitnessClassName != null) {
-                    fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
-                }
+        Instructor instructor = null;
+        FitnessClass fitnessClass = null;
+        if (instructorUsername != null) {
+            instructor = instructorService.getInstructor(instructorUsername);
+        }
+        if (fitnessClassName != null) {
+            fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
+        }
         List<Session> sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice,
                 startDate, endDate, startTime, endTime);
         return sessions.stream().map(this::convertToDto).toList();
