@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from "vue";
-import { createSession } from "@/api"
+import { useSessionStore } from '@/stores/sessionCreationStore';
 
 const { uniqueSession } = defineProps({
   uniqueSession: {
@@ -18,14 +18,8 @@ const submitForm = async () => {
     fitnessClass: 'TestFitnessclass',
   };
 
-  try {
-    const response = await createSession(sessionData);
-    console.log('Session created:', response.data);
-    // Handle the success scenario
-  } catch (error) {
-    console.error(error.response);
-    // Handle the error scenario
-  }
+  const store = useSessionStore();
+  await store.createSession(sessionData);
 };
 
 </script>

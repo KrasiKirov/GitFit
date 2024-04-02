@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import CreateSessionView from '../views/CreateSessionView.vue';
+import CreateSessionView from '../views/CreateSessionView.vue'
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,8 +21,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/sessions',
-      name: 'sessions',
+      path: '/SessionCreation',
+      name: 'SessionCreation',
       component: CreateSessionView
     }
   ]

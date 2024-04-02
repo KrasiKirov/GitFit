@@ -10,9 +10,14 @@ const AXIOS = axios.create({
 
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
+
+}
+
+export function fetchSessions() {
+    return AXIOS.get('/sessions/');
 }
 
 export function createSession(sessionData) {
-    return AXIOS.post('/sessions/', sessionData);
+    return AXIOS.post('/sessions/', { data: { sessionData: sessionData }, headers: { 'Content-Type': 'application/json' }});
 }
 
