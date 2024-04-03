@@ -21,8 +21,9 @@ export const useSessionStore = defineStore({
         await createSession(sessionData);
         this.fetchSessions();
       } catch (error) {
-        console.error(error);
+        console.error("Error creating session:", error);
+        throw error; // Rethrow or handle as needed
       }
-    },
+    }
   },
 });

@@ -1,26 +1,31 @@
 <script setup>
 import SessionCreationForm from '@/components/SessionCreationForm.vue';
-import { ref, onMounted, computed } from 'vue';
 import { useSessionStore } from '@/stores/sessionCreationStore';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
 
-const store = useSessionStore();
+const sessionStore = useSessionStore();
 
-const SessionData = ref({
-  startTime: '',
-  endTime: '',
-  date: '',
-  instructor: 'TestInstructor',
-  fitnessClass: 'TestFitnessClass'
-});
-
-onMounted(() => {
-  store.fetchSessions();
-})
-
-const sessions = computed(() => store.sessions);
+const handleSessionCreation = async (sessionData) => {
+  try {
+    const response = await sessionStore.createSession(sessionData);
+    if (response && response.status === 200) {
+      console.log("Session created successfully");
+      router.push('/');
+    } else {
+      // Handle unexpected response structure
+      console.log("Unexpected response", response);
+    }
+  } catch (error) {
+    // Handle error, such as showing an error message
+    console.error('Failed to create session:', error);
+  }
+};
 
 </script>
 
 <template>
-    <SessionCreationForm :uniqueSession="SessionData"/>
-  </template>
+  <div>
+    <SessionCreationForm @create-session="handleSessionCreation" />
+  </div>
+</template>

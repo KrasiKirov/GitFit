@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CreateSessionView from '../views/CreateSessionView.vue'
+import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
 
 
 
@@ -24,6 +25,11 @@ const router = createRouter({
       path: '/SessionCreation',
       name: 'SessionCreation',
       component: CreateSessionView
+    },
+    {
+      path: '/FitnessClassCreation',
+      name: 'FitnessClasssCreation',
+      component: CreateFitnessClassView
     }
   ]
 })

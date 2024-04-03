@@ -18,6 +18,10 @@ export function fetchSessions() {
 }
 
 export function createSession(sessionData) {
-    return AXIOS.post('/sessions/', sessionData)
+    return AXIOS.post('/sessions', sessionData)
+}
+
+export function createFitnessClass(fitnessClassData) {
+    return AXIOS.post('/fitnessclasses', fitnessClassData)
 }
 
