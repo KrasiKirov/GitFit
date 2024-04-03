@@ -5,7 +5,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" action="#" method="POST" @submit.prevent="login">
           <div>
             <label for="customerSignupEmail" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div>
-            <button type="submit" class="mt-10 flex w-full justify-center rounded-md bg-custom-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-dark-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+            <button type="submit" class="mt-10 flex w-full justify-center rounded-md bg-custom-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-dark-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create account</button>
           </div>
         </form>
   
@@ -56,7 +56,44 @@
     </div>
   </template>
 
-<script>
+<script setup>
+import router from '@/router';
+import { useCustomerStore } from '@/stores/customerStore';
+import { defineEmits, ref } from 'vue';
+
+const emit = defineEmits(['updateForm']);
+
+const updateForm = () => {
+    emit('updateForm');
+};
+
+
+
+const login = async () => {
+    const customer = {
+        email: customerSignupEmail.value,
+        password: customerSignupPassword.value,
+        firstName: customerSignupFirstName.value,
+        lastName: customerSignupLastName.value,
+        username: customerSignupUsername.value
+    };
+    console.log(customer);
+    const customerStore = useCustomerStore();
+    const response = await customerStore.createCustomer(customer);
+    console.log(response);
+    console.log(response.status);
+    if (response.status === 200) {
+        console.log("Customer created successfully");
+        router.push('/');
+    } else {
+        console.log("Not successful");
+    }
+    
+}
+
+</script>
+
+<!-- <script>
 export default {
     data() {
         return {
@@ -75,4 +112,4 @@ export default {
       }
     }
 }
-</script>
+</script> -->

@@ -11,3 +11,10 @@ const AXIOS = axios.create({
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
 }
+
+export function createCustomer(customer) {
+    console.log("entereing api.js");
+    return AXIOS.post('/customer', customer);
+}
+
+// return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});
