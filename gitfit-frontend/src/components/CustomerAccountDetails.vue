@@ -4,7 +4,7 @@
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 class="mt-20 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">User Profile</h2>
         </div>
-        <div class="w500 bg-white overflow-hidden shadow rounded-lg border">
+        <div class="w500 bg-white overflow-hidden shadow rounded-lg border mb-10">
         
         <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl class="sm:divide-y sm:divide-gray-200">
@@ -49,7 +49,7 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Login Information
                 </h3>
-                <div class="flex px-8 items-center">
+                <div class="flex px-8 items-center" @click="editPassword">
                     <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
                     <div class="px-1">Edit</div>
                 </div>
@@ -96,7 +96,7 @@ import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
 import { defineEmits, ref } from 'vue';
 
-const emit = defineEmits(['editBilling']);
+const emit = defineEmits(['editBilling', 'editPassword']);
 const customerStore = useCustomerStore();
 const billingStore = useBillingStore();
 // onMounted(() => {
@@ -109,6 +109,10 @@ const billing = computed(() => billingStore.billing);
 
 const editBilling = () => {
     emit('editBilling');
+};
+
+const editPassword = () => {
+    emit('editPassword');
 };
 
 </script>

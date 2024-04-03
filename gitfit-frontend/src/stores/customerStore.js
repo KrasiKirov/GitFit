@@ -26,6 +26,17 @@ export const useCustomerStore = defineStore({
                 return error.response;
             }
         },
+        async updateCustomerPassword(username, password) {
+            try {
+                console.log('Updating customer password');
+                const response = await updateCustomerPassword(username, password);
+                localStorage.setItem('customer', JSON.stringify(response.data));
+                this.updateCustomerFromLocalStorage();
+                return response;
+            } catch (error) {
+                return error.response;
+            }
+        },
         updateCustomerFromLocalStorage() {
             this.customer = JSON.parse(localStorage.getItem('customer'))||null;
         },

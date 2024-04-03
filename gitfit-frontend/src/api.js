@@ -17,6 +17,10 @@ export function createCustomer(customer) {
     return AXIOS.post('/customer', customer);
 }
 
+export function updateCustomerPassword(username, password) {
+    return AXIOS.put(`/customer/${username}/password`, password);
+}
+
 export function createBilling(billing) {
     return AXIOS.put(`/customers/${billing.username}/billing`, billing);
 }

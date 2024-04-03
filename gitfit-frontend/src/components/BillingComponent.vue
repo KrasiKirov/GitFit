@@ -82,7 +82,7 @@ const createBilling = async () => {
     const response = await billingStore.createBilling(billing);
     if (response.status===200) {
         console.log("Billing created");
-        router.push('/');
+        editAccount();
     } else {
         console.log("Billing not created");
     }
