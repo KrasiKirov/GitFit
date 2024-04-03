@@ -1,8 +1,7 @@
 <script setup>
 import SessionCreationForm from '@/components/SessionCreationForm.vue';
 import { useSessionStore } from '@/stores/sessionCreationStore';
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
+
 
 const sessionStore = useSessionStore();
 
@@ -11,7 +10,6 @@ const handleSessionCreation = async (sessionData) => {
     const response = await sessionStore.createSession(sessionData);
     if (response && response.status === 200) {
       console.log("Session created successfully");
-      router.push('/');
     } else {
       // Handle unexpected response structure
       console.log("Unexpected response", response);
