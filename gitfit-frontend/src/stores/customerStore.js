@@ -7,6 +7,9 @@ export const useCustomerStore = defineStore({
         customer: null,
     }),
     actions: {
+        getCustomer() {
+            return this.customer;
+        },
         async createCustomer(customer) {
             try {
                 console.log('Creating customer', customer);

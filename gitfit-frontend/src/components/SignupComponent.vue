@@ -82,6 +82,7 @@ const login = async () => {
     const response = await customerStore.createCustomer(customer);
     console.log(response);
     console.log(response.status);
+    console.log(customerStore.customer);
     if (response.status === 200) {
         console.log("Customer created successfully");
         router.push('/');

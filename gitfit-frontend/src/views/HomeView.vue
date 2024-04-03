@@ -76,6 +76,7 @@ const fitnessClasses = computed(() => store.fitnessClasses);
 </script>
 
 <template>
+    <RouterLink to="/profile">Profile</RouterLink>
     <h1 class="text-3xl font-semibold text-center my-8">Good morning, ???</h1>
     <div class="grid grid-cols-3 gap-4">
         <FitnessClassCard v-for="fclass in fitnessClasses" :key="fclass.name" :fitnessClass="fclass" />

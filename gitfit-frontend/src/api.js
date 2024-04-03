@@ -17,4 +17,8 @@ export function createCustomer(customer) {
     return AXIOS.post('/customer', customer);
 }
 
+export function createBilling(billing) {
+    return AXIOS.put(`/customers/${billing.username}/billing`, billing);
+}
+
 // return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});

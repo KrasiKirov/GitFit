@@ -5,7 +5,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" action="#" method="POST" @submit.prevent="createBilling">
           <div>
             <label for="billingCardNumber" class="block text-sm font-medium leading-6 text-gray-900">Card Number</label>
             <div class="mt-2">
@@ -52,7 +52,42 @@
     </div>
   </template>
 
-<script>
+<script setup>
+import router from '@/router';
+import { useCustomerStore } from '@/stores/customerStore';
+import { useBillingStore } from '@/stores/billingStore';
+import { defineEmits, ref } from 'vue';
+
+const createBilling = async () => {
+    const customerStore = useCustomerStore();
+    const billingStore = useBillingStore();
+    console.log(customerStore.getCustomer());
+    const billing = {
+        country: billingCountry.value,
+        state: billingState.value,
+        postalCode: billingPostalCode.value,
+        address: billingAddress.value,
+        cardNumber: billingCardNumber.value,
+        username: customerStore.customer
+    }
+    const response = await billingStore.createBilling(billing);
+    if (response.status===200) {
+        console.log("Billing created");
+        router.push('/');
+    } else {
+        console.log("Billing not created");
+    }
+
+
+
+}
+
+
+</script>
+
+
+
+<!-- <script>
 
 
 export default {
@@ -65,4 +100,4 @@ export default {
         
     }
 }
-</script>
+</script> -->
