@@ -4,7 +4,7 @@ import { createCustomer } from '@/api';
 export const useCustomerStore = defineStore({
     id: 'customer',
     state: () => ({
-        customer: null,
+        customer: JSON.parse(localStorage.getItem('customer')) || null,
     }),
     actions: {
         getCustomer() {
@@ -15,7 +15,9 @@ export const useCustomerStore = defineStore({
                 console.log('Creating customer', customer);
                 const response = await createCustomer(customer);
                 console.log("no error in creating customer");
-                this.customer = response.data.username;
+                localStorage.setItem('customer', JSON.stringify(response.data));
+                this.updateCustomerFromLocalStorage();
+                // this.customer = response.data;
                 console.log(this.customer);
                 return response;
             } catch (error) {
@@ -23,6 +25,9 @@ export const useCustomerStore = defineStore({
                 console.log("error store");
                 return error.response;
             }
-        }
+        },
+        updateCustomerFromLocalStorage() {
+            this.customer = JSON.parse(localStorage.getItem('customer'))||null;
+        },
     },
 });

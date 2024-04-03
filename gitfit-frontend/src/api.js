@@ -21,4 +21,8 @@ export function createBilling(billing) {
     return AXIOS.put(`/customers/${billing.username}/billing`, billing);
 }
 
+export function getBilling(username) {
+    return AXIOS.get(`/customers/${username}/billing`);
+}
+
 // return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});

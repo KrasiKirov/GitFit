@@ -4,6 +4,7 @@ import { createBilling } from '@/api';
 export const useBillingStore = defineStore({
     id: 'billing',
     state: () => ({
+        billing: null,
     }),
     actions: {
         async createBilling(billing) {
@@ -16,5 +17,15 @@ export const useBillingStore = defineStore({
                 return error.response;
             }
         },
+        async getBilling(username) {
+            try {
+                const response = await getBilling(username);
+                this.billing = response.data;
+                return response;
+            } catch (error) {
+                console.log(error);
+                return error.response;
+            }
+        }
     },
 });

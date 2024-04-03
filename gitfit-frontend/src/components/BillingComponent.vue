@@ -68,7 +68,7 @@ const createBilling = async () => {
         postalCode: billingPostalCode.value,
         address: billingAddress.value,
         cardNumber: billingCardNumber.value,
-        username: customerStore.customer
+        username: customerStore.customer.username
     }
     const response = await billingStore.createBilling(billing);
     if (response.status===200) {

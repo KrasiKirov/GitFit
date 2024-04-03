@@ -18,7 +18,7 @@
                         First name
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        John Doe
+                        {{ customer.firstName }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -26,7 +26,7 @@
                         Last name
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        johndoe@example.com
+                        {{ customer.lastName }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -34,7 +34,7 @@
                         Email
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        (123) 456-7890
+                        {{ customer.email }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -42,8 +42,7 @@
                         Username
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        123 Main St<br>
-                        Anytown, USA 12345
+                        {{ customer.username }}
                     </dd>
                 </div>
                 <div class="flex px-4 py-5 sm:px-6">
@@ -67,7 +66,7 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Billing Information
                 </h3>
-                <div class="flex px-8 items-center">
+                <div class="flex px-8 items-center" @click="editBilling">
                     <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
                     <div class="px-1">Edit</div>
                 </div>
@@ -76,9 +75,13 @@
                     <dt class="text-sm font-medium text-gray-500">
                         Card
                     </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        **** **** **** 1234
+                    <dd v-if="billing" class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        **** **** **** {{ billing.cardNumberEnd }}
                     </dd>
+                    <dd v-else class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        No card on file
+                    </dd>
+                    
                 </div>
             </dl>
         </div>
@@ -87,8 +90,25 @@
     </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { onMounted, computed } from 'vue';
+import { useCustomerStore } from '@/stores/customerStore';
+import { useBillingStore } from '@/stores/billingStore';
+import { defineEmits, ref } from 'vue';
 
-}
+const emit = defineEmits(['editBilling']);
+const customerStore = useCustomerStore();
+const billingStore = useBillingStore();
+// onMounted(() => {
+//     customerStore.updateCustomerFromLocalStorage();
+//     // billingStore.getBilling();
+// });
+
+const customer = computed(() => customerStore.customer);
+const billing = computed(() => billingStore.billing);
+
+const editBilling = () => {
+    emit('editBilling');
+};
+
 </script>
