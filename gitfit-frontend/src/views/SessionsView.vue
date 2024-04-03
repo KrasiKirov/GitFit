@@ -1,9 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import IconToggleSort from '@/components/icons/IconToggleSort.vue';
+import DatePicker from '@/components/DatePicker.vue';
+import TimePicker from '@/components/TimePicker.vue';
+// import { useSessionStore } from '@/stores/sessionStore';
 
 // Mock data for sessions
-const sessions = ref([
+const sessionsTest = ref([
     {id: 1, date: '2024-04-01', startTime: '10:00 AM', endTime: '11:00 AM', price: '$10', instructor: 'John Doe', fclass: 'Yoga'},
     {id: 2, date: '2024-04-02', startTime: '11:00 AM', endTime: '12:00 PM', price: '$15', instructor: 'Jane Smith', fclass: 'Zumba'},
     {id: 3, date: '2024-04-03', startTime: '12:00 PM', endTime: '1:00 PM', price: '$20', instructor: 'John Doe', fclass: 'Pilates'},
@@ -31,13 +34,21 @@ const sortAttributes = ref([
     { value: 'fclass', label: 'Fitness Class' }
 ])
 
-const filteredSessions = computed(() => {
-  if (!filter.value) return sessions.value;
-  return sessions.value.filter(session => session.name.includes(filter.value));
+// const store = useSessionStore();
+
+// onMounted(async () => {
+//     await store.fetchAndSetFilteredSessions(filter);
+// });
+
+// const filteredSessions = computed(() => store.sessions);
+
+const filteredSessionsTest = computed(() => {
+  if (!filter.value) return sessionsTest.value;
+  return sessionsTest.value.filter(session => session.instructor.includes(filter.value));
 });
 
 const sortedAndFilteredSessions = computed(() => {
-    let sortedSessions = [...filteredSessions.value];
+    let sortedSessions = [...filteredSessionsTest.value];
     if (sortAttribute.value) {
         sortedSessions.sort((a, b) => {
             if (sortDirection.value === 'asc') {
@@ -58,15 +69,17 @@ const toggleSortDirection = () => {
 
 <template>
     <div class="relative overflow-x-auto shadow-md">
-      <!-- <input type="text" v-model="filter" placeholder="Filter sessions" /> -->
-        <div class="text-s text-gray-700 uppercase bg-spindle dark:bg-gray-700 dark:text-gray-400">
+        <DatePicker></DatePicker>
+        <TimePicker></TimePicker>
+      <input type="text" v-model="filter" placeholder="Filter sessions" />
+        <div class="text-s text-gray-700 bg-spindle dark:bg-gray-700 dark:text-gray-400">
             <label for="sortAttribute" class="sort-label">Sort by:</label>
             <select class="sort-dropdown" id="sortAttribute" v-model="sortAttribute">
                 <option v-for="attribute in sortAttributes" :key="attribute.value" :value="attribute.value">
                     {{ attribute.label }}
                 </option>
             </select>
-            <button @click="toggleSortDirection" type="button" class="px-1 py-1 text-blue-700
+            <button @click="toggleSortDirection" type="button" class="px-2 py-2 text-persianblue
             hover:bg-moodyblue hover:text-linkwater font-medium rounded-lg text-sm p-2.5 text-center 
             inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white 
             dark:focus:ring-blue-800 dark:hover:bg-blue-500">
@@ -89,7 +102,10 @@ const toggleSortDirection = () => {
         </thead>
         <tbody>
           <tr class="bg-linkwater border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          v-for="session in sortedAndFilteredSessions" :key="session.id">
+          v-for="session in sortedAndFilteredSessions" :key="session.id"
+          @click="$router.push(`/sessions/${session.id}`)"
+          style="cursor: pointer;"
+          >
             <td class="px-6 py-4">{{ session.id }}</td>
             <td class="px-6 py-4">{{ session.date }}</td>
             <td class="px-6 py-4">{{ session.startTime }}</td>
@@ -108,6 +124,7 @@ const toggleSortDirection = () => {
 .sort-label {
   margin-left: 1rem;
   margin-right: 0.5rem;
+  margin-bottom: 20px;
 }
 .sort-dropdown {
   margin-right: 1rem;

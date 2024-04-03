@@ -21,6 +21,11 @@ const router = createRouter({
       path: '/sessions',
       name: 'sessions',
       component: () => import('../views/SessionsView.vue')
+    },
+    {
+      path: '/sessions/:id',
+      name: 'single session',
+      component: () => import('../views/SingleSessionView.vue')
     }
   ]
 })

@@ -2,7 +2,7 @@
 export default {
   content: [
     './public/**/*.html',
-    './src/**/*.{js,jsx,ts,tsx,vue}',
+    './src/**/*.{js,jsx,ts,tsx,vue}'
   ],
   theme: {
     extend: {
@@ -10,7 +10,7 @@ export default {
         moodyblue: '#737CCF',
         linkwater: '#E1E5F8',
         persianblue: '#2218A7',
-        spindle: '#BBC4EB',
+        spindle: '#BBC4EB'
       }
     },
   },
