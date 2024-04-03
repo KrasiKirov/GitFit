@@ -9,63 +9,50 @@ const { uniqueSession } = defineProps({
   },
 });
 
-const submitForm = async () => {
-  const sessionData = {
-    startTime: uniqueSession.startTime,
-    endTime: uniqueSession.endTime,
-    date: uniqueSession.date,
-    instructor: 'TestInstructor',
-    fitnessClass: 'TestFitnessclass',
-  };
-
-  const store = useSessionStore();
-  await store.createSession(sessionData);
-};
-
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center p-6">
-    <!-- Start Time Input -->
-    <div class="mb-6 w-full">
-      <label for="startDate" class="block mb-2 text-sm font-medium text-gray-700">Start Time</label>
-      <input
-        type="time"
-        id="startDate"
-        v-model="uniqueSession.startTime"
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        required
-      />
+  <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <h2 class="mt-32 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create new session</h2>
     </div>
-    <!-- End Time Input -->
-    <div class="mb-6 w-full">
-      <label for="endDate" class="block mb-2 text-sm font-medium text-gray-700">End Time</label>
-      <input
-        type="time"
-        id="endDate"
-        v-model="uniqueSession.endTime"
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        required
-      />
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+      <form class="space-y-6" action="#" method="POST">
+        <div>
+          <label for="createSessionPrice" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
+          <input id="createSessionPrice" name="createSessionPrice" type="number" autocomplete="off" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <label for="createSessionStartTime" class="block text-sm font-medium leading-6 text-gray-900">Start Time</label>
+          <input id="createSessionStartTime" name="createSessionStartTime" type="time" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <label for="createSessionEndTime" class="block text-sm font-medium leading-6 text-gray-900">End Time</label>
+          <input id="createSessionEndTime" name="createSessionEndTime" type="time" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <label for="createSessionDate" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
+          <input id="createSessionDate" name="createSessionDate" type="date" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <label for="createSessionInstructor" class="block text-sm font-medium leading-6 text-gray-900">Instructor</label>
+          <input id="createSessionInstructor" name="createSessionInstructor" type="text" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <label for="createSessionFitnessClass" class="block text-sm font-medium leading-6 text-gray-900">Fitness Class</label>
+          <input id="createSessionFitnessClass" name="createSessionFitnessClass" type="text" required class="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-custom-blue focus:ring focus:ring-custom-blue focus:ring-opacity-50" />
+        </div>
+
+        <div>
+          <button type="submit" class="mt-10 flex w-full justify-center rounded-md bg-custom-blue py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-dark-blue focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2">Create Session</button>
+        </div>
+      </form>
     </div>
-    <!-- Date Input -->
-    <div class="mb-6 w-full">
-      <label for="date" class="block mb-2 text-sm font-medium text-gray-700">Date</label>
-      <input
-        type="date"
-        id="date"
-        v-model="uniqueSession.date"
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        required
-      />
-    </div>
-    <!-- Submit Button -->
-    <button
-      type="button"
-      @click="submitForm"
-      class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-    >
-      Create Session
-    </button>
   </div>
 </template>

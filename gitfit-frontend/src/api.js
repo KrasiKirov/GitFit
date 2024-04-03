@@ -18,6 +18,6 @@ export function fetchSessions() {
 }
 
 export function createSession(sessionData) {
-    return AXIOS.post('/sessions/', { data: { sessionData: sessionData }, headers: { 'Content-Type': 'application/json' }});
+    return AXIOS.post('/sessions/', sessionData)
 }
 

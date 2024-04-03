@@ -22,6 +22,5 @@ const sessions = computed(() => store.sessions);
 </script>
 
 <template>
-    <h1 class="text-3xl font-semibold text-center my-8">Create new Session</h1>
     <SessionCreationForm :uniqueSession="SessionData"/>
   </template>
