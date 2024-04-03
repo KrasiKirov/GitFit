@@ -45,8 +45,11 @@
           <div>
             <button type="submit" class="mt-10 flex w-full justify-center rounded-md bg-custom-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-dark-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Comfirm</button>
           </div>
+          
         </form>
-  
+        <div>
+            <button type="submit" class="mt-10 flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" @click="editAccount">Cancel</button>
+        </div>
         
       </div>
     </div>
@@ -57,6 +60,12 @@ import router from '@/router';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
 import { defineEmits, ref } from 'vue';
+
+const emit = defineEmits(['editAccount']);
+
+const editAccount = () => {
+    emit('editAccount');
+}
 
 const createBilling = async () => {
     const customerStore = useCustomerStore();

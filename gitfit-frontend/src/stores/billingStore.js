@@ -4,13 +4,15 @@ import { createBilling } from '@/api';
 export const useBillingStore = defineStore({
     id: 'billing',
     state: () => ({
-        billing: null,
+        billing: JSON.parse(localStorage.getItem('billing')) || null,
     }),
     actions: {
         async createBilling(billing) {
             try {
                 console.log('Creating billing', billing);
                 const response = await createBilling(billing);
+                localStorage.setItem('billing', JSON.stringify(response.data));
+                this.updateBillingFromLocalStorage();
                 return response;
             } catch (error) {
                 console.log(error);
@@ -26,6 +28,9 @@ export const useBillingStore = defineStore({
                 console.log(error);
                 return error.response;
             }
-        }
+        },
+        updateBillingFromLocalStorage() {
+            this.billing = JSON.parse(localStorage.getItem('billing'))||null;
+        },
     },
 });
