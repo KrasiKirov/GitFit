@@ -152,6 +152,22 @@ public class InstructorAccountService {
     }
 
     /**
+     * Login an instructor
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     * @param password
+     * @return true if login is successful, false otherwise
+     */
+    public boolean login(String username, String password) {
+        Instructor instructor = instructorRepository.findInstructorByUsername(username);
+        if (instructor == null) {
+            throw new SportCenterException(HttpStatus.NOT_FOUND, "Instructor not found.");
+        }
+        return instructor.getPassword().equals(password);
+    }
+
+    /**
      * Converts an iterable to a list
      * 
      * @author Jatin Patel (Jatin-Pat)

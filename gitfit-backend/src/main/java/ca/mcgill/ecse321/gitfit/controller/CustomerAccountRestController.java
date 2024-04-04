@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.gitfit.dto.AccountLoginRequestDto;
+import ca.mcgill.ecse321.gitfit.dto.AccountLoginResponseDto;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.CustomerAccountRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
@@ -32,6 +34,20 @@ public class CustomerAccountRestController {
 
     @Autowired
     private CustomerAccountService customerAccountService;
+
+    /**
+     * Login a customer
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param AccountLoginRequestDto
+     * @return AccountLoginResponseDto
+     *
+     */
+    @GetMapping(value = { "/customer/login/" })
+    public AccountLoginResponseDto login(@RequestBody AccountLoginRequestDto loginRequest) {
+        boolean success = customerAccountService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        return new AccountLoginResponseDto(success);
+    }
 
     /**
      * Retrieve a customer by username
