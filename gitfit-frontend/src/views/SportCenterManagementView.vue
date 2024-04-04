@@ -34,10 +34,6 @@
             class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
         <div class="mt-3 flex justify-end gap-3">
-          <button @click="cancelEdit(key)"
-            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 focus:outline-none">
-            Cancel
-          </button>
           <button @click="saveChanges(key)"
             class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
             Save
@@ -119,15 +115,6 @@ function formatFieldName(key) {
 
 const startEdit = (key) => {
   editModes[key] = true;
-};
-
-const cancelEdit = (key) => {
-  if (key === 'operatingHours') {
-    // Reset to original values if cancel is clicked
-    operatingHours.openingTime = sportCenterDetails.value.openingTime;
-    operatingHours.closingTime = sportCenterDetails.value.closingTime;
-  }
-  editModes[key] = false;
 };
 
 // Method to save changes for each field
