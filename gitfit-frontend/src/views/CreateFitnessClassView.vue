@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ErrorModal from '@/components/ErrorModal.vue';
-import SuccessModal from '@/components/SuccessModal.vue';
+import FitnesClassCreationSuccessModal from '@/components/FitnessClassCreationSuccessModal.vue';
 import FitnessClassCreationForm from '@/components/FitnessClassCreationForm.vue';
 import { useFitnessClassStore } from '@/stores/fitnessClassCreationStore';
 
@@ -58,6 +58,6 @@ const closeSuccessModalAndRedirect = () => {
       </div>
     </div>
     <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
-    <SuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
+    <FitnesClassCreationSuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
   </div>
 </template>

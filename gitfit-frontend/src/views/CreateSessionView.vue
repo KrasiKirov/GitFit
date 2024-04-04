@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ErrorModal from '@/components/ErrorModal.vue';
-import SuccessModal from '@/components/SuccessModal.vue';
+import SessionCreationSuccessModal from '@/components/SessionCreationSuccessModal.vue';
 import SessionCreationForm from '@/components/SessionCreationForm.vue';
 import { useSessionStore } from '@/stores/sessionCreationStore';
 
@@ -29,7 +29,7 @@ const handleSessionCreation = async (sessionData) => {
 
 const closeSuccessModalAndRedirect = () => {
   showSuccessModal.value = false;
-  router.push('/'); // Redirect to home page
+  router.push('/sessions'); // Redirect to sessions page
 };
 
 </script>
@@ -57,7 +57,7 @@ const closeSuccessModalAndRedirect = () => {
         <SessionCreationForm @create-session="handleSessionCreation" />
         <!-- Modals -->
         <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
-        <SuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
+        <SessionCreationSuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
       </div>
 
     </div>
