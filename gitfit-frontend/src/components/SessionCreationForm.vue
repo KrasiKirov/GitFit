@@ -48,12 +48,12 @@ const handleSubmit = () => {
         </div>
         <!-- Input for Instructor Username with a label -->
         <div>
-          <label for="instructor" class="text-sm font-medium text-gray-700">Instructor Username</label>
+          <label for="instructor" class="text-sm font-medium text-gray-700">Instructor</label>
           <input v-model="formData.instructorUsername" type="text" id="instructor" placeholder="Enter instructor username" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
         </div>
         <!-- Input for Fitness Class Name with a label -->
         <div>
-          <label for="fitnessClass" class="text-sm font-medium text-gray-700">Fitness Class Name</label>
+          <label for="fitnessClass" class="text-sm font-medium text-gray-700">Fitness Class</label>
           <input v-model="formData.fitnessClassName" type="text" id="fitnessClass" placeholder="Enter fitness class name" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
         </div>
         <!-- Submit button -->
