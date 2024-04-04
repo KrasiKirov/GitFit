@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 
 const emits = defineEmits(['create-session']);
 
@@ -8,8 +8,8 @@ const formData = ref({
   startTime: '',
   endTime: '',
   date: '',
-  instructor: '',
-  fitnessClass: '',
+  instructorUsername: '',
+  fitnessClassName: '',
 });
 
 const handleSubmit = () => {
