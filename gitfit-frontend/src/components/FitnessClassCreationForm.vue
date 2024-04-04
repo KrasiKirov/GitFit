@@ -22,12 +22,8 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-linkwater py-12">
     <!-- Form container with a shadow and rounded corners -->
     <div class="w-full max-w-lg p-8 bg-white rounded-xl shadow-xl">
-      <h2 class="text-4xl font-bold text-center text-persianblue mb-8 tracking-wide shadow-sm">
-        Create New Fitness Class
-      </h2>
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <!-- Input for Name with a label -->
         <div>
@@ -45,5 +41,4 @@ const handleSubmit = () => {
         </button>
       </form>
     </div>
-  </div>
 </template>

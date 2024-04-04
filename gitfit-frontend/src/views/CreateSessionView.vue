@@ -34,10 +34,32 @@ const closeSuccessModalAndRedirect = () => {
 
 </script>
 
+
+
 <template>
-  <div>
-    <SessionCreationForm @create-session="handleSessionCreation" />
-    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
-    <SuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
+  <div class="min-h-screen bg-linkwater pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto">
+      
+      <!-- Left Column for title and image -->
+      <div class="justify-center items-center md:items-start">
+        <!-- Title -->
+        <h1 class="text-4xl font-bold text-persianblue mb-20 md:mb-6 lg:mb-8 md:text-5xl lg:text-6xl">
+          Create New Session
+        </h1>
+        <!-- Image container -->
+        <div>
+          <img src="@/assets/sessionCreationImg.jpg" alt="Session" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+      </div>
+      
+      <!-- Right Column for form -->
+      <div class="flex flex-col justify-center">
+        <SessionCreationForm @create-session="handleSessionCreation" />
+        <!-- Modals -->
+        <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
+        <SuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
+      </div>
+
+    </div>
   </div>
 </template>

@@ -34,8 +34,29 @@ const closeSuccessModalAndRedirect = () => {
 </script>
 
 <template>
-  <div>
-    <FitnessClassCreationForm @create-fitnessClass="handleFitnessClassCreation" />
+  <div class="min-h-screen bg-linkwater pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-6xl mx-auto">
+
+      <!-- Title with reduced margin-bottom or no margin -->
+      <h1 class="text-4xl font-bold text-persianblue mb-12 md:text-5xl lg:text-6xl">
+        Propose New Class
+      </h1>
+      
+      <!-- Content container for image and form -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+        <!-- Image container -->
+        <div class="md:w-1/2">
+          <img src="@/assets/fitnessClassCreationImg.jpg" alt="Fitness Class" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+
+        <!-- Form container -->
+        <div class="md:w-1/2">
+          <FitnessClassCreationForm @create-fitnessClass="handleFitnessClassCreation" />
+        </div>
+
+      </div>
+    </div>
     <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
     <SuccessModal :show="showSuccessModal" :message="message" @update:show="closeSuccessModalAndRedirect" />
   </div>
