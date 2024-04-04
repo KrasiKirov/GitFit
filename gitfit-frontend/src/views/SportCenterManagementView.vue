@@ -14,7 +14,6 @@
         <img src="../assets/SportCenterImg.jpg" alt="Sport Center" class="rounded-xl shadow-lg"/>
       </div>
       
-      <!-- Form Column spanning 2 of 3 columns on larger screens -->
       <div class="lg:col-span-2">
         <!-- Iterating over editable fields -->
         <div v-for="(value, key) in editableFields" :key="key" class="mb-8">
@@ -125,8 +124,8 @@ const startEdit = (key) => {
 const cancelEdit = (key) => {
   if (key === 'operatingHours') {
     // Reset to original values if cancel is clicked
-    operatingHours.openingTime = sportCenterDetails.value.openingTime || '';
-    operatingHours.closingTime = sportCenterDetails.value.closingTime || '';
+    operatingHours.openingTime = sportCenterDetails.value.openingTime;
+    operatingHours.closingTime = sportCenterDetails.value.closingTime;
   }
   editModes[key] = false;
 };

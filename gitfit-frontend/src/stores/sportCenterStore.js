@@ -18,7 +18,6 @@ export const useSportCenterStore = defineStore({
     async updateName(name) {
       try {
         await updateSportCenterName(name);
-        // Optionally refresh the sport center details after update
         await this.fetchSportCenterDetails();
       } catch (error) {
         console.error('Failed to update sport center name:', error);
@@ -27,7 +26,6 @@ export const useSportCenterStore = defineStore({
     async updateMaxCapacity(maxCapacity) {
       try {
         await updateSportCenterMaxCapacity(maxCapacity);
-        // Optionally refresh the sport center details after update
         await this.fetchSportCenterDetails();
       } catch (error) {
         console.error('Failed to update sport center max capacity:', error);
@@ -37,7 +35,6 @@ export const useSportCenterStore = defineStore({
       try {
         // Pass openingTime and closingTime directly to updateSportCenterHours
         await updateSportCenterHours(openingTime, closingTime);
-        // Optionally refresh the sport center details after update
         await this.fetchSportCenterDetails();
       } catch (error) {
         console.error('Failed to update sport center operating hours:', error);

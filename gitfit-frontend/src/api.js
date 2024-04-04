@@ -40,8 +40,8 @@ export function updateSportCenterMaxCapacity(maxCapacity) {
 export function updateSportCenterHours(openingTime, closingTime) {
     // Ensure the payload structure matches what the backend expects
     const payload = {
-      openingTime,  // "HH:mm"
-      closingTime   // "HH:mm"
+      openingTime,
+      closingTime
     };
     return AXIOS.put('/sportcenter/hours', payload, {
       headers: { 'Content-Type': 'application/json' }
