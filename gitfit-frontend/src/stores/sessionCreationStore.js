@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia';
-import { fetchSessions, createSession } from '../api.js';
+import { createSession } from '../api.js';
 
 export const useSessionStore = defineStore({
   id: 'sessions',

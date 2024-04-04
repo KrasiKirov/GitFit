@@ -22,6 +22,6 @@ export function createSession(sessionData) {
 }
 
 export function createFitnessClass(fitnessClassData) {
-    return AXIOS.post('/fitnessclasses', fitnessClassData)
+    return AXIOS.post('/fitnessclasses/', fitnessClassData)
 }
 
