@@ -20,3 +20,19 @@ export function fetchInstructors() {
 export function deleteInstructor(username) {
     return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
 }
+
+export function fetchSportCenter() {
+    return AXIOS.get('/sportcenter');
+}
+
+export function updateSportCenterName(name) {
+    return AXIOS.put('/sportcenter/name', { name });
+}
+
+export function updateSportCenterMaxCapacity(maxCapacity) {
+    return AXIOS.put('/sportcenter/maxCapacity', { maxCapacity });
+}
+
+export function updateSportCenterHours(hours) {
+    return AXIOS.put('/sportcenter/hours', { hours });
+}
