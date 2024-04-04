@@ -10,7 +10,6 @@ const AXIOS = axios.create({
 
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
-
 }
 
 export function fetchSessions() {
@@ -24,4 +23,10 @@ export function createSession(sessionData) {
 export function createFitnessClass(fitnessClassData) {
     return AXIOS.post('/fitnessclasses/', fitnessClassData)
 }
+export function fetchInstructors() {
+    return AXIOS.get('/instructors/');
+}
 
+export function deleteInstructor(username) {
+    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
+}

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CreateSessionView from '../views/CreateSessionView.vue'
 import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
+import InstructorManagementView from '../views/InstructorManagementView.vue'
 
 
 
@@ -30,7 +31,12 @@ const router = createRouter({
       path: '/FitnessClassCreation',
       name: 'FitnessClasssCreation',
       component: CreateFitnessClassView
-    }
+    },
+    {
+      path: '/InstructorManagementView',
+      name: 'InstructorManagement',
+      component: InstructorManagementView
+    },
   ]
 })
 
