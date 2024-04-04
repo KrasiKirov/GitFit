@@ -70,6 +70,10 @@
                     <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
                     <div class="px-1">Edit</div>
                 </div>
+                <div v-if="billing" class="flex px-8 items-center cursor-pointer" @click="deleteBilling">
+                    <img src="../assets/remove.png" alt="edit" class="w-4 h-4">
+                    <div class="px-1">Remove</div>
+                </div>
             </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">
@@ -113,6 +117,12 @@ const editBilling = () => {
 
 const editPassword = () => {
     emit('editPassword');
+};
+
+const deleteBilling = async () => {
+    console.log("inside deleteBilling of accountview");
+    console.log(customer.value.username);
+    await billingStore.deleteBilling(customer.value.username);
 };
 
 </script>

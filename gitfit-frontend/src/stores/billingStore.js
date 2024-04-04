@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { createBilling } from '@/api';
+import { createBilling, getBilling, deleteBilling } from '@/api';
 
 export const useBillingStore = defineStore({
     id: 'billing',
@@ -22,7 +22,22 @@ export const useBillingStore = defineStore({
         async getBilling(username) {
             try {
                 const response = await getBilling(username);
+                localStorage.setItem('billing', JSON.stringify(response.data));
+                this.updateBillingFromLocalStorage();
                 this.billing = response.data;
+                return response;
+            } catch (error) {
+                console.log(error);
+                return error.response;
+            }
+        },
+        async deleteBilling(username) {
+            try {
+                console.log('Deleting billing');
+                const response = await deleteBilling(username);
+                localStorage.removeItem('billing');
+                this.updateBillingFromLocalStorage();
+                this.billing = null;
                 return response;
             } catch (error) {
                 console.log(error);

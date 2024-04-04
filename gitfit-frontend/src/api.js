@@ -31,6 +31,10 @@ export function getBilling(username) {
     return AXIOS.get(`/customers/${username}/billing`);
 }
 
+export function deleteBilling(username) {
+    return AXIOS.delete(`/customers/${username}/billing`);
+}
+
 export function createInstructor(instructor) {
     console.log("entereing api.js");
     return AXIOS.post('/instructor', instructor);
