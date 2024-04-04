@@ -26,13 +26,24 @@ export function fetchSportCenter() {
 }
 
 export function updateSportCenterName(name) {
-    return AXIOS.put('/sportcenter/name', { name });
+    return AXIOS.put('/sportcenter/name', name, {
+        headers: { 'Content-Type': 'application/json' }
+    });
 }
 
 export function updateSportCenterMaxCapacity(maxCapacity) {
-    return AXIOS.put('/sportcenter/maxCapacity', { maxCapacity });
+    return AXIOS.put('/sportcenter/capacity', maxCapacity, {
+        headers: { 'Content-Type': 'application/json' }
+    });
 }
 
-export function updateSportCenterHours(hours) {
-    return AXIOS.put('/sportcenter/hours', { hours });
-}
+export function updateSportCenterHours(openingTime, closingTime) {
+    // Ensure the payload structure matches what the backend expects
+    const payload = {
+      openingTime,  // "HH:mm"
+      closingTime   // "HH:mm"
+    };
+    return AXIOS.put('/sportcenter/hours', payload, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }

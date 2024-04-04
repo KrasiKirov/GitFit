@@ -1,64 +1,151 @@
 <template>
-  <div class="flex min-h-full flex-col justify-center items-center ">
-    <div class="flex flex-col min-h-screen items-center">
-      <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-20 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sport Center Details</h2>
+  <div class="max-w-7xl mx-auto my-10 p-10 bg-white shadow-xl rounded-xl">
+    
+    <!-- Header Section with Title -->
+    <div class="mb-10">
+      <h1 class="text-4xl font-bold text-center text-blue-700">Sport Center Info</h1>
+    </div>
+    
+    <!-- Main Content Section with Image and Form Side by Side -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      
+      <!-- Image Column spanning 1 of 3 columns on larger screens -->
+      <div class="lg:col-span-1">
+        <img src="../assets/SportCenterImg.jpg" alt="Sport Center" class="rounded-xl shadow-lg"/>
       </div>
-      <div class="w-full bg-white overflow-hidden shadow rounded-lg border mb-10">
-        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-          <dl class="sm:divide-y sm:divide-gray-200">
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">
-                Name
-              </dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ sportCenter.name }}
-              </dd>
-            </div>
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">
-                Max Capacity
-              </dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ sportCenter.maxCapacity }}
-              </dd>
-            </div>
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">
-                Opening Hours
-              </dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ sportCenter.openingHours }}
-              </dd>
-            </div>
-          </dl>
-          <div class="px-4 py-5 sm:px-6 flex justify-end">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="editDetails">
-              Edit Details
-            </button>
-          </div>
+      
+      <!-- Form Column spanning 2 of 3 columns on larger screens -->
+      <div class="lg:col-span-2">
+        <!-- Iterating over editable fields -->
+        <div v-for="(value, key) in editableFields" :key="key" class="mb-8">
+          <label class="block text-lg font-semibold text-gray-800 mb-2">
+            {{ formatFieldName(key) }}
+          </label>
+          <template v-if="editModes[key]">
+        <div v-if="key === 'operatingHours'" class="flex gap-4">
+          <input v-model="operatingHours.openingTime" type="time"
+            class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Opening Time" />
+          <input v-model="operatingHours.closingTime" type="time"
+            class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Closing Time" />
         </div>
-      </div>
+        <div v-else>
+          <input v-model="editableFields[key]"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+        </div>
+        <div class="mt-3 flex justify-end gap-3">
+          <button @click="cancelEdit(key)"
+            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 focus:outline-none">
+            Cancel
+          </button>
+          <button @click="saveChanges(key)"
+            class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            Save
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-700">{{ displayValue(key, value) }}</span>
+          <button @click="startEdit(key)"
+            class="px-4 py-2 rounded-lg text-sm bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            Edit
+          </button>
+        </div>
+      </template>
     </div>
   </div>
+</div>
+</div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { defineEmits } from 'vue';
-import { useSportCenterStore } from '@/stores/sportCenterStore'; // Assume you have a store for sport center
+import { ref, reactive, toRefs } from 'vue';
+import { useSportCenterStore } from '@/stores/sportCenterStore';
 
-const emit = defineEmits(['editDetails']);
 const sportCenterStore = useSportCenterStore();
-const sportCenter = ref(sportCenterStore.sportCenter);
+const sportCenterDetails = ref({});
+const editModes = reactive({
+  name: false,
+  maxCapacity: false,
+  operatingHours: false,
+});
 
-const editDetails = () => {
-  emit('editDetails', sportCenter.value);
+const operatingHours = reactive({
+  openingTime: '',
+  closingTime: '',
+});
+
+// Convert sport center details to editable fields
+const editableFields = reactive({
+  name: '',
+  maxCapacity: '',
+  operatingHours: '',
+});
+
+// Fetch sport center details on component mount and fill editableFields
+sportCenterStore.fetchSportCenterDetails().then(() => {
+  sportCenterDetails.value = sportCenterStore.sportCenter;
+  editableFields.name = removeQuotes(sportCenterDetails.value.name);
+  editableFields.maxCapacity = sportCenterDetails.value.maxCapacity;
+  operatingHours.openingTime = sportCenterDetails.value.openingTime;
+  operatingHours.closingTime = sportCenterDetails.value.closingTime;
+  editableFields.operatingHours = `${operatingHours.openingTime} - ${operatingHours.closingTime}`;
+});
+
+const displayValue = (key, value) => {
+  if (key === 'operatingHours') {
+    return `${operatingHours.openingTime} - ${operatingHours.closingTime}`;
+  }
+  return value;
 };
 
-// Optionally, if you need to fetch sport center details on component mount:
-onMounted(() => {
-  // Assuming sportCenterStore has a method to fetch and update local sportCenter data
-  sportCenterStore.fetchSportCenterDetails();
-});
+const removeQuotes = (str) => {
+  if (typeof str === 'string') {
+    // Remove escaped quotes and leading/trailing whitespace
+    return str.replace(/^"|"$/g, '').trim();
+  }
+  return str;
+};
+
+function formatFieldName(key) {
+  return key
+    // Split based on uppercase letters
+    .split(/(?=[A-Z])/)
+    // Convert array back to string with spaces and capitalize first letter
+    .join(' ')
+    .replace(/^./, (str) => str.toUpperCase());
+}
+
+const startEdit = (key) => {
+  editModes[key] = true;
+};
+
+const cancelEdit = (key) => {
+  if (key === 'operatingHours') {
+    // Reset to original values if cancel is clicked
+    operatingHours.openingTime = sportCenterDetails.value.openingTime || '';
+    operatingHours.closingTime = sportCenterDetails.value.closingTime || '';
+  }
+  editModes[key] = false;
+};
+
+// Method to save changes for each field
+const saveChanges = async (key) => {
+  switch (key) {
+    case 'name':
+      await sportCenterStore.updateName(editableFields.name);
+      break;
+    case 'maxCapacity':
+      await sportCenterStore.updateMaxCapacity(editableFields.maxCapacity);
+      break;
+    case 'operatingHours':
+      await sportCenterStore.updateOperatingHours(operatingHours.openingTime, operatingHours.closingTime);
+      editableFields.operatingHours = `${operatingHours.openingTime} - ${operatingHours.closingTime}`;
+      break;
+  }
+  editModes[key] = false;
+};
+
 </script>

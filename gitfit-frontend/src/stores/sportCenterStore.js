@@ -35,8 +35,8 @@ export const useSportCenterStore = defineStore({
     },
     async updateOperatingHours(openingTime, closingTime) {
       try {
-        // Assuming updateSportCenterHours accepts an object with openingTime and closingTime
-        await updateSportCenterHours({ openingTime, closingTime });
+        // Pass openingTime and closingTime directly to updateSportCenterHours
+        await updateSportCenterHours(openingTime, closingTime);
         // Optionally refresh the sport center details after update
         await this.fetchSportCenterDetails();
       } catch (error) {
