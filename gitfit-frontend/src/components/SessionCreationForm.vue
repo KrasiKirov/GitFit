@@ -3,20 +3,13 @@ import { ref, defineEmits } from 'vue';
 
 const emits = defineEmits(['create-session']);
 
-// const { uniqueSession } = defineProps({
-//   uniqueSession: {
-//     type: Object,
-//     required: true,
-//   },
-// });
-
 const formData = ref({
-  price: 150,
-  startTime: '14:00:00',
-  endTime: '15:00:00',
-  date: '2024-04-04',
-  instructor: 'adam_smith',
-  fitnessClass: 'Pilates',
+  price: '',
+  startTime: '',
+  endTime: '',
+  date: '',
+  instructor: '',
+  fitnessClass: '',
 });
 
 const handleSubmit = () => {
@@ -26,14 +19,48 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <!-- Form inputs bound with v-model to formData properties -->
-    <input v-model="formData.price" type="number" placeholder="Price" />
-    <input v-model="formData.startTime" type="time" placeholder="Start Time" />
-    <input v-model="formData.endTime" type="time" placeholder="End Time" />
-    <input v-model="formData.date" type="date" placeholder="Date" />
-    <input v-model="formData.instructorUsername" type="text" placeholder="Instructor Username" />
-    <input v-model="formData.fitnessClassName" type="text" placeholder="Fitness Class Name" />
-    <button type="submit">Create Session</button>
-  </form>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-linkwater py-12">
+    <!-- Form container with a shadow and rounded corners -->
+    <div class="w-full max-w-lg p-8 bg-white rounded-xl shadow-xl">
+      <h2 class="text-4xl font-bold text-center text-persianblue mb-8 tracking-wide shadow-sm">
+        Create New Session
+      </h2>
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <!-- Input for Price with a label -->
+        <div>
+          <label for="price" class="text-sm font-medium text-gray-700">Price</label>
+          <input v-model="formData.price" type="number" id="price" placeholder="Enter price" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Input for Start Time with a label -->
+        <div>
+          <label for="startTime" class="text-sm font-medium text-gray-700">Start Time</label>
+          <input v-model="formData.startTime" type="time" id="startTime" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Input for End Time with a label -->
+        <div>
+          <label for="endTime" class="text-sm font-medium text-gray-700">End Time</label>
+          <input v-model="formData.endTime" type="time" id="endTime" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Input for Date with a label -->
+        <div>
+          <label for="date" class="text-sm font-medium text-gray-700">Date</label>
+          <input v-model="formData.date" type="date" id="date" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Input for Instructor Username with a label -->
+        <div>
+          <label for="instructor" class="text-sm font-medium text-gray-700">Instructor Username</label>
+          <input v-model="formData.instructorUsername" type="text" id="instructor" placeholder="Enter instructor username" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Input for Fitness Class Name with a label -->
+        <div>
+          <label for="fitnessClass" class="text-sm font-medium text-gray-700">Fitness Class Name</label>
+          <input v-model="formData.fitnessClassName" type="text" id="fitnessClass" placeholder="Enter fitness class name" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="mt-4 px-4 py-2 bg-persianblue text-white font-semibold rounded-md w-full hover:bg-moodyblue focus:outline-none focus:ring-2 focus:ring-spindle focus:ring-offset-2 transition-colors">
+          Create Session
+        </button>
+      </form>
+    </div>
+  </div>
 </template>
