@@ -12,10 +12,16 @@ export const useSessionStore = defineStore({
       try {
         const response = await createSession(sessionData);
         this.sessions.push(response.data);
-        return response;
+        return response; // Assuming success case returns response directly
       } catch (error) {
-        console.error("Error creating session:", error);
-        throw error; // Rethrow or handle as needed
+        if (error.response && error.response.data.errors) {
+          // Assuming error.response.data.errors is populated based on ErrorDto
+          const errorMessages = error.response.data.errors.join(', '); // Join all errors into a single string
+          throw new Error(errorMessages);
+        } else {
+          // Handle other types of errors (network issues, etc.)
+          throw new Error("Failed to create session due to network or configuration error.");
+        }
       }
     },
   },
