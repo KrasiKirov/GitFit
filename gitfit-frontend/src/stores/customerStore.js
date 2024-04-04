@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { createCustomer } from '@/api';
+import { createCustomer, updateCustomerPassword } from '@/api';
 
 export const useCustomerStore = defineStore({
     id: 'customer',
@@ -30,6 +30,7 @@ export const useCustomerStore = defineStore({
             try {
                 console.log('Updating customer password');
                 const response = await updateCustomerPassword(username, password);
+                console.log(response)
                 localStorage.setItem('customer', JSON.stringify(response.data));
                 this.updateCustomerFromLocalStorage();
                 return response;

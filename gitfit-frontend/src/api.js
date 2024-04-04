@@ -17,8 +17,10 @@ export function createCustomer(customer) {
     return AXIOS.post('/customer', customer);
 }
 
-export function updateCustomerPassword(username, password) {
-    return AXIOS.put(`/customer/${username}/password`, password);
+export function updateCustomerPassword(password) {
+    console.log("entereing api.js");
+    return AXIOS.put(`/customer/password`, password);
+    console.log("exiting api.js");
 }
 
 export function createBilling(billing) {
@@ -29,4 +31,8 @@ export function getBilling(username) {
     return AXIOS.get(`/customers/${username}/billing`);
 }
 
+export function createInstructor(instructor) {
+    console.log("entereing api.js");
+    return AXIOS.post('/instructor', instructor);
+}
 // return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});

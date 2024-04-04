@@ -42,6 +42,7 @@ const updatePassword = async () => {
         username: customerStore.customer.username
     }
     const response = await customerStore.updateCustomerPassword(password);
+    console.log(response);
     if (response.status===200) {
         console.log("Password updated");
         editAccount();

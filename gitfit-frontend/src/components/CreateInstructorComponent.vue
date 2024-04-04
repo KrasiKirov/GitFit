@@ -5,7 +5,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" action="#" method="POST" @submit.prevent="create">
           <div>
             <label for="createInstructorEmail" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
@@ -49,3 +49,35 @@
       </div>
     </div>
 </template>
+
+<script setup>
+import router from '@/router';
+import { useInstructorStore } from '@/stores/instructorStore';
+import { defineEmits, ref } from 'vue';
+
+
+
+const create = async () => {
+    const instructor = {
+        email: createInstructorEmail.value,
+        password: createInstructorPassword.value,
+        firstName: createInstructorFirstName.value,
+        LastName: createInstructorLastName.value,
+        username: createInstructorUsername.value
+    };
+    console.log(instructor);
+    const instructorStore = useInstructorStore();
+    const response = await instructorStore.createInstructor(instructor);
+    console.log(response);
+    console.log(response.status);
+    console.log(instructorStore.instructor);
+    if (response.status === 200) {
+        console.log("Instructor created successfully");
+        router.push('/');
+    } else {
+        console.log("Not successful");
+    }
+    
+}
+
+</script>

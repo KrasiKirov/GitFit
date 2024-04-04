@@ -49,7 +49,7 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Login Information
                 </h3>
-                <div class="flex px-8 items-center" @click="editPassword">
+                <div class="flex px-8 items-center cursor-pointer" @click="editPassword">
                     <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
                     <div class="px-1">Edit</div>
                 </div>
@@ -66,7 +66,7 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Billing Information
                 </h3>
-                <div class="flex px-8 items-center" @click="editBilling">
+                <div class="flex px-8 items-center cursor-pointer" @click="editBilling">
                     <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
                     <div class="px-1">Edit</div>
                 </div>
