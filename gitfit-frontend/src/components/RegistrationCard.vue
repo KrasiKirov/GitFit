@@ -13,7 +13,7 @@ const deleteRegistrationHandler = async () => {
     const store = useRegistrationStore();
     alert(props.registration.id);
     await store.deleteRegistration(props.registration.id);
-    await store.fetchRegistrationsByCustomerUsername("john_doe");
+    await store.fetchRegistrationsByCustomerUsername("john_smith");
 };
 </script>
 

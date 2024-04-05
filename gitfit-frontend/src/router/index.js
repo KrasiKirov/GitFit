@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import InstructorManagementView from '../views/InstructorManagementView.vue';
 import RegistrationView from '../views/RegistrationView.vue';
-
+import SportCenterManagementView from '../views/SportCenterManagementView.vue';
 
 
 const router = createRouter({
@@ -30,6 +30,11 @@ const router = createRouter({
       path: "/registrations",
       name: "registrations",
       component: RegistrationView
+    },
+    {
+      path: '/SportCenterManagement',
+      name: 'SportCenterManagement',
+      component: SportCenterManagementView
     }
   ]
 });

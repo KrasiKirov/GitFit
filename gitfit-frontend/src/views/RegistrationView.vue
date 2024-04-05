@@ -6,7 +6,7 @@ import { useRegistrationStore } from '@/stores/registrationStore';
 const store = useRegistrationStore();
 
 onMounted(() => {
-    store.fetchRegistrationsByCustomerUsername("john_doe");
+    store.fetchRegistrationsByCustomerUsername("john_smith");
 });
 
 const registrations = computed(() => store.registrations);
