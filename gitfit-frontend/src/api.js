@@ -20,3 +20,15 @@ export function fetchInstructors() {
 export function deleteInstructor(username) {
     return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
 }
+
+export function fetchSessions() {
+    return AXIOS.get('/sessions');
+}
+
+export function fetchFilteredSessions(filter) {
+    return AXIOS.get('/sessions/', { params: filter });
+}
+
+export function fetchSessionById(id) {
+    return AXIOS.get('/sessions/' + id);
+}

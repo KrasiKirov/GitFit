@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import IconToggleSort from '@/components/icons/IconToggleSort.vue';
 import DatePicker from '@/components/DatePicker.vue';
 import TimePicker from '@/components/TimePicker.vue';
-// import { useSessionStore } from '@/stores/sessionStore';
+import { useSessionStore } from '@/stores/sessionStore';
 
 // Mock data for sessions
 const sessionsTest = ref([
@@ -34,13 +34,13 @@ const sortAttributes = ref([
     { value: 'fclass', label: 'Fitness Class' }
 ])
 
-// const store = useSessionStore();
+const store = useSessionStore();
 
-// onMounted(async () => {
-//     await store.fetchAndSetFilteredSessions(filter);
-// });
+onMounted(async () => {
+    await store.fetchAndSetSessions();
+});
 
-// const filteredSessions = computed(() => store.sessions);
+const filteredSessions = computed(() => store.allSessions);
 
 const filteredSessionsTest = computed(() => {
   if (!filter.value) return sessionsTest.value;
@@ -48,7 +48,7 @@ const filteredSessionsTest = computed(() => {
 });
 
 const sortedAndFilteredSessions = computed(() => {
-    let sortedSessions = [...filteredSessionsTest.value];
+    let sortedSessions = [...filteredSessions.value];
     if (sortAttribute.value) {
         sortedSessions.sort((a, b) => {
             if (sortDirection.value === 'asc') {
@@ -97,13 +97,12 @@ const toggleSortDirection = () => {
             <th scope="col" class="px-6 py-3">Price</th>
             <th scope="col" class="px-6 py-3">Instructor</th>
             <th scope="col" class="px-6 py-3">Fitness Class</th>
-            <!-- Add more columns as needed -->
           </tr>
         </thead>
         <tbody>
           <tr class="bg-linkwater border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
           v-for="session in sortedAndFilteredSessions" :key="session.id"
-          @click="$router.push(`/sessions/${session.id}`)"
+          @click="store.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
           style="cursor: pointer;"
           >
             <td class="px-6 py-4">{{ session.id }}</td>
@@ -111,9 +110,8 @@ const toggleSortDirection = () => {
             <td class="px-6 py-4">{{ session.startTime }}</td>
             <td class="px-6 py-4">{{ session.endTime }}</td>
             <td class="px-6 py-4">{{ session.price }}</td>
-            <td class="px-6 py-4">{{ session.instructor }}</td>
-            <td class="px-6 py-4">{{ session.fclass }}</td>
-            <!-- Add more cells as needed -->
+            <td class="px-6 py-4">{{ session.instructorUsername }}</td>
+            <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
           </tr>
         </tbody>
     </table>
