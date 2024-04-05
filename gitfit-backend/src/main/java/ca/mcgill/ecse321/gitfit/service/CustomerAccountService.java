@@ -181,22 +181,6 @@ public class CustomerAccountService {
     }
 
     /**
-     * Login a customer
-     * 
-     * @author Jatin Patel (Jatin-Pat)
-     * @param username
-     * @param password
-     * @return boolean
-     */
-    public boolean login(String username, String password) {
-        Customer customer = customerRepository.findCustomerByUsername(username);
-        if (customer == null) {
-            throw new SportCenterException(HttpStatus.NOT_FOUND, "Customer not found.");
-        }
-        return customer.getPassword().equals(password);
-    }
-
-    /**
      * Converts to List
      * 
      * @author Krasimir Kirov (KrasiKirov)

@@ -36,20 +36,6 @@ public class InstructorAccountRestController {
     private InstructorAccountService instructorAccountService;
 
     /**
-     * Login an instructor
-     * 
-     * author Jatin Patel (Jatin-Pat)
-     * 
-     * @param AccountLoginRequestDto
-     * @return AccountLoginResponseDto
-     */
-    @GetMapping(value = { "/instructor/login/" })
-    public AccountLoginResponseDto login(@RequestBody AccountLoginRequestDto loginRequest) {
-        boolean success = instructorAccountService.login(loginRequest.getUsername(), loginRequest.getPassword());
-        return new AccountLoginResponseDto(success);
-    }
-
-    /**
      * Retrieve an instructor by username
      * 
      * @author Jatin Patel (Jatin-Pat)
