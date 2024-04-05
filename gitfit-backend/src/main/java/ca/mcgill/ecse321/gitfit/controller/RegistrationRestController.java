@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.gitfit.dto.CustomerAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.RegistrationRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.RegistrationResponseDto;
 import ca.mcgill.ecse321.gitfit.model.Registration;
-import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.service.RegistrationService;
 
 @CrossOrigin(origins = "http://127.0.0.1:8087")
@@ -60,10 +58,11 @@ public class RegistrationRestController {
      * @param customer
      * @return a list of registration DTOs linked to the given customer
      */
-    @GetMapping(value = { "/registrations/customer", "/registrations/customer/" })
-    public List<RegistrationResponseDto> getAllRegistrationsByCustomer(@RequestBody CustomerAccountDto customer) {
+    @GetMapping(value = { "/registrations/customer/{username}", "/registrations/customer/{username}/" })
+    public List<RegistrationResponseDto> getAllRegistrationsByCustomer(
+            @PathVariable("username") String customerUsername) {
         List<RegistrationResponseDto> registrationDtos = new ArrayList<>();
-        for (Registration registration : registrationService.getAllCustomerRegistrations(customer.getUsername())) {
+        for (Registration registration : registrationService.getAllCustomerRegistrations(customerUsername)) {
             registrationDtos.add(registrationConvertToDto(registration));
         }
         return registrationDtos;
@@ -76,10 +75,10 @@ public class RegistrationRestController {
      * @param session
      * @return a list of registration DTOs linked to the given session
      */
-    @GetMapping(value = { "/registrations/session", "/registrations/session/" })
-    public List<RegistrationResponseDto> getAllRegistrationsBySession(@RequestBody Session session) {
+    @GetMapping(value = { "/registrations/session/{id}", "/registrations/session/{id}/" })
+    public List<RegistrationResponseDto> getAllRegistrationsBySession(@PathVariable("id") int sessionId) {
         List<RegistrationResponseDto> registrationDtos = new ArrayList<>();
-        for (Registration registration : registrationService.getAllSessionRegistrations(session.getId())) {
+        for (Registration registration : registrationService.getAllSessionRegistrations(sessionId)) {
             registrationDtos.add(registrationConvertToDto(registration));
         }
         return registrationDtos;
