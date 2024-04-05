@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const frontendUrl = 'http://' + import.meta.env.VITE_APP_FRONTEND_HOST + ':' + import.meta.env.VITE_APP_FRONTEND_PORT;
 const backendUrl = 'http://' + import.meta.env.VITE_APP_BACKEND_HOST + ':' + import.meta.env.VITE_APP_BACKEND_PORT + '/api';
@@ -10,7 +10,22 @@ const AXIOS = axios.create({
 
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
+}
 
+export function fetchSessionBySessionId(sessionId) {
+    return AXIOS.get('/sessions/' + sessionId);
+}
+
+export function fetchRegistrations() {
+    return AXIOS.get('/registrations');
+}
+
+export function fetchRegistrationsByCustomerUsername(username) {
+    return AXIOS.get('/registrations/customer/' + username);
+}
+
+export function deleteRegistation(registrationId) {
+    return AXIOS.delete('/registrations/' + registrationId);
 }
 
 export function fetchInstructors() {
@@ -18,7 +33,7 @@ export function fetchInstructors() {
 }
 
 export function deleteInstructor(username) {
-    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
+    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' } });
 }
 
 export function fetchSportCenter() {
@@ -40,10 +55,10 @@ export function updateSportCenterMaxCapacity(maxCapacity) {
 export function updateSportCenterHours(openingTime, closingTime) {
     // Ensure the payload structure matches what the backend expects
     const payload = {
-      openingTime,
-      closingTime
+        openingTime,
+        closingTime
     };
     return AXIOS.put('/sportcenter/hours', payload, {
-      headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' }
     });
-  }
+}
