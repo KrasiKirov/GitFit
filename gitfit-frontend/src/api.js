@@ -10,7 +10,11 @@ const AXIOS = axios.create({
 
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
+}
 
+export function deleteFitnessClass(name) {
+    const encodedName = encodeURIComponent(name);
+    return AXIOS.delete(`/fitnessclasses/${encodedName}`);
 }
 
 export function fetchInstructors() {
@@ -18,5 +22,8 @@ export function fetchInstructors() {
 }
 
 export function deleteInstructor(username) {
-    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
+    return AXIOS.delete('/instructor/', { 
+        data: username,
+        headers: { 'Content-Type': 'text/plain' }
+    });
 }

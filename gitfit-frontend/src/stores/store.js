@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fetchFitnessClasses } from '../api.js'; // Update the import route to api.js
+import { fetchFitnessClasses, deleteFitnessClass } from '../api.js'; // Update the import route to api.js
 
 export const useStore = defineStore({
     id: 'main',
@@ -11,6 +11,14 @@ export const useStore = defineStore({
             try {
                 const response = await fetchFitnessClasses();
                 this.fitnessClasses = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async deleteFitnessClass(name) {
+            try {
+                await deleteFitnessClass(name);
+                this.fetchAndSetFitnessClasses();
             } catch (error) {
                 console.error(error);
             }
