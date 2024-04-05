@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import CreateSessionView from '../views/CreateSessionView.vue'
+import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
+import InstructorManagementView from '../views/InstructorManagementView.vue'
 import InstructorManagementView from '../views/InstructorManagementView.vue';
 import RegistrationView from '../views/RegistrationView.vue';
 import SportCenterManagementView from '../views/SportCenterManagementView.vue';
+
 
 
 const router = createRouter({
@@ -20,6 +24,16 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/SessionCreation',
+      name: 'SessionCreation',
+      component: CreateSessionView
+    },
+    {
+      path: '/FitnessClassCreation',
+      name: 'FitnessClasssCreation',
+      component: CreateFitnessClassView
     },
     {
       path: '/InstructorManagementView',

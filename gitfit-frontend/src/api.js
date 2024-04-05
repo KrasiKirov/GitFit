@@ -12,6 +12,14 @@ export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
 }
 
+
+export function fetchSessions() {
+    return AXIOS.get('/sessions/');
+}
+
+export function createSession(sessionData) {
+    return AXIOS.post('/sessions/', sessionData)
+
 export function fetchSessionBySessionId(sessionId) {
     return AXIOS.get('/sessions/' + sessionId);
 }
@@ -28,6 +36,9 @@ export function deleteRegistation(registrationId) {
     return AXIOS.delete('/registrations/' + registrationId);
 }
 
+export function createFitnessClass(fitnessClassData) {
+    return AXIOS.post('/fitnessclasses/', fitnessClassData)
+}
 export function fetchInstructors() {
     return AXIOS.get('/instructors/');
 }
