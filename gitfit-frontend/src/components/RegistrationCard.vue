@@ -40,7 +40,7 @@ const viewSessionDetailsHandler = () => {
             @click.stop="deleteRegistrationHandler">X</button>
         <div class="p-8">
             <div class="uppercase tracking-wide text-xl text-persianblue font-semibold">
-                Registration ID: {{ registration.id }}
+                ID: {{ registration.id }}
             </div>
             <p class="mt-2 text-gray-500">Registration Date: {{ registration.date }}</p>
             <button class="mt-2 text-moodyblue hover:text-persianblue font-bold"
