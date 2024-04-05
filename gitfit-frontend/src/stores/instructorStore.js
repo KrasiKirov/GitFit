@@ -38,5 +38,21 @@ export const useInstructorStore = defineStore({
         updateInstructorFromLocalStorage() {
             this.instructor = JSON.parse(localStorage.getItem('instructor'))||null;
         },
+        async fetchInstructors() {
+            try {
+              const response = await fetchInstructors();
+              this.instructors = response.data;
+            } catch (error) {
+              console.error(error);
+            }
+          },
+          async deleteInstructor(username) {
+            try {
+              await deleteInstructor(username);
+              this.fetchInstructors();
+            } catch (error) {
+              console.error(error);
+            }
+          },
     },
 });

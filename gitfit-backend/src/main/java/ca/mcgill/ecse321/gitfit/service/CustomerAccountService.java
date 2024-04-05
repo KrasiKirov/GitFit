@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
+import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
@@ -28,6 +30,12 @@ public class CustomerAccountService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private InstructorRepository instructorRepository;
+
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     @Autowired
     private SportCenterService sportCenterService;
@@ -105,10 +113,22 @@ public class CustomerAccountService {
 
         validatorService.validate(new PasswordCheckDto(password));
 
-        Customer checkExistenceCustomer = customerRepository.findCustomerByUsername(username);
+        boolean usernameTaken = false;
+        String role = null;
 
-        if (checkExistenceCustomer != null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists.");
+        if (customerRepository.findCustomerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "customer";
+        } else if (ownerRepository.findOwnerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "owner";
+        } else if (instructorRepository.findInstructorByUsername(username) != null) {
+            usernameTaken = true;
+            role = "instructor";
+        }
+
+        if (usernameTaken) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists as " + role + ".");
         }
 
         Customer customer = new Customer(username, email, password, lastName, firstName,
