@@ -85,6 +85,7 @@ const login = async () => {
     console.log(customerStore.customer);
     if (response.status === 200) {
         console.log("Customer created successfully");
+        
         router.push('/');
     } else {
         console.log("Not successful");

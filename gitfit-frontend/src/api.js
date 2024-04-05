@@ -32,6 +32,8 @@ export function getBilling(username) {
 }
 
 export function deleteBilling(username) {
+    console.log("entereing deleteBilling apijs");
+    console.log(username);
     return AXIOS.delete(`/customers/${username}/billing`);
 }
 

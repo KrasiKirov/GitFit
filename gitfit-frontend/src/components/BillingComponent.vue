@@ -5,7 +5,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST" @submit.prevent="createBilling">
+        <form id="billingForm" class="space-y-6" action="#" method="POST" @submit.prevent="createBilling">
           <div>
             <label for="billingCardNumber" class="block text-sm font-medium leading-6 text-gray-900">Card Number</label>
             <div class="mt-2">
@@ -64,6 +64,8 @@ import { defineEmits, ref } from 'vue';
 const emit = defineEmits(['editAccount']);
 
 const editAccount = () => {
+    var billingForm = document.getElementById("billingForm");
+    billingForm.reset();
     emit('editAccount');
 }
 
