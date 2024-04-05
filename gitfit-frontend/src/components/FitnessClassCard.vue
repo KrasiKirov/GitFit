@@ -24,7 +24,6 @@ const props = defineProps({
                 </div>
                 <p class="block mt-1 text-lg leading-tight font-medium text-black">{{ fitnessClass.description
                     }}</p>
-                <p class="mt-2 text-gray-500">Status: {{ fitnessClass.status }}</p>
             </div>
 
         </div>
