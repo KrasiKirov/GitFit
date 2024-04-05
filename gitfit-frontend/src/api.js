@@ -15,3 +15,13 @@ export function fetchFitnessClasses() {
 export function fetchApprovedFitnessClasses() {
     return AXIOS.get('/fitnessclasses/approved');
 }
+
+export function fetchInstructors() {
+    return AXIOS.get('/instructors/');
+}
+
+export function deleteInstructor(username) {
+    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
+}
+
+

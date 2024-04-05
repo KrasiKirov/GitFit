@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.gitfit.model;
 import java.sql.Time;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
@@ -15,12 +17,12 @@ public class Owner extends Account {
   // ------------------------
 
   // Owner Attributes
-  @Id // No need for @GeneratedValue because the id is mapped to the sportCenter
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
   // Owner Associations
   @OneToOne(optional = false)
-  @MapsId
   private SportCenter sportCenter;
 
   // ------------------------
