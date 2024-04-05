@@ -24,6 +24,10 @@ const props = defineProps({
                 </div>
                 <p class="block mt-1 text-lg leading-tight font-medium text-black">{{ fitnessClass.description
                     }}</p>
+                <div class="mt-4">
+                    <font-awesome-icon icon="heart" class="text-red-500 mr-2" />
+                    <font-awesome-icon icon="thumbs-down" class="text-gray-500" />
+                </div>
             </div>
 
         </div>
