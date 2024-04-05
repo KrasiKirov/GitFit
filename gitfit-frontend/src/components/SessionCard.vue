@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <div class="flex min-h-full flex-col justify-center items-center ">
-        <div class="flex flex-col min-h-screen items-center">
+        <div class="flex flex-col items-center">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 class="mt-20 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">{{ session.fitnessClassName }}</h2>
         </div>

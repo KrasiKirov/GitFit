@@ -32,3 +32,28 @@ export function fetchFilteredSessions(filter) {
 export function fetchSessionById(id) {
     return AXIOS.get('/sessions/' + id);
 }
+
+export function createRegistration(registrationData) {
+    return AXIOS.post('/registrations/', registrationData);
+}
+
+export function fetchRegistrations() {
+    return AXIOS.get('/registrations');
+}
+
+export function fetchRegistrationsByCustomerUsername(username) {
+    return AXIOS.get('/registrations/customer/' + username);
+}
+
+export function deleteRegistation(registrationId) {
+    return AXIOS.delete('/registrations/' + registrationId);
+}
+
+export function createCustomer(customer) {
+    console.log("entereing api.js");
+    return AXIOS.post('/customer', customer);
+}
+
+export function updateCustomerPassword(password) {
+    return AXIOS.put(`/customer/password`, password);
+}
