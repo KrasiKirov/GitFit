@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ConfirmationModal from './ConfirmationModal.vue';
+import SessionDetailsModal from './SessionDetailsModal.vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
 import { defineProps } from 'vue';
 
@@ -23,6 +24,13 @@ const confirmDelete = async () => {
 const deleteRegistrationHandler = () => {
     showModal.value = true;
 };
+
+const showSessionModal = ref(false);
+
+const viewSessionDetailsHandler = () => {
+    showSessionModal.value = true;
+};
+
 </script>
 
 <template>
@@ -31,13 +39,18 @@ const deleteRegistrationHandler = () => {
         <button class="absolute top-0 right-0 m-2 text-xl font-semibold"
             @click.stop="deleteRegistrationHandler">X</button>
         <div class="p-8">
-            <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+            <div class="uppercase tracking-wide text-xl text-persianblue font-semibold">
                 Registration ID: {{ registration.id }}
             </div>
             <p class="mt-2 text-gray-500">Registration Date: {{ registration.date }}</p>
-            <p class="mt-2 text-gray-500">SessionId: {{ registration.sessionId }}</p>
+            <button class="mt-2 text-moodyblue hover:text-persianblue font-bold"
+                @click.stop="viewSessionDetailsHandler">
+                View Session Details
+            </button>
         </div>
     </div>
     <ConfirmationModal :show="showModal" :registrationId="registration.id" @confirm="confirmDelete"
         @update:show="showModal = $event" />
+    <SessionDetailsModal :show="showSessionModal" :sessionId="registration.sessionId"
+        @update:show="showSessionModal = $event" />
 </template>

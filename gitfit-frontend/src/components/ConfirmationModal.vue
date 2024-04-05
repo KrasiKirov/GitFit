@@ -18,13 +18,13 @@ const confirm = () => {
 </script>
 
 <template>
-    <div v-if="show" class="fixed inset-0 bg-linkwater bg-opacity-50 overflow-y-auto h-full w-full"
+    <div v-if="show" class="z-10 fixed inset-0 bg-linkwater bg-opacity-50 overflow-y-auto h-full w-full"
         @click.self="closeModal">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="z-11 relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div class="mt-3 text-center">
-                <h3 class="text-lg leading-6 font-medium text-moodyblue">Cancel Registration</h3>
+                <h3 class="text-xl leading-6 font-medium text-persianblue">Cancel Registration</h3>
                 <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">Are you sure you want to cancel this registration?</p>
+                    <p class="text-md text-gray-500">Are you sure you want to cancel this registration?</p>
                 </div>
                 <div class="flex items-center justify-center space-x-4 px-4 py-3">
                     <button @click="confirm"
