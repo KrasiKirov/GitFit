@@ -1,4 +1,5 @@
 <template>
+  <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
   <div class="max-w-7xl mx-auto my-10 p-10 bg-white shadow-xl rounded-xl">
     
     <!-- Header Section with Title -->
@@ -56,7 +57,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs } from 'vue';
+import ErrorModal from '@/components/ErrorModal.vue';
+import { ref, reactive } from 'vue';
 import { useSportCenterStore } from '@/stores/sportCenterStore';
 
 const sportCenterStore = useSportCenterStore();
@@ -78,6 +80,9 @@ const editableFields = reactive({
   maxCapacity: '',
   operatingHours: '',
 });
+
+const showModal = ref(false);
+const errorMessage = ref('');
 
 // Fetch sport center details on component mount and fill editableFields
 sportCenterStore.fetchSportCenterDetails().then(() => {
@@ -119,19 +124,31 @@ const startEdit = (key) => {
 
 // Method to save changes for each field
 const saveChanges = async (key) => {
-  switch (key) {
-    case 'name':
-      await sportCenterStore.updateName(editableFields.name);
-      break;
-    case 'maxCapacity':
-      await sportCenterStore.updateMaxCapacity(editableFields.maxCapacity);
-      break;
-    case 'operatingHours':
-      await sportCenterStore.updateOperatingHours(operatingHours.openingTime, operatingHours.closingTime);
-      editableFields.operatingHours = `${operatingHours.openingTime} - ${operatingHours.closingTime}`;
-      break;
+  try {
+    switch (key) {
+      case 'name':
+      if (!editableFields.name || editableFields.name.trim() === '') {
+          throw new Error('Name cannot be empty.');
+        }
+        await sportCenterStore.updateName(editableFields.name);
+        break;
+      case 'maxCapacity':
+        await sportCenterStore.updateMaxCapacity(editableFields.maxCapacity);
+        break;
+      case 'operatingHours':
+        await sportCenterStore.updateOperatingHours(operatingHours.openingTime, operatingHours.closingTime);
+        editableFields.operatingHours = `${operatingHours.openingTime} - ${operatingHours.closingTime}`;
+        break;
+    }
+    editModes[key] = false;
+    // Reset the error message and hide the modal if the operation was successful
+    errorMessage.value = '';
+    showModal.value = false;
+  } catch (error) {
+    // Set the error message from the caught error and show the modal
+    errorMessage.value = error.message;
+    showModal.value = true;
   }
-  editModes[key] = false;
 };
 
 </script>

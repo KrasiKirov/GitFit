@@ -20,7 +20,10 @@ export const useSportCenterStore = defineStore({
         await updateSportCenterName(name);
         await this.fetchSportCenterDetails();
       } catch (error) {
-        console.error('Failed to update sport center name:', error);
+        if (error.response && error.response.data.errors) {
+          const errorMessages = error.response.data.errors
+          throw new Error(errorMessages);
+        }
       }
     },
     async updateMaxCapacity(maxCapacity) {
@@ -28,7 +31,10 @@ export const useSportCenterStore = defineStore({
         await updateSportCenterMaxCapacity(maxCapacity);
         await this.fetchSportCenterDetails();
       } catch (error) {
-        console.error('Failed to update sport center max capacity:', error);
+        if (error.response && error.response.data.errors) {
+          const errorMessages = error.response.data.errors
+          throw new Error(errorMessages);
+        }
       }
     },
     async updateOperatingHours(openingTime, closingTime) {
@@ -37,7 +43,10 @@ export const useSportCenterStore = defineStore({
         await updateSportCenterHours(openingTime, closingTime);
         await this.fetchSportCenterDetails();
       } catch (error) {
-        console.error('Failed to update sport center operating hours:', error);
+        if (error.response && error.response.data.errors) {
+          const errorMessages = error.response.data.errors
+          throw new Error(errorMessages);
+        }
       }
     },
   },
