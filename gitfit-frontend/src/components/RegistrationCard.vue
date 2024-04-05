@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+import ConfirmationModal from './ConfirmationModal.vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
 import { defineProps } from 'vue';
 
@@ -9,11 +11,17 @@ const props = defineProps({
     }
 });
 
-const deleteRegistrationHandler = async () => {
-    const store = useRegistrationStore();
-    alert(props.registration.id);
+const showModal = ref(false);
+const store = useRegistrationStore();
+
+const confirmDelete = async () => {
     await store.deleteRegistration(props.registration.id);
     await store.fetchRegistrationsByCustomerUsername("john_smith");
+    showModal.value = false;
+};
+
+const deleteRegistrationHandler = () => {
+    showModal.value = true;
 };
 </script>
 
@@ -26,13 +34,10 @@ const deleteRegistrationHandler = async () => {
             <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
                 Registration ID: {{ registration.id }}
             </div>
-            <!-- Additional details shown when expanded -->
             <p class="mt-2 text-gray-500">Registration Date: {{ registration.date }}</p>
             <p class="mt-2 text-gray-500">SessionId: {{ registration.sessionId }}</p>
         </div>
     </div>
+    <ConfirmationModal :show="showModal" :registrationId="registration.id" @confirm="confirmDelete"
+        @update:show="showModal = $event" />
 </template>
-
-
-
-<style scoped></style>
