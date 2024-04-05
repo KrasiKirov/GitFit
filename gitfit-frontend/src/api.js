@@ -20,3 +20,30 @@ export function fetchInstructors() {
 export function deleteInstructor(username) {
     return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' }});
 }
+
+export function fetchSportCenter() {
+    return AXIOS.get('/sportcenter');
+}
+
+export function updateSportCenterName(name) {
+    return AXIOS.put('/sportcenter/name', name, {
+        headers: { 'Content-Type': 'application/json' }
+    });
+}
+
+export function updateSportCenterMaxCapacity(maxCapacity) {
+    return AXIOS.put('/sportcenter/capacity', maxCapacity, {
+        headers: { 'Content-Type': 'application/json' }
+    });
+}
+
+export function updateSportCenterHours(openingTime, closingTime) {
+    // Ensure the payload structure matches what the backend expects
+    const payload = {
+      openingTime,
+      closingTime
+    };
+    return AXIOS.put('/sportcenter/hours', payload, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
