@@ -52,7 +52,7 @@ public class CustomerAccountRestController {
      * @author Krasimir Kirov (KrasiKirov)
      * @return List of all CustomerAccountDto
      */
-    @GetMapping(value = { "/customers/", "/customers/" })
+    @GetMapping(value = { "/customers/", "/customers" })
     public List<CustomerAccountDto> getAllCustomers() {
         List<Customer> list = customerAccountService.getAllCustomers();
 
@@ -70,7 +70,7 @@ public class CustomerAccountRestController {
      * @param passwordRequestDto
      * @return CustomerAccountDto
      */
-    @PutMapping(value = { "/customer/password/", "/customer/password/" })
+    @PutMapping(value = { "/customer/password/", "/customer/password" })
     public CustomerAccountDto updateCustomerPassword(@RequestBody PasswordRequestDto passwordRequestDto) {
         Customer customer = customerAccountService.getCustomer(passwordRequestDto.getUsername());
         customer = customerAccountService.updateCustomerPassword(passwordRequestDto.getUsername(),
@@ -85,7 +85,7 @@ public class CustomerAccountRestController {
      * @param customerAccountRequestDto
      * @return CustomerAccountDto
      */
-    @PostMapping(value = { "/customer/" })
+    @PostMapping(value = { "/customer", "/customer/" })
     public CustomerAccountDto createCustomer(@RequestBody CustomerAccountRequestDto customerAccountRequestDto) {
         Customer customer = customerAccountService.createCustomer(customerAccountRequestDto.getUsername(),
                 customerAccountRequestDto.getEmail(), customerAccountRequestDto.getPassword(),
