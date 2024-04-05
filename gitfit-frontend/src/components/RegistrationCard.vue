@@ -13,7 +13,7 @@ const deleteRegistrationHandler = async () => {
     const store = useRegistrationStore();
     alert(props.registration.id);
     await store.deleteRegistration(props.registration.id);
-    await store.fetchRegistrationsByCustomerUsername("testuser1");
+    await store.fetchRegistrationsByCustomerUsername("john_doe");
 };
 </script>
 
@@ -24,10 +24,10 @@ const deleteRegistrationHandler = async () => {
             @click.stop="deleteRegistrationHandler">X</button>
         <div class="p-8">
             <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                {{ registration.id }}
+                Registration ID: {{ registration.id }}
             </div>
             <!-- Additional details shown when expanded -->
-            <p class="mt-2 text-gray-500">Date: {{ registration.date }}</p>
+            <p class="mt-2 text-gray-500">Registration Date: {{ registration.date }}</p>
             <p class="mt-2 text-gray-500">SessionId: {{ registration.sessionId }}</p>
         </div>
     </div>

@@ -11,6 +11,11 @@ const AXIOS = axios.create({
 export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
 }
+
+export function fetchSessionBySessionId(sessionId) {
+    return AXIOS.get('/sessions/' + sessionId);
+}
+
 export function fetchRegistrations() {
     return AXIOS.get('/registrations');
 }
