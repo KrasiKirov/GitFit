@@ -1,12 +1,25 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps} from 'vue'
+import { updateFitnessClassStatus } from '@/api'
 
 const props = defineProps({
     fitnessClass: {
         type: Object,
         required: true
     }
-});
+})
+
+const emit = defineEmits(['update'])
+
+const approveClass = async () => {
+    await updateFitnessClassStatus(props.fitnessClass.name, 'APPROVED')
+    emit('update')
+}
+
+const rejectClass = async () => {
+    await updateFitnessClassStatus(props.fitnessClass.name, 'REJECTED')
+    emit('update')
+}
 </script>
 
 <template>
@@ -25,8 +38,10 @@ const props = defineProps({
                 <p class="block mt-1 text-lg leading-tight font-medium text-black">{{ fitnessClass.description
                     }}</p>
                 <div class="mt-4">
-                    <font-awesome-icon icon="heart" class="text-red-500 mr-2" />
-                    <font-awesome-icon icon="thumbs-down" class="text-gray-500" />
+                    <font-awesome-icon icon="heart" class="text-red-500 mr-4 cursor-pointer text-2xl"
+                        @click="approveClass" />
+                    <font-awesome-icon icon="thumbs-down" class="text-gray-500 cursor-pointer text-2xl"
+                        @click="rejectClass" />
                 </div>
             </div>
 
