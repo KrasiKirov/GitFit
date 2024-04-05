@@ -15,7 +15,7 @@
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import { ref, defineProps, watch } from 'vue';
   
