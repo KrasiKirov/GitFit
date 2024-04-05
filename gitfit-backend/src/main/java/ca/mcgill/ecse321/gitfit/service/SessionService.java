@@ -13,11 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.gitfit.dao.RegistrationRepository;
 import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Registration;
 import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
 
@@ -29,6 +31,9 @@ public class SessionService {
 
     @Autowired
     private SportCenterRepository sportCenterRepository;
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     /**
      * Create a session
@@ -201,6 +206,10 @@ public class SessionService {
     public void deleteSession(Session session) {
         if (session == null) {
             throw new SportCenterException(HttpStatus.BAD_REQUEST, "Session must be filled in to delete");
+        }
+        List<Registration> registrations = registrationRepository.findBySession(session);
+        for (Registration registration : registrations) {
+            registrationRepository.delete(registration);
         }
         sessionRepository.delete(session);
     }
