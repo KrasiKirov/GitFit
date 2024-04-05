@@ -30,8 +30,8 @@ const sortAttributes = ref([
     { value: 'startTime', label: 'Start Time' },
     { value: 'endTime', label: 'End Time' },
     { value: 'price', label: 'Price' },
-    { value: 'instructor', label: 'Instructor' },
-    { value: 'fclass', label: 'Fitness Class' }
+    { value: 'instructorUsername', label: 'Instructor' },
+    { value: 'fitnessClassName', label: 'Fitness Class' }
 ])
 
 const store = useSessionStore();
