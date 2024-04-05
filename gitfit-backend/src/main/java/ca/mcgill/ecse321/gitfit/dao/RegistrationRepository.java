@@ -11,6 +11,5 @@ import ca.mcgill.ecse321.gitfit.model.Session;
 @Repository
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
     Registration findRegistrationById(int id);
-
     List<Registration> findBySession(Session session);
 }
