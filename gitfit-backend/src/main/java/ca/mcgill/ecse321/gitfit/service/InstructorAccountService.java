@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
+import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
@@ -24,6 +26,12 @@ public class InstructorAccountService {
 
     @Autowired
     private InstructorRepository instructorRepository;
+
+    @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private SportCenterService sportCenterService;
@@ -86,9 +94,23 @@ public class InstructorAccountService {
 
         validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
         validatorService.validate(new PasswordCheckDto(password));
-        Instructor checkExistenceInstructor = instructorRepository.findInstructorByUsername(username);
-        if (checkExistenceInstructor != null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists.");
+
+        boolean usernameTaken = false;
+        String role = null;
+
+        if (customerRepository.findCustomerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "customer";
+        } else if (ownerRepository.findOwnerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "owner";
+        } else if (instructorRepository.findInstructorByUsername(username) != null) {
+            usernameTaken = true;
+            role = "instructor";
+        }
+
+        if (usernameTaken) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists as " + role + ".");
         }
 
         Instructor instructor = new Instructor(username, email, password, lastName, firstName,
