@@ -15,12 +15,10 @@ export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
 }
 
-
 export function deleteFitnessClass(name) {
     const encodedName = encodeURIComponent(name);
     return AXIOS.delete(`/fitnessclasses/${encodedName}`);
 }
-
 
 export function fetchApprovedFitnessClasses() {
     return AXIOS.get('/fitnessclasses/approved');
@@ -38,28 +36,12 @@ export function updateFitnessClassStatus(name, status) {
     });
 }
 
-export function fetchSessions() {
-    return AXIOS.get('/sessions/');
-}
-
 export function createSession(sessionData) {
     return AXIOS.post('/sessions/', sessionData)
 }
 
 export function fetchSessionBySessionId(sessionId) {
     return AXIOS.get('/sessions/' + sessionId);
-}
-
-export function fetchRegistrations() {
-    return AXIOS.get('/registrations');
-}
-
-export function fetchRegistrationsByCustomerUsername(username) {
-    return AXIOS.get('/registrations/customer/' + username);
-}
-
-export function deleteRegistation(registrationId) {
-    return AXIOS.delete('/registrations/' + registrationId);
 }
 
 export function createFitnessClass(fitnessClassData) {
@@ -75,7 +57,6 @@ export function deleteInstructor(username) {
         headers: { 'Content-Type': 'text/plain' }
     });
 }
-
 
 export function fetchSportCenter() {
     return AXIOS.get('/sportcenter');
