@@ -62,15 +62,15 @@ const login = async () => {
     if (response.status === 200 && response.data.success === true) {
         if (response.data.role === 'Customer') {
             const customerStore = useCustomerStore();
-            customerStore.fetchAndSetCustomer(username);
+            await customerStore.fetchAndSetCustomer(username);
             console.log("Customer login successful");
         } else if (response.data.role === 'Instructor') {
             const instructorStore = useInstructorStore();
-            instructorStore.fetchAndSetInstructor(username);
+            await instructorStore.fetchAndSetInstructor(username);
             console.log("Instructor login successful");
         } else if (response.data.role === 'Owner') {
             const ownerStore = useOwnerStore();
-            ownerStore.fetchAndSetOwner();
+            await ownerStore.fetchAndSetOwner();
             console.log("Owner login successful");
         }
         console.log("Login successful");

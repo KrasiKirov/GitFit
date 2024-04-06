@@ -9,11 +9,15 @@ export const useCustomerStore = defineStore({
     actions: {
         async fetchAndSetCustomer(username) {
             try {
+                console.log("[[[[[[[[[[");
+                console.log(username);
                 const response = await fetchCustomer(username);
                 localStorage.setItem('customer', JSON.stringify(response.data));
                 localStorage.setItem('userType', 'Customer');
                 this.updateCustomerFromLocalStorage();
+                console.log("update localstorage complete")
             } catch (error) {
+                console.log("***********************")
                 console.error(error);
             }
         },

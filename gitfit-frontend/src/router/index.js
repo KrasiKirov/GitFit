@@ -4,8 +4,10 @@ import LoginView from '../views/LoginView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import CreateInstructorComponent from '../components/CreateInstructorComponent.vue'
 import InstructorManagementView from '../views/InstructorManagementView.vue'
-
-
+import { useOwnerStore } from '@/stores/ownerStore'
+import { useInstructorStore } from '@/stores/instructorStore'
+import { useCustomerStore } from '@/stores/customerStore'
+import { defineStore } from 'pinia'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +54,71 @@ const router = createRouter({
     //   component: () => import('../views/AboutView.vue')
     // }
   ]
-})
+});
+
+
+
+router.beforeEach((to, from, next) => {
+    console.log("inside router before each");
+    console.log(localStorage.getItem('userType'));
+    //console.log(isLoggedIn());
+    if (isLoggedIn() || to.name==='login') {
+        next();
+    }
+    else {
+        next({ name: 'login' });
+    }
+    //   // Check if user is authenticated
+    //   if (!isLoggedIn()) {
+    //     // Redirect to login page if not authenticated
+    //     next({ name: 'login' });
+    //   } else {
+    //     // Proceed to the route
+    //     next();
+    //   }
+  })
+  
+  function isLoggedIn() {
+    const ownerStore = useOwnerStore();
+    const instructorStore = useInstructorStore();
+    const customerStore = useCustomerStore();
+    console.log("++++++++++++")
+    // console.log(customerStore.customer.username);
+    console.log(localStorage.getItem('userType'));
+    if (localStorage.getItem('userType') === 'Owner') {
+        try {
+            const response = ownerStore.fetchAndSetOwner();
+            return true;
+        }   catch (error) {
+            localStorage.clear();
+            return false;
+        }
+    } else if (localStorage.getItem('userType') === 'Instructor') {
+        try {
+            const instructor = localStorage.getItem('instructor');
+            const response = instructorStore.fetchAndSetInstructor(instructor.username);
+            return true;
+        }   catch (error) {
+            localStorage.clear();
+            return false;
+        }
+    } else if (localStorage.getItem('userType') === 'Customer') {
+        try {
+            console.log("REACHED HERE");
+            const customer = JSON.parse(localStorage.getItem('customer'));
+            console.log(customer);
+            const response = customerStore.fetchAndSetCustomer(customer.username);
+            return true;
+        }   catch (error) {
+            localStorage.clear();
+            console.log("ERROR");
+            console.log(error);
+            return false;
+        }
+    } else {
+        localStorage.clear();
+        return false;
+    }
+  }
 
 export default router
