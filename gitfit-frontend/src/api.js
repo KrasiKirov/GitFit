@@ -26,7 +26,7 @@ export function fetchSessions() {
 }
 
 export function fetchFilteredSessions(filter) {
-    return AXIOS.get('/sessions/', { params: filter });
+    return AXIOS.get('/sessions/filter?' + filter);
 }
 
 export function fetchSessionById(id) {

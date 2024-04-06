@@ -4,15 +4,14 @@ import { fetchSessions, fetchFilteredSessions, fetchSessionById } from '../api.j
 export const useSessionStore = defineStore({
     id: 'session',
     state: () => ({
-        allSessions: [],
-        filteredSessions: [],
+        sessions: [],
         session: null
     }),
     actions: {
         async fetchAndSetSessions() {
             try {
                 const response = await fetchSessions();
-                this.allSessions = response.data;
+                this.sessions = response.data;
             } catch (error) {
                 console.error(error);
             }
@@ -20,7 +19,7 @@ export const useSessionStore = defineStore({
         async fetchAndSetFilteredSessions(filter) {
             try {
                 const response = await fetchFilteredSessions(filter);
-                this.filteredSessions = response.data;
+                this.sessions = response.data;
             } catch (error) {
                 console.error(error);
             }

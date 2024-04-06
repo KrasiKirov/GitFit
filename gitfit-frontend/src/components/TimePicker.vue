@@ -3,10 +3,27 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { ref, onMounted } from 'vue';
 
-const format = 'HH:mm:ss';
-const time = ref();
+const time = ref({
+  hours: 0,
+  minutes: 0,
+});
+const format = 'HH:mm';
+
+const emits = defineEmits(['update-time']);
+
+const handleTime = (time) => {
+    const { hours, minutes, seconds } = time;
+    // Format hours, minutes, and seconds with leading zeros
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+    // Concatenate the formatted values into the desired string format
+    const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    emits('update-time', formattedTime);
+}
+
 </script>
 
 <template>
-  <VueDatePicker v-model="time" time-picker range :format="format" />
+  <VueDatePicker :model-value="time" @update:model-value="handleTime" v-model="time" time-picker :format="format" />
 </template>
