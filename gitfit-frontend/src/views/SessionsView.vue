@@ -5,22 +5,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import TimePicker from '@/components/TimePicker.vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useInstructorStore } from '@/stores/instructorStore';
-import { useStore } from '@/stores/store';
-
-// Mock data for sessions
-// const sessionsTest = ref([
-//     {id: 1, date: '2024-04-01', startTime: '10:00 AM', endTime: '11:00 AM', price: '$10', instructor: 'John Doe', fclass: 'Yoga'},
-//     {id: 2, date: '2024-04-02', startTime: '11:00 AM', endTime: '12:00 PM', price: '$15', instructor: 'Jane Smith', fclass: 'Zumba'},
-//     {id: 3, date: '2024-04-03', startTime: '12:00 PM', endTime: '1:00 PM', price: '$20', instructor: 'John Doe', fclass: 'Pilates'},
-//     {id: 4, date: '2024-04-04', startTime: '1:00 PM', endTime: '2:00 PM', price: '$25', instructor: 'Jane Smith', fclass: 'Kickboxing'},
-//     {id: 5, date: '2024-04-05', startTime: '2:00 PM', endTime: '3:00 PM', price: '$30', instructor: 'John Doe', fclass: 'Spin'},
-//     {id: 6, date: '2024-04-06', startTime: '3:00 PM', endTime: '4:00 PM', price: '$35', instructor: 'Jane Smith', fclass: 'Barre'},
-//     {id: 7, date: '2024-04-07', startTime: '4:00 PM', endTime: '5:00 PM', price: '$40', instructor: 'John Doe', fclass: 'HIIT'},
-//     {id: 8, date: '2024-04-08', startTime: '5:00 PM', endTime: '6:00 PM', price: '$45', instructor: 'Jane Smith', fclass: 'Piloxing'},
-//     {id: 9, date: '2024-04-09', startTime: '6:00 PM', endTime: '7:00 PM', price: '$50', instructor: 'John Doe', fclass: 'Aerial Yoga'},
-//     {id: 10, date: '2024-04-10', startTime: '7:00 PM', endTime: '8:00 PM', price: '$55', instructor: 'Jane Smith', fclass: 'Bootcamp'},
-//     {id: 11, date: '2024-04-11', startTime: '8:00 PM', endTime: '9:00 PM', price: '$60', instructor: 'John Doe', fclass: 'Pound'}
-// ]);
+import { useStore } from '@/stores/fitnessClassStore';
 
 var filters = ref();
 var selectedInstructor = ref('');
@@ -48,6 +33,7 @@ var sessions = computed(() => sessionStore.sessions);
 var instructors = computed(() => instructorStore.instructors);
 var fitnessClasses = computed(() => store.fitnessClasses);
 
+// updates the filtered sessions when any of the filters change
 watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDate, selectedEndDate, selectedStartTime, selectedEndTime],
 async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTime, newEndTime]) => {
     filters.value = {
@@ -86,11 +72,6 @@ async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTi
     sessions = computed(() => sessionStore.sessions);
 });
 
-// const filteredSessions = computed(() => {
-//   if (!selectedFitnessClass.value) return sessionsTest.value;
-//   return sessionsTest.value.filter(session => session.instructor.includes(filter.value));
-// });
-
 const sortAttributes = ref([
     { value: 'id', label: 'ID' },
     { value: 'date', label: 'Date' },
@@ -101,6 +82,7 @@ const sortAttributes = ref([
     { value: 'fitnessClassName', label: 'Fitness Class' }
 ])
 
+// sorts the sessions based on the selected attribute and direction
 const sortedAndFilteredSessions = computed(() => {
     let sortedSessions = [...sessions.value];
     if (sortAttribute.value) {
@@ -139,73 +121,97 @@ const updatePrice = (event) => {
 </script>
 
 <template>
-    <div class="relative overflow-x-auto shadow-md">
-        <DatePicker @update-dates="updateDates" />
-        <TimePicker @update-time="updateStartTime" />
-        <TimePicker @update-time="updateEndTime" />
-        <select v-model="selectedFitnessClass">
-          <option disabled value="">Filter by Fitness Class</option>
-          <option value="">No Filter</option>
-          <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}</option>
-        </select>
-        <select v-model="selectedInstructor" class="mr-8">
-          <option disabled value="">Filter by Instructor</option>
-          <option value="">No Filter</option>
-          <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}</option>
-        </select>
-            <input type="text" @keyup.enter="updatePrice" placeholder="Max Price" />
-        <div class="text-s text-gray-700 bg-spindle dark:bg-gray-700 dark:text-gray-400">
-            <label for="sortAttribute" class="sort-label">Sort by:</label>
+    <div class="min-h-screen bg-linkwater pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+        <!-- title -->
+        <h1 class="text-4xl text-center font-bold text-persianblue mb-5 ">
+        Sessions List
+        </h1>
+        <!-- filters -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto mb-4">
+            <!-- left side of filters -->
+            <div class="justify-center items-center md:items-start">
+                <label for="dates" class="text-sm font-medium text-gray-700">Date Range</label>
+                <DatePicker @update-dates="updateDates" id="dates"/>
+                <label for="start" class="text-sm font-medium text-gray-700">Start Time</label>
+                <TimePicker @update-time="updateStartTime" id="start"/>
+                <label for="end" class="text-sm font-medium text-gray-700">End Time</label>
+                <TimePicker @update-time="updateEndTime" id="end"/>
+            </div>
+            <!-- right side of filters -->
+            <div class="flex flex-col justify-center h-full">
+                <label for="fclass" class="text-sm font-medium text-gray-700">Fitness Class</label>
+                <!-- dropdown menu for fitness class -->
+                <select id="fclass" v-model="selectedFitnessClass"
+                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    <option disabled value="">Filter by Fitness Class</option>
+                    <option value="">No Filter</option>
+                    <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}</option>
+                </select>
+                <!-- dropdown menu for instructor -->
+                <label for="instructor" class="text-sm font-medium text-gray-700">Instructor</label>
+                <select id="instructor" v-model="selectedInstructor"
+                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    <option disabled value="">Filter by Instructor</option>
+                    <option value="">No Filter</option>
+                    <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}</option>
+                </select>
+                <!-- input for max price -->
+                <label for="price" class="text-sm font-medium text-gray-700">Max Price</label>
+                <input id="price" type="number" @keyup.enter="updatePrice" placeholder="Max Price" 
+                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50"/>
+            </div>
+        </div>
+        <!-- sorting -->
+        <div class="text-s text-gray-700 bg-moodyblue dark:bg-gray-700 dark:text-gray-400">
+            <!-- dropdown menu for sorting attribute -->
+            <label for="sortAttribute" class="text-sm font-medium text-gray-700 ml-5 mr-2">Sort by:</label>
             <select class="sort-dropdown" id="sortAttribute" v-model="sortAttribute">
                 <option v-for="attribute in sortAttributes" :key="attribute.value" :value="attribute.value">
                     {{ attribute.label }}
                 </option>
             </select>
+            <!-- button to toggle direction -->
             <button @click="toggleSortDirection" type="button" class="px-2 py-2 text-persianblue
-            hover:bg-moodyblue hover:text-linkwater font-medium rounded-lg text-sm p-2.5 text-center 
+            hover:bg-spindle hover:text-white font-medium rounded-lg text-sm p-2.5 text-center 
             inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white 
             dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                 <IconToggleSort></IconToggleSort>
                 <span class="sr-only">Icon description</span>
             </button>
         </div>
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-spindle dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-6 py-3">ID</th>
-            <th scope="col" class="px-6 py-3">Date</th>
-            <th scope="col" class="px-6 py-3">Start Time</th>
-            <th scope="col" class="px-6 py-3">End Time</th>
-            <th scope="col" class="px-6 py-3">Price</th>
-            <th scope="col" class="px-6 py-3">Instructor</th>
-            <th scope="col" class="px-6 py-3">Fitness Class</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="bg-linkwater border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          v-for="session in sortedAndFilteredSessions" :key="session.id"
-          @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
-          style="cursor: pointer;"
-          >
-            <td class="px-6 py-4">{{ session.id }}</td>
-            <td class="px-6 py-4">{{ session.date }}</td>
-            <td class="px-6 py-4">{{ session.startTime }}</td>
-            <td class="px-6 py-4">{{ session.endTime }}</td>
-            <td class="px-6 py-4">{{ session.price }}</td>
-            <td class="px-6 py-4">{{ session.instructorUsername }}</td>
-            <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
-          </tr>
-        </tbody>
-    </table>
+        <!-- sessions table -->
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-moodyblue dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">ID</th>
+                <th scope="col" class="px-6 py-3">Date</th>
+                <th scope="col" class="px-6 py-3">Start Time</th>
+                <th scope="col" class="px-6 py-3">End Time</th>
+                <th scope="col" class="px-6 py-3">Price</th>
+                <th scope="col" class="px-6 py-3">Instructor</th>
+                <th scope="col" class="px-6 py-3">Fitness Class</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+            v-for="session in sortedAndFilteredSessions" :key="session.id"
+            @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
+            style="cursor: pointer;"
+            >
+                <td class="px-6 py-4">{{ session.id }}</td>
+                <td class="px-6 py-4">{{ session.date }}</td>
+                <td class="px-6 py-4">{{ session.startTime }}</td>
+                <td class="px-6 py-4">{{ session.endTime }}</td>
+                <td class="px-6 py-4">{{ session.price }}</td>
+                <td class="px-6 py-4">{{ session.instructorUsername }}</td>
+                <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
 <style scoped>
-.sort-label {
-  margin-left: 1rem;
-  margin-right: 0.5rem;
-  margin-bottom: 20px;
-}
 .sort-dropdown {
   margin-right: 1rem;
 }
