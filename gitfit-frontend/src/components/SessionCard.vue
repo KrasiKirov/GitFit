@@ -19,7 +19,7 @@ defineProps({
             <dl class="sm:divide-y sm:divide-gray-200">
                 <div class="flex px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Session Information
+                    {{ `Session ${session.id} Information` }}
                 </h3>
             </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
