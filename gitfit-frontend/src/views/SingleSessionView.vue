@@ -4,7 +4,7 @@ import SessionCard from '@/components/SessionCard.vue';
 import SessionCreationSuccessModal from '@/components/SessionCreationSuccessModal.vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
 import { useSessionStore } from '@/stores/sessionStore';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const registrationStore = useRegistrationStore();
@@ -36,10 +36,10 @@ onBeforeMount(async () => {
 });
 
 const handleRegister = async () => {
-    console.log(registrationData.value); // Debugging
     try {
         const response = await registrationStore.createRegistration(registrationData.value);
         if (response) {
+            console.log("Registration successful");
             showSuccessModal.value = true;
             setTimeout(() => {
                 closeSuccessModalAndRedirect();

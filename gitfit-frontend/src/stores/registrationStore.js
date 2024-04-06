@@ -27,6 +27,7 @@ export const useRegistrationStore = defineStore({
         try {
             const response = await createRegistration(registrationData);
             this.registrations.push(response.data);
+            return true;
         } catch (error) {
             console.error(error);
         }
