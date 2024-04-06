@@ -16,12 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @SpringBootApplication
 public class GitFitApplication {
-
-	@Autowired
-	private SportCenterRepository sportCenterRepository;
-
-	private SportCenter sportCenter;
-
 	public static void main(String[] args) {
 		SpringApplication.run(GitFitApplication.class, args);
 	}

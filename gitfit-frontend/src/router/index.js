@@ -1,6 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import CreateSessionView from '../views/CreateSessionView.vue'
+import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
 import InstructorManagementView from '../views/InstructorManagementView.vue'
+import FitnessClassManagementView from '../views/FitnessClassManagementView.vue'
+import RegistrationView from '../views/RegistrationView.vue';
+import SportCenterManagementView from '../views/SportCenterManagementView.vue';
+
 
 
 
@@ -32,10 +38,36 @@ const router = createRouter({
     },
     {
       path: '/InstructorManagementView',
+      path: '/new-session',
+      name: 'SessionCreation',
+      component: CreateSessionView
+    },
+    {
+      path: '/new-fitness-class',
+      name: 'FitnessClasssCreation',
+      component: CreateFitnessClassView
+    },
+    {
+      path: '/instructors',
       name: 'InstructorManagement',
       component: InstructorManagementView
+    },
+    {
+      path: '/fitness-classes',
+      name: 'FitnessClassManagement',
+      component: FitnessClassManagementView
+    },
+    {
+      path: "/registrations",
+      name: "registrations",
+      component: RegistrationView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: SportCenterManagementView
     }
   ]
-})
+});
 
-export default router
+export default router;

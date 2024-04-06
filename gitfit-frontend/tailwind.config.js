@@ -10,10 +10,9 @@ export default {
         moodyblue: '#737CCF',
         linkwater: '#E1E5F8',
         persianblue: '#2218A7',
-        spindle: '#BBC4EB'
+        spindle: '#BBC4EB',
       }
     },
   },
   plugins: [],
 }
-

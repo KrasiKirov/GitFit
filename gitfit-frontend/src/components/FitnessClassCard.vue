@@ -1,36 +1,47 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps} from 'vue'
+import { updateFitnessClassStatus } from '@/api'
 
 const props = defineProps({
     fitnessClass: {
         type: Object,
         required: true
     }
-});
+})
+
+const emit = defineEmits(['update'])
+
+const approveClass = async () => {
+    await updateFitnessClassStatus(props.fitnessClass.name, 'APPROVED')
+    emit('update')
+}
+
+const rejectClass = async () => {
+    await updateFitnessClassStatus(props.fitnessClass.name, 'REJECTED')
+    emit('update')
+}
 </script>
 
 <template>
-    <div class="flex flex-col bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-3">
-        <div class="md:flex items-stretch">
-            <!-- rest of your template -->
-
-            <div class="md:flex-shrink-0">
-                <!-- You can replace this div with an image if you have one for each class -->
-                <div class="h-48 md:h-auto md:w-48 bg-blue-500"></div>
-            </div>
-            <div class="p-8">
-                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{{ fitnessClass.name
-                    }}
+    <div
+        class="overflow-hidden shadow-lg rounded-lg h-auto w-full md:w-full cursor-pointer m-auto transform transition-transform duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#" class="w-full block h-full">
+            <img :src="'https://source.unsplash.com/featured/?' + fitnessClass.name" alt="fitness class"
+                class="max-h-40 w-full object-cover rounded-t-lg transform transition-transform duration-500 hover:scale-110" />
+            <div class="bg-linkwater w-full p-8">
+                <p class="text-persianblue text-md font-medium">
+                    {{ fitnessClass.name }}
+                </p>
+                <p class="text-moodyblue text-xl font-medium mb-2">
+                    {{ fitnessClass.description }}
+                </p>
+                <div class="flex items-center mt-4">
+                    <font-awesome-icon icon="heart" class="text-red-500 mr-4 cursor-pointer text-2xl"
+                        @click="approveClass" />
+                    <font-awesome-icon icon="thumbs-down" class="text-gray-500 cursor-pointer text-2xl"
+                        @click="rejectClass" />
                 </div>
-                <p class="block mt-1 text-lg leading-tight font-medium text-black">{{ fitnessClass.description
-                    }}</p>
-                <p class="mt-2 text-gray-500">Status: {{ fitnessClass.status }}</p>
             </div>
-
-        </div>
+        </a>
     </div>
 </template>
-
-
-
-<style scoped></style>

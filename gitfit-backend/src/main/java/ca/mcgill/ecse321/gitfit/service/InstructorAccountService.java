@@ -8,11 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
+import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Session;
 
 /**
  * This class is responsible for handling instructor account operations
@@ -26,10 +30,22 @@ public class InstructorAccountService {
     private InstructorRepository instructorRepository;
 
     @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private SportCenterService sportCenterService;
 
     @Autowired
     private ValidatorService validatorService;
+
+    @Autowired
+    private SessionRepository sessionRepository;
+
+    @Autowired
+    private SessionService sessionService;
 
     /**
      * Retrieve an instructor by username
@@ -86,9 +102,23 @@ public class InstructorAccountService {
 
         validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));
         validatorService.validate(new PasswordCheckDto(password));
-        Instructor checkExistenceInstructor = instructorRepository.findInstructorByUsername(username);
-        if (checkExistenceInstructor != null) {
-            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists.");
+
+        boolean usernameTaken = false;
+        String role = null;
+
+        if (customerRepository.findCustomerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "customer";
+        } else if (ownerRepository.findOwnerByUsername(username) != null) {
+            usernameTaken = true;
+            role = "owner";
+        } else if (instructorRepository.findInstructorByUsername(username) != null) {
+            usernameTaken = true;
+            role = "instructor";
+        }
+
+        if (usernameTaken) {
+            throw new SportCenterException(HttpStatus.BAD_REQUEST, "Username already exists as " + role + ".");
         }
 
         Instructor instructor = new Instructor(username, email, password, lastName, firstName,
@@ -126,6 +156,10 @@ public class InstructorAccountService {
      */
     public void deleteInstructor(String username) {
         Instructor instructor = getInstructor(username);
+        List<Session> sessions = sessionRepository.findByInstructor(instructor);
+        for (Session session : sessions) {
+            sessionService.deleteSession(session);
+        }
         instructorRepository.delete(instructor);
     }
 

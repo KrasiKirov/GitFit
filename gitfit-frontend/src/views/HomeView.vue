@@ -1,83 +1,36 @@
 <script setup>
 import FitnessClassCard from '@/components/FitnessClassCard.vue';
-import { ref, onMounted, computed } from 'vue';
-import { useStore } from '@/stores/store';
-
-const fitnessClassesTest = ref([
-    {
-        name: 'Yoga',
-        description: 'A class that focuses on flexibility and breathing exercises.',
-        status: 'active'
-    },
-    {
-        name: 'Zumba',
-        description: 'A class that focuses on dance and aerobic exercises.',
-        status: 'active'
-    },
-    {
-        name: 'Pilates',
-        description: 'A class that focuses on core strength and flexibility.',
-        status: 'active'
-    },
-    {
-        name: 'Kickboxing',
-        description: 'A class that combines martial arts and cardio exercises.',
-        status: 'active'
-    },
-    {
-        name: 'Spin',
-        description: 'A high-intensity cycling class.',
-        status: 'active'
-    },
-    {
-        name: 'Barre',
-        description: 'A class that combines ballet-inspired moves with elements of Pilates, dance, and yoga.',
-        status: 'active'
-    },
-    {
-        name: 'HIIT',
-        description: 'A high-intensity interval training class.',
-        status: 'active'
-    },
-    {
-        name: 'Piloxing',
-        description: 'A class that combines Pilates, boxing, and dance.',
-        status: 'active'
-    },
-    {
-        name: 'Aerial Yoga',
-        description: 'A class that combines traditional yoga poses with aerial arts.',
-        status: 'active'
-    },
-    {
-        name: 'Bootcamp',
-        description: 'A class that combines strength training and cardiovascular exercises.',
-        status: 'active'
-    },
-    {
-        name: 'Pound',
-        description: 'A class that combines cardio, conditioning, and strength training with drumming.',
-        status: 'active'
-    },
-    {
-        name: 'TRX',
-        description: 'A class that uses suspension straps for a full-body workout.',
-        status: 'active'
-    }
-]);
+import { onMounted, computed } from 'vue';
+import { useStore } from '@/stores/fitnessClassStore';
 
 const store = useStore();
 
 onMounted(async () => {
-    await store.fetchAndSetFitnessClasses();
+    await store.fetchAndSetPendingFitnessClasses();
 });
 
-const fitnessClasses = computed(() => store.fitnessClasses);
+const fitnessClasses = computed(() => store.pendingFitnessClasses);
+
+const refreshClasses = async () => {
+    await store.fetchAndSetPendingFitnessClasses();
+}
 </script>
 
 <template>
-    <h1 class="text-3xl font-semibold text-center my-8">Good morning, ???</h1>
-    <div class="grid grid-cols-3 gap-4">
-        <FitnessClassCard v-for="fclass in fitnessClasses" :key="fclass.name" :fitnessClass="fclass" />
+    <div class="bg-gradient-to-r from-persianblue via-moodyblue to-spindle text-white text-center py-20">
+        <h1 class="text-6xl font-bold">Good morning</h1>
+    </div>
+    <div class="grid grid-cols-3 gap-8 p-8">
+        <FitnessClassCard v-for="fclass in fitnessClasses" :key="fclass.name" :fitnessClass="fclass"
+            @update="refreshClasses"
+            class="transform transition-transform duration-500 hover:scale-105 bg-linkwater rounded-lg shadow-md" />
     </div>
 </template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+</style>
