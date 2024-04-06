@@ -30,6 +30,7 @@ export function updateFitnessClassStatus(name, status) {
             'Content-Type': 'application/json'
         }
     });
+}
 
 export function fetchSessions() {
     return AXIOS.get('/sessions/');
@@ -37,6 +38,7 @@ export function fetchSessions() {
 
 export function createSession(sessionData) {
     return AXIOS.post('/sessions/', sessionData)
+}
 
 export function fetchSessionBySessionId(sessionId) {
     return AXIOS.get('/sessions/' + sessionId);

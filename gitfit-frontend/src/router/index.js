@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import CreateSessionView from '../views/CreateSessionView.vue'
 import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
-import InstructorManagementView from '../views/InstructorManagementView.vue'
 import InstructorManagementView from '../views/InstructorManagementView.vue';
 import RegistrationView from '../views/RegistrationView.vue';
 import SportCenterManagementView from '../views/SportCenterManagementView.vue';
@@ -26,17 +25,17 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/SessionCreation',
+      path: '/new-session',
       name: 'SessionCreation',
       component: CreateSessionView
     },
     {
-      path: '/FitnessClassCreation',
+      path: '/new-fitness-class',
       name: 'FitnessClasssCreation',
       component: CreateFitnessClassView
     },
     {
-      path: '/InstructorManagementView',
+      path: '/instructors',
       name: 'InstructorManagement',
       component: InstructorManagementView
     },
@@ -46,8 +45,8 @@ const router = createRouter({
       component: RegistrationView
     },
     {
-      path: '/SportCenterManagement',
-      name: 'SportCenterManagement',
+      path: '/about',
+      name: 'about',
       component: SportCenterManagementView
     }
   ]
