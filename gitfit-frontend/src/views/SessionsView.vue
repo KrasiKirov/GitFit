@@ -6,6 +6,7 @@ import TimePicker from '@/components/TimePicker.vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useStore } from '@/stores/fitnessClassStore';
+import { useRouter } from 'vue-router';
 
 var filters = ref();
 var selectedInstructor = ref('');
@@ -33,15 +34,17 @@ onMounted(async () => {
 
 var sessions = computed(() => sessionStore.sessions);
 
-var instructorLookup = computed(() => {
-    var lookup = {};
-    instructorStore.instructors.forEach(instructor => {
-        lookup[instructor.username] = instructor;
-    });
-    return lookup;
-});
+var instructorLookup = computed(() => instructorStore.instructorLookup);
 var instructors = computed(() => instructorStore.instructors);
 var fitnessClasses = computed(() => store.fitnessClasses);
+
+const router = useRouter();
+
+const selectSession = async (session) => {
+    await sessionStore.fetchAndSetSessionById(session.id);
+    console.log(sessionStore.session)
+    router.push({ name: 'SessionDetails', params: { id: session.id } });
+}
 
 // updates the filtered sessions when any of the filters change
 watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDate, selectedEndDate, selectedStartTime, selectedEndTime],
@@ -221,7 +224,7 @@ const updatePrice = (event) => {
             <tbody>
                 <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                     v-for="session in sortedAndFilteredSessions" :key="session.id"
-                    @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
+                    @click="selectSession(session)"
                     style="cursor: pointer;">
                     <td class="px-6 py-4">{{ session.id }}</td>
                     <td class="px-6 py-4">{{ session.date }}</td>
