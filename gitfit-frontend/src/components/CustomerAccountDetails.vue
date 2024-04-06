@@ -103,10 +103,6 @@ import { defineEmits, ref } from 'vue';
 const emit = defineEmits(['editBilling', 'editPassword']);
 const customerStore = useCustomerStore();
 const billingStore = useBillingStore();
-// onMounted(() => {
-//     customerStore.updateCustomerFromLocalStorage();
-//     // billingStore.getBilling();
-// });
 
 const customer = computed(() => customerStore.customer);
 const billing = computed(() => billingStore.billing);

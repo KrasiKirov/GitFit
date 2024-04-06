@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { createInstructor } from '@/api';
+import { createInstructor, fetchInstructors } from '@/api';
 
 export const useInstructorStore = defineStore({
     id: 'instructor',
@@ -13,6 +13,7 @@ export const useInstructorStore = defineStore({
                 const response = await createInstructor(instructor);
                 console.log("no error in creating instructor");
                 localStorage.setItem('instructor', JSON.stringify(response.data));
+                localStorage.setItem('userType', 'instructor');
                 this.updateInstructorFromLocalStorage();
                 // this.instructor = response.data;
                 console.log(this.instructor);
@@ -37,6 +38,16 @@ export const useInstructorStore = defineStore({
         },
         updateInstructorFromLocalStorage() {
             this.instructor = JSON.parse(localStorage.getItem('instructor'))||null;
+        },
+        async fetchAndSetInstructor(username) {
+            try {
+                const response = await fetchInstructor(username);
+                localStorage.setItem('instructor', JSON.stringify(response.data));
+                localStorage.setItem('userType', 'instructor');
+                this.updateInstructorFromLocalStorage();
+            } catch (error) {
+                console.error(error);
+            }
         },
         async fetchInstructors() {
             try {

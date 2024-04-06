@@ -5,7 +5,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" action="#" method="POST" @submit.prevent="login">
           <div>
             <label for="signinUsername" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
@@ -36,7 +36,52 @@
     </div>
   </template>
 
-<script>
+<script setup>
+import { checkLogin } from '@/api';
+import { defineEmits } from 'vue';
+import { useCustomerStore } from '@/stores/customerStore';
+import { useInstructorStore } from '@/stores/instructorStore';
+import { useOwnerStore } from '@/stores/ownerStore';
+import { useStore } from '@/stores/store';
+import router from '@/router';
+
+
+const emit = defineEmits(['updateForm']);
+
+const updateForm = () => {
+    emit('updateForm');
+};
+
+const login = async () => {
+    localStorage.clear();
+    const store = useStore();
+    const username = signinUsername.value;
+    const password = signinPassword.value;
+    const response = await store.checkLogin(username, password);
+    if (response.status === 200 && response.data.status === true) {
+        if (response.data.role === 'customer') {
+            const customerStore = useCustomerStore();
+            customerStore.fetchAndSetCustomer(username);
+            console.log("Customer login successful");
+        } else if (response.data.role === 'instructor') {
+            const instructorStore = useInstructorStore();
+            instructorStore.fetchAndSetInstructor(username);
+            console.log("Instructor login successful");
+        } else if (response.data.role === 'owner') {
+            const ownerStore = useOwnerStore();
+            ownerStore.fetchAndSetOwner();
+            console.log("Owner login successful");
+        }
+        console.log("Login successful");
+        router.push('/');
+    } else {
+        console.log(response)
+        console.log("Login failed");
+    }
+}
+</script>
+
+<!-- <script>
 export default {
     data() {
         return {
@@ -49,10 +94,8 @@ export default {
             this.$emit('updateForm');
         },
         login() {
-            // Perform login logic here
-            // Example: make an API call to authenticate the user
-            // and redirect to the dashboard on success
+            
         }
     }
 }
-</script>
+</script> -->

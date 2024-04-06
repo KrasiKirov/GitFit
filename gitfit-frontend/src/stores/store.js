@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fetchFitnessClasses, createCustomer } from '../api.js'; // Update the import route to api.js
+import { fetchFitnessClasses, createCustomer, checkLogin } from '../api.js'; // Update the import route to api.js
 
 export const useStore = defineStore({
     id: 'main',
@@ -17,15 +17,13 @@ export const useStore = defineStore({
                 console.error(error);
             }
         },
-        // async createCustomer(customer) {
-        //     try {
-        //         console.log('Creating customer', customer);
-        //         const response = await createCustomer(customer);
-        //         this.loggedInUser = response.data.username;
-        //         console.log(this.response.username);
-        //     } catch (error) {
-        //         console.error(error);
-        //     }
-        // }
+        async checkLogin(username, password) {
+            try {
+                const response = await checkLogin(username, password);
+                return response;
+            } catch (error) {
+                return error.response;
+            }
+        }
     },
 });

@@ -12,15 +12,26 @@ export function fetchFitnessClasses() {
     return AXIOS.get('/fitnessclasses');
 }
 
+export function checkLogin(username, password) {
+    return AXIOS.get('/login', { username: username, password: password });
+}
+
+export function fetchOwner() {
+    return AXIOS.get(`/owner`);
+}
+
 export function createCustomer(customer) {
     console.log("entereing api.js");
     return AXIOS.post('/customer', customer);
 }
 
+export function fetchCustomer(username) {
+    return AXIOS.get(`/customer/${username}`);
+}
+
 export function updateCustomerPassword(password) {
     console.log("entereing api.js");
     return AXIOS.put(`/customer/password`, password);
-    console.log("exiting api.js");
 }
 
 export function createBilling(billing) {
@@ -46,6 +57,10 @@ export function createInstructor(instructor) {
 
 export function fetchInstructors() {
     return AXIOS.get('/instructors/');
+}
+
+export function fetchInstructor(username) {
+    return AXIOS.get(`/instructor/${username}`);
 }
 
 export function deleteInstructor(username) {
