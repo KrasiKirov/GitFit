@@ -124,41 +124,43 @@ const updatePrice = (event) => {
     <div class="min-h-screen bg-linkwater pt-12 pb-8 px-4 sm:px-6 lg:px-8">
         <!-- title -->
         <h1 class="text-4xl text-center font-bold text-persianblue mb-5 ">
-        Sessions List
+            Sessions List
         </h1>
         <!-- filters -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto mb-4">
             <!-- left side of filters -->
             <div class="justify-center items-center md:items-start">
                 <label for="dates" class="text-sm font-medium text-gray-700">Date Range</label>
-                <DatePicker @update-dates="updateDates" id="dates"/>
+                <DatePicker class="z-10" @update-dates="updateDates" id="dates" />
                 <label for="start" class="text-sm font-medium text-gray-700">Start Time</label>
-                <TimePicker @update-time="updateStartTime" id="start"/>
+                <TimePicker class="z-10" @update-time="updateStartTime" id="start" />
                 <label for="end" class="text-sm font-medium text-gray-700">End Time</label>
-                <TimePicker @update-time="updateEndTime" id="end"/>
+                <TimePicker class="z-10" @update-time="updateEndTime" id="end" />
             </div>
             <!-- right side of filters -->
             <div class="flex flex-col justify-center h-full">
                 <label for="fclass" class="text-sm font-medium text-gray-700">Fitness Class</label>
                 <!-- dropdown menu for fitness class -->
                 <select id="fclass" v-model="selectedFitnessClass"
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
                     <option disabled value="">Filter by Fitness Class</option>
                     <option value="">No Filter</option>
-                    <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}</option>
+                    <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}
+                    </option>
                 </select>
                 <!-- dropdown menu for instructor -->
                 <label for="instructor" class="text-sm font-medium text-gray-700">Instructor</label>
                 <select id="instructor" v-model="selectedInstructor"
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
                     <option disabled value="">Filter by Instructor</option>
                     <option value="">No Filter</option>
-                    <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}</option>
+                    <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}
+                    </option>
                 </select>
                 <!-- input for max price -->
                 <label for="price" class="text-sm font-medium text-gray-700">Max Price</label>
-                <input id="price" type="number" @keyup.enter="updatePrice" placeholder="Max Price" 
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50"/>
+                <input id="price" type="number" @keyup.enter="updatePrice" placeholder="Max Price"
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
             </div>
         </div>
         <!-- sorting -->
@@ -182,30 +184,29 @@ const updatePrice = (event) => {
         <!-- sessions table -->
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-moodyblue dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">ID</th>
-                <th scope="col" class="px-6 py-3">Date</th>
-                <th scope="col" class="px-6 py-3">Start Time</th>
-                <th scope="col" class="px-6 py-3">End Time</th>
-                <th scope="col" class="px-6 py-3">Price</th>
-                <th scope="col" class="px-6 py-3">Instructor</th>
-                <th scope="col" class="px-6 py-3">Fitness Class</th>
-            </tr>
+                <tr>
+                    <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">Date</th>
+                    <th scope="col" class="px-6 py-3">Start Time</th>
+                    <th scope="col" class="px-6 py-3">End Time</th>
+                    <th scope="col" class="px-6 py-3">Price</th>
+                    <th scope="col" class="px-6 py-3">Instructor</th>
+                    <th scope="col" class="px-6 py-3">Fitness Class</th>
+                </tr>
             </thead>
             <tbody>
-            <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-            v-for="session in sortedAndFilteredSessions" :key="session.id"
-            @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
-            style="cursor: pointer;"
-            >
-                <td class="px-6 py-4">{{ session.id }}</td>
-                <td class="px-6 py-4">{{ session.date }}</td>
-                <td class="px-6 py-4">{{ session.startTime }}</td>
-                <td class="px-6 py-4">{{ session.endTime }}</td>
-                <td class="px-6 py-4">{{ session.price }}</td>
-                <td class="px-6 py-4">{{ session.instructorUsername }}</td>
-                <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
-            </tr>
+                <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    v-for="session in sortedAndFilteredSessions" :key="session.id"
+                    @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
+                    style="cursor: pointer;">
+                    <td class="px-6 py-4">{{ session.id }}</td>
+                    <td class="px-6 py-4">{{ session.date }}</td>
+                    <td class="px-6 py-4">{{ session.startTime }}</td>
+                    <td class="px-6 py-4">{{ session.endTime }}</td>
+                    <td class="px-6 py-4">{{ session.price }}</td>
+                    <td class="px-6 py-4">{{ session.instructorUsername }}</td>
+                    <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
+                </tr>
             </tbody>
         </table>
     </div>

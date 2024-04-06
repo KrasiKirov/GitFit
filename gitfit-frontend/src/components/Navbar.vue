@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-white border-gray-200 dark:bg-gray-900 sticky top-0">
+    <nav class="bg-white border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
         <div class="flex flex-wrap items-center justify-between p-4">
             <router-link to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="@/assets/gradlesus.svg" class="h-8" alt="Flowbite Logo" />
