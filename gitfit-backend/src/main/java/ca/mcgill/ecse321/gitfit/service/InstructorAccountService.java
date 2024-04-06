@@ -11,10 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
 import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
 import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Session;
 
 /**
  * This class is responsible for handling instructor account operations
@@ -38,6 +40,12 @@ public class InstructorAccountService {
 
     @Autowired
     private ValidatorService validatorService;
+
+    @Autowired
+    private SessionRepository sessionRepository;
+
+    @Autowired
+    private SessionService sessionService;
 
     /**
      * Retrieve an instructor by username
@@ -148,6 +156,10 @@ public class InstructorAccountService {
      */
     public void deleteInstructor(String username) {
         Instructor instructor = getInstructor(username);
+        List<Session> sessions = sessionRepository.findByInstructor(instructor);
+        for (Session session : sessions) {
+            sessionService.deleteSession(session);
+        }
         instructorRepository.delete(instructor);
     }
 

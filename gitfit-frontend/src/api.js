@@ -16,6 +16,12 @@ export function fetchFitnessClasses() {
 }
 
 
+export function deleteFitnessClass(name) {
+    const encodedName = encodeURIComponent(name);
+    return AXIOS.delete(`/fitnessclasses/${encodedName}`);
+}
+
+
 export function fetchApprovedFitnessClasses() {
     return AXIOS.get('/fitnessclasses/approved');
 }
@@ -64,8 +70,12 @@ export function fetchInstructors() {
 }
 
 export function deleteInstructor(username) {
-    return AXIOS.delete('/instructor/', { data: { username: username }, headers: { 'Content-Type': 'application/json' } });
+    return AXIOS.delete('/instructor/', { 
+        data: username,
+        headers: { 'Content-Type': 'text/plain' }
+    });
 }
+
 
 export function fetchSportCenter() {
     return AXIOS.get('/sportcenter');
@@ -93,3 +103,4 @@ export function updateSportCenterHours(openingTime, closingTime) {
         headers: { 'Content-Type': 'application/json' }
     });
 }
+
