@@ -27,9 +27,9 @@ const rejectClass = async () => {
         class="overflow-hidden shadow-lg rounded-lg h-auto w-full md:w-full cursor-pointer m-auto transform transition-transform duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#" class="w-full block h-full">
             <img :src="'https://source.unsplash.com/featured/?' + fitnessClass.name" alt="fitness class"
-                class="max-h-40 w-full object-cover rounded-t-lg transform transition-transform duration-500 hover:scale-110" />
+                class="max-h-80 w-full object-cover rounded-t-lg transform transition-transform duration-500 hover:scale-110" />
             <div class="bg-linkwater w-full p-8">
-                <p class="text-persianblue text-md font-medium">
+                <p class="text-persianblue text-2xl font-medium">
                     {{ fitnessClass.name }}
                 </p>
                 <p class="text-moodyblue text-xl font-medium mb-2">
