@@ -16,6 +16,8 @@ var selectedEndDate = ref('');
 var selectedStartTime = ref('');
 var selectedEndTime = ref('');
 
+
+
 const sortAttribute = ref('id');
 const sortDirection = ref('asc');
 
@@ -30,47 +32,55 @@ onMounted(async () => {
 });
 
 var sessions = computed(() => sessionStore.sessions);
+
+var instructorLookup = computed(() => {
+    var lookup = {};
+    instructorStore.instructors.forEach(instructor => {
+        lookup[instructor.username] = instructor;
+    });
+    return lookup;
+});
 var instructors = computed(() => instructorStore.instructors);
 var fitnessClasses = computed(() => store.fitnessClasses);
 
 // updates the filtered sessions when any of the filters change
 watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDate, selectedEndDate, selectedStartTime, selectedEndTime],
-async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTime, newEndTime]) => {
-    filters.value = {
-        'instructorUsername': newInstructor,
-        'fitnessClassName': newFClass,
-        'maxPrice': newPrice,
-        'startDate': newStartDate,
-        'endDate': newEndDate,
-        'startTime': newStartTime,
-        'endTime': newEndTime
-    };
-    console.log(filters.value);
-    var params = '';
-    if (newInstructor !== '') {
-        params += `instructorUsername=${newInstructor}&`;
-    }
-    if (newFClass !== '') {
-        params += `fitnessClassName=${newFClass}&`;
-    }
-    if (newPrice !== '') {
-        params += `maxPrice=${newPrice}&`;
-    }
-    if (newStartDate !== '') {
-        params += `startDate=${newStartDate}&`;
-    }
-    if (newEndDate !== '') {
-        params += `endDate=${newEndDate}&`;
-    }
-    if (newStartTime !== '') {
-        params += `startTime=${newStartTime}&`;
-    }
-    if (newEndTime !== '') {
-        params += `endTime=${newEndTime}&`;
-    }
-    await sessionStore.fetchAndSetFilteredSessions(params);
-    sessions = computed(() => sessionStore.sessions);
-});
+    async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTime, newEndTime]) => {
+        filters.value = {
+            'instructorUsername': newInstructor,
+            'fitnessClassName': newFClass,
+            'maxPrice': newPrice,
+            'startDate': newStartDate,
+            'endDate': newEndDate,
+            'startTime': newStartTime,
+            'endTime': newEndTime
+        };
+        console.log(filters.value);
+        var params = '';
+        if (newInstructor !== '') {
+            params += `instructorUsername=${newInstructor}&`;
+        }
+        if (newFClass !== '') {
+            params += `fitnessClassName=${newFClass}&`;
+        }
+        if (newPrice !== '') {
+            params += `maxPrice=${newPrice}&`;
+        }
+        if (newStartDate !== '') {
+            params += `startDate=${newStartDate}&`;
+        }
+        if (newEndDate !== '') {
+            params += `endDate=${newEndDate}&`;
+        }
+        if (newStartTime !== '') {
+            params += `startTime=${newStartTime}&`;
+        }
+        if (newEndTime !== '') {
+            params += `endTime=${newEndTime}&`;
+        }
+        await sessionStore.fetchAndSetFilteredSessions(params);
+        sessions = computed(() => sessionStore.sessions);
+    });
 
 const sortAttributes = ref([
     { value: 'id', label: 'ID' },
@@ -102,16 +112,29 @@ const toggleSortDirection = () => {
 }
 
 const updateDates = (dates) => {
-    selectedStartDate.value = dates[0].toISOString().slice(0, 10)
-    selectedEndDate.value = dates[1].toISOString().slice(0, 10)
+    if (dates === null) {
+        selectedStartDate.value = ''
+        selectedEndDate.value = ''
+    } else {
+        selectedStartDate.value = dates[0].toISOString().slice(0, 10)
+        selectedEndDate.value = dates[1].toISOString().slice(0, 10)
+    }
 }
 
 const updateStartTime = (time) => {
-    selectedStartTime.value = time
+    if (time === null) {
+        selectedStartTime.value = ''
+    } else {
+        selectedStartTime.value = time
+    }
 }
 
 const updateEndTime = (time) => {
-    selectedEndTime.value = time
+    if (time === null) {
+        selectedEndTime.value = ''
+    } else {
+        selectedEndTime.value = time
+    }
 }
 
 const updatePrice = (event) => {
@@ -131,11 +154,11 @@ const updatePrice = (event) => {
             <!-- left side of filters -->
             <div class="justify-center items-center md:items-start">
                 <label for="dates" class="text-sm font-medium text-gray-700">Date Range</label>
-                <DatePicker class="z-10" @update-dates="updateDates" id="dates" />
+                <DatePicker class="z-3" @update-dates="updateDates" id="dates" placeholder="Select date range" />
                 <label for="start" class="text-sm font-medium text-gray-700">Start Time</label>
-                <TimePicker class="z-10" @update-time="updateStartTime" id="start" />
+                <TimePicker class="z-2" @update-time="updateStartTime" id="start" placeholder="Select start time" />
                 <label for="end" class="text-sm font-medium text-gray-700">End Time</label>
-                <TimePicker class="z-10" @update-time="updateEndTime" id="end" />
+                <TimePicker class="z-1" @update-time="updateEndTime" id="end" placeholder="Select end time" />
             </div>
             <!-- right side of filters -->
             <div class="flex flex-col justify-center h-full">
@@ -154,7 +177,8 @@ const updatePrice = (event) => {
                     class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
                     <option disabled value="">Filter by Instructor</option>
                     <option value="">No Filter</option>
-                    <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}
+                    <option v-for="instructor in instructors" :key="instructor.username" :value="instructor.username">{{
+                        instructor.firstName + ' ' + instructor.lastName }}
                     </option>
                 </select>
                 <!-- input for max price -->
@@ -204,7 +228,11 @@ const updatePrice = (event) => {
                     <td class="px-6 py-4">{{ session.startTime }}</td>
                     <td class="px-6 py-4">{{ session.endTime }}</td>
                     <td class="px-6 py-4">{{ session.price }}</td>
-                    <td class="px-6 py-4">{{ session.instructorUsername }}</td>
+                    <td class="px-6 py-4">{{
+                        (instructorLookup[session.instructorUsername] || {}).firstName
+                        + ' '
+                        + (instructorLookup[session.instructorUsername] || {}).lastName
+                    }}</td>
                     <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
                 </tr>
             </tbody>
@@ -214,6 +242,6 @@ const updatePrice = (event) => {
 
 <style scoped>
 .sort-dropdown {
-  margin-right: 1rem;
+    margin-right: 1rem;
 }
 </style>

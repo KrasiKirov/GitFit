@@ -5,6 +5,7 @@ export const useInstructorStore = defineStore({
   id: 'instructors',
   state: () => ({
     instructors: [],
+    instructorLookup: {},
   }),
   actions: {
     async fetchInstructors() {
