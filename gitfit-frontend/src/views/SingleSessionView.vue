@@ -6,19 +6,20 @@ import { ref, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useRegistrationStore } from '@/stores/registrationStore';
 import { useCustomerStore } from '@/stores/customerStore';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const sessionStore = useSessionStore();
 const customerStore = useCustomerStore();
 const registrationStore = useRegistrationStore();
 const router = useRouter();
+const route = useRoute();
 const showSuccessModal = ref(false);
 const showModal = ref(false);
 const errorMessage = ref('');
 const message = ref('Session registered successfully.');
 
 // onMounted(async () => {
-//     await sessionStore.fetchAndSetSessionById(router.params.id);
+//     await sessionStore.fetchAndSetSessionById(route.params.id);
 // });
 
 const session = computed(() => sessionStore.session);
