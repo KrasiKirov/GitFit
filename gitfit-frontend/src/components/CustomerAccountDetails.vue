@@ -1,4 +1,5 @@
 <template>
+    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
     <div class="flex min-h-full flex-col justify-center items-center ">
         <div class="flex flex-col min-h-screen items-center">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -100,6 +101,10 @@ import { useBillingStore } from '@/stores/billingStore';
 import { useOwnerStore } from '@/stores/ownerStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { defineEmits, ref } from 'vue';
+import ErrorModal from '@/components/ErrorModal.vue';
+
+const showModal = ref(false);
+const errorMessage = ref('');
 
 const emit = defineEmits(['editBilling', 'editPassword']);
 const customerStore = useCustomerStore();
@@ -157,6 +162,14 @@ const deleteBilling = async () => {
     console.log("inside deleteBilling of accountview");
     console.log(customer.username);
     const response = await billingStore.deleteBilling(customer.username);
+    if (response.status === 200) {
+        console.log("Billing deleted");
+        billingStore.billing = null;
+    } else {
+        errorMessage.value = response.data.errors[0];
+        showModal.value = true;
+        console.log("Billing not deleted");
+    }
     console.log(response);
 
 

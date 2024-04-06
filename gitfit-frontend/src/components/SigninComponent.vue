@@ -1,4 +1,5 @@
 <template>
+    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-32 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
@@ -38,14 +39,17 @@
 
 <script setup>
 import { checkLogin } from '@/api';
-import { defineEmits } from 'vue';
+import { defineEmits, ref } from 'vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useOwnerStore } from '@/stores/ownerStore';
 import { useStore } from '@/stores/store';
 import router from '@/router';
+import ErrorModal from '@/components/ErrorModal.vue';
 
 
+const showModal = ref(false);
+const errorMessage = ref('');
 const emit = defineEmits(['updateForm']);
 
 const updateForm = () => {
@@ -76,6 +80,13 @@ const login = async () => {
         console.log("Login successful");
         router.push('/');
     } else {
+        if (response.data.errors) {
+            errorMessage.value = response.data.errors[0];
+        } else {
+            errorMessage.value = "Authentication failed. Please try again.";
+        }
+        //errorMessage.value = response.data.errors[0];
+        showModal.value = true;
         console.log(response)
         console.log("Login failed");
     }

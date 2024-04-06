@@ -1,11 +1,12 @@
 <template>
+    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />    
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-32 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create your account</h2>
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST" @submit.prevent="login">
+        <form class="space-y-6" action="#" method="POST" @submit.prevent="signup">
           <div>
             <label for="customerSignupEmail" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
@@ -58,9 +59,12 @@
 
 <script setup>
 import router from '@/router';
+import ErrorModal from '@/components/ErrorModal.vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { defineEmits, ref } from 'vue';
 
+const showModal = ref(false);
+const errorMessage = ref('');
 const emit = defineEmits(['updateForm']);
 
 const updateForm = () => {
@@ -69,7 +73,8 @@ const updateForm = () => {
 
 
 
-const login = async () => {
+const signup = async () => {
+    localStorage.clear();
     const customer = {
         email: customerSignupEmail.value,
         password: customerSignupPassword.value,
@@ -85,9 +90,10 @@ const login = async () => {
     console.log(customerStore.customer);
     if (response.status === 200) {
         console.log("Customer created successfully");
-        
         router.push('/');
     } else {
+        errorMessage.value = response.data.errors[0];
+        showModal.value = true;
         console.log("Not successful");
     }
     
@@ -107,8 +113,8 @@ export default {
       updateForm() {
         this.$emit('updateForm');
       },
-      login() {
-          // Perform login logic here
+      signup() {
+          // Perform signup logic here
           // Example: make an API call to authenticate the user
           // and redirect to the dashboard on success
       }

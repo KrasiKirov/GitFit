@@ -1,4 +1,5 @@
 <template>
+    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-32 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create new instructor account</h2>
@@ -54,8 +55,10 @@
 import router from '@/router';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { defineEmits, ref } from 'vue';
+import ErrorModal from '@/components/ErrorModal.vue';
 
-
+const showModal = ref(false);
+const errorMessage = ref('');
 
 const create = async () => {
     const instructor = {
@@ -75,6 +78,8 @@ const create = async () => {
         console.log("Instructor created successfully");
         router.push('/');
     } else {
+        errorMessage.value = response.data.errors[0];
+        showModal.value = true;
         console.log("Not successful");
     }
     
