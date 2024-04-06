@@ -1,6 +1,5 @@
 <script setup>
 import InstructorCard from '@/components/InstructorCard.vue';
-import OwnerNavbar from '@/components/OwnerNavbar.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useInstructorStore } from '@/stores/instructorStore'
 
