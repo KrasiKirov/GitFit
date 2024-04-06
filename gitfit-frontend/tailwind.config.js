@@ -5,8 +5,14 @@ export default {
     './src/**/*.{js,jsx,ts,tsx,vue}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        moodyblue: '#737CCF',
+        linkwater: '#E1E5F8',
+        persianblue: '#2218A7',
+        spindle: '#BBC4EB',
+      }
+    },
   },
   plugins: [],
 }
-
