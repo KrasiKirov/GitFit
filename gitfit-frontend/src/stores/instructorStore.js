@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { createInstructor, fetchInstructors } from '@/api';
+import { createInstructor, fetchInstructors, fetchInstructor } from '@/api';
 
 export const useInstructorStore = defineStore({
     id: 'instructor',

@@ -72,7 +72,7 @@ const editAccount = () => {
 const createBilling = async () => {
     const customerStore = useCustomerStore();
     const billingStore = useBillingStore();
-    console.log(customerStore.getCustomer());
+    console.log(customerStore.customer);
     const billing = {
         country: billingCountry.value,
         state: billingState.value,

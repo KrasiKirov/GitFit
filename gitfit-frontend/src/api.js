@@ -13,7 +13,7 @@ export function fetchFitnessClasses() {
 }
 
 export function checkLogin(username, password) {
-    return AXIOS.get('/login', { username: username, password: password });
+    return AXIOS.post('/login', { username: username, password: password });
 }
 
 export function fetchOwner() {

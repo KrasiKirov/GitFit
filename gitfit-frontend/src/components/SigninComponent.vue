@@ -9,7 +9,7 @@
           <div>
             <label for="signinUsername" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
-              <input id="signinUsername" name="signinUsername" type="email" autocomplete="email" required="" class="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue focus:outline-none sm:text-sm sm:leading-6" />
+              <input id="signinUsername" name="signinUsername" type="text"  required="" class="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue focus:outline-none sm:text-sm sm:leading-6" />
             </div>
           </div>
   
@@ -58,16 +58,17 @@ const login = async () => {
     const username = signinUsername.value;
     const password = signinPassword.value;
     const response = await store.checkLogin(username, password);
-    if (response.status === 200 && response.data.status === true) {
-        if (response.data.role === 'customer') {
+    console.log(response);
+    if (response.status === 200 && response.data.success === true) {
+        if (response.data.role === 'Customer') {
             const customerStore = useCustomerStore();
             customerStore.fetchAndSetCustomer(username);
             console.log("Customer login successful");
-        } else if (response.data.role === 'instructor') {
+        } else if (response.data.role === 'Instructor') {
             const instructorStore = useInstructorStore();
             instructorStore.fetchAndSetInstructor(username);
             console.log("Instructor login successful");
-        } else if (response.data.role === 'owner') {
+        } else if (response.data.role === 'Owner') {
             const ownerStore = useOwnerStore();
             ownerStore.fetchAndSetOwner();
             console.log("Owner login successful");

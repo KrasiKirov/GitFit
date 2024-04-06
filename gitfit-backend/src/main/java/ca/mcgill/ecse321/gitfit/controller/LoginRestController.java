@@ -1,10 +1,7 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.gitfit.dto.AccountLoginRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.AccountLoginResponseDto;
@@ -32,8 +29,9 @@ public class LoginRestController {
      * @param AccountLoginRequestDto
      * @return AccountLoginResponseDto
      */
-    @GetMapping(value = { "/login/", "/login" })
+    @PostMapping(value = { "/login/", "/login" })
     public AccountLoginResponseDto loginAccount(@RequestBody AccountLoginRequestDto loginRequest) {
+        System.out.println("reached backend");
         return loginService.login(loginRequest.getUsername(), loginRequest.getPassword());
     }
 
