@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.gitfit.controller;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,10 +87,27 @@ public class SessionRestController {
     @GetMapping(value = { "/sessions/filter", "/sessions/filter/" })
     public List<SessionDto> getFilteredSessions(@RequestParam(required = false) String instructorUsername,
             @RequestParam(required = false) String fitnessClassName, @RequestParam(required = false) Integer maxPrice,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time startTime,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") Time endTime) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") LocalTime startTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm:ss") LocalTime endTime) {
+        java.sql.Date sqlStartDate = null;
+        java.sql.Date sqlEndDate = null;
+        java.sql.Time sqlStartTime = null;
+        java.sql.Time sqlEndTime = null;
+
+        if (startDate != null) {
+            sqlStartDate = Date.valueOf(startDate);
+        }
+        if (endDate != null) {
+            sqlEndDate = Date.valueOf(endDate);
+        }
+        if (startTime != null) {
+            sqlStartTime = Time.valueOf(startTime);
+        }
+        if (endTime != null) {
+            sqlEndTime = Time.valueOf(endTime);
+        }
         Instructor instructor = null;
         FitnessClass fitnessClass = null;
         if (instructorUsername != null) {
@@ -97,8 +116,8 @@ public class SessionRestController {
         if (fitnessClassName != null) {
             fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);
         }
-        List<Session> sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice,
-                startDate, endDate, startTime, endTime);
+        List<Session> sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice, sqlStartDate,
+                sqlEndDate, sqlStartTime, sqlEndTime);
         return sessions.stream().map(this::convertToDto).toList();
     }
 
