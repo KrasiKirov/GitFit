@@ -1,7 +1,7 @@
 <script setup>
 import FitnessClassManagementCard from '@/components/FitnessClassManagementCard.vue';
 import { ref, onMounted, computed } from 'vue';
-import { useStore } from '@/stores/store';
+import { useStore } from '@/stores/fitnessClassStore';
 
 const store = useStore();
 

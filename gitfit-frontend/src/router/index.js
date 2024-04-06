@@ -42,7 +42,7 @@ const router = createRouter({
       component: InstructorManagementView
     },
     {
-      path: '/FitnessClassManagementView',
+      path: '/fitness-classes',
       name: 'FitnessClassManagement',
       component: FitnessClassManagementView
     },
