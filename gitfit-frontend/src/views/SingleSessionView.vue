@@ -17,6 +17,10 @@ const showModal = ref(false);
 const errorMessage = ref('');
 const message = ref('Session registered successfully.');
 
+// onMounted(async () => {
+//     await sessionStore.fetchAndSetSessionById(router.params.id);
+// });
+
 const session = computed(() => sessionStore.session);
 const customer = computed(() => customerStore.getCustomer());
 
