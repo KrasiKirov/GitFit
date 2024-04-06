@@ -9,16 +9,16 @@
         <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl class="sm:divide-y sm:divide-gray-200">
                 <div class="flex px-4 py-5 sm:px-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Basic Information
-                </h3>
-            </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Basic Information
+                    </h3>
+                </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">
                         First name
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ customer.firstName }}
+                        {{ user.firstName }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -26,7 +26,7 @@
                         Last name
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ customer.lastName }}
+                        {{ user.lastName }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -34,7 +34,7 @@
                         Email
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ customer.email }}
+                        {{ user.email }}
                     </dd>
                 </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -42,18 +42,18 @@
                         Username
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ customer.username }}
+                        {{ user.username }}
                     </dd>
                 </div>
                 <div class="flex px-4 py-5 sm:px-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Login Information
-                </h3>
-                <div class="flex px-8 items-center cursor-pointer" @click="editPassword">
-                    <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
-                    <div class="px-1">Edit</div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Login Information
+                    </h3>
+                    <div class="flex px-8 items-center cursor-pointer" @click="editPassword">
+                        <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
+                        <div class="px-1">Edit</div>
+                    </div>
                 </div>
-            </div>
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">
                         Password
@@ -62,20 +62,20 @@
                         <b>••••••••</b>
                     </dd>
                 </div>
-                <div class="flex px-4 py-5 sm:px-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Billing Information
-                </h3>
-                <div class="flex px-8 items-center cursor-pointer" @click="editBilling">
-                    <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
-                    <div class="px-1">Edit</div>
+                <div v-if="userType==='Customer'" class="flex px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Billing Information
+                    </h3>
+                    <div class="flex px-8 items-center cursor-pointer" @click="editBilling">
+                        <img src="../assets/edit.png" alt="edit" class="w-4 h-4">
+                        <div class="px-1">Edit</div>
+                    </div>
+                    <div v-if="billing" class="flex px-8 items-center cursor-pointer" @click="deleteBilling">
+                        <img src="../assets/remove.png" alt="edit" class="w-4 h-4">
+                        <div class="px-1">Remove</div>
+                    </div>
                 </div>
-                <div v-if="billing" class="flex px-8 items-center cursor-pointer" @click="deleteBilling">
-                    <img src="../assets/remove.png" alt="edit" class="w-4 h-4">
-                    <div class="px-1">Remove</div>
-                </div>
-            </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div v-if="userType==='Customer'" class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">
                         Card
                     </dt>
@@ -85,7 +85,6 @@
                     <dd v-else class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         No card on file
                     </dd>
-                    
                 </div>
             </dl>
         </div>
@@ -98,14 +97,51 @@
 import { onMounted, computed } from 'vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
+import { useOwnerStore } from '@/stores/ownerStore';
+import { useInstructorStore } from '@/stores/instructorStore';
 import { defineEmits, ref } from 'vue';
 
 const emit = defineEmits(['editBilling', 'editPassword']);
 const customerStore = useCustomerStore();
 const billingStore = useBillingStore();
+const ownerStore = useOwnerStore();
+const instructorStore = useInstructorStore();
 
-const customer = computed(() => customerStore.customer);
+// const customer = computed(() => customerStore.customer);
+// const instructor = computed(() => customerStore.instructor);
+// const owner = computed(() => customerStore.owner);
 const billing = computed(() => billingStore.billing);
+const userType = localStorage.getItem('userType');
+const user = computed(() => {
+    console.log(userType);
+    if (userType === 'Customer') {
+        console.log("inside accountviewcustomer");
+        return customerStore.customer;
+    } else if (userType === 'Instructor') {
+        console.log("inside accountviewinstructor");
+        return instructorStore.instructor;
+    } else if (userType === 'Owner') {
+        return ownerStore.owner;
+    }
+    return null;
+});
+
+
+// const userType = localStorage.getItem('userType');
+// console.log(userType);
+// const user = ref(null);
+// if (userType === 'Customer') {
+//     console.log("entered");
+//     user.value = customerStore.customer;
+// } else if (userType === 'Instructor') {
+//     user.value = instructorStore.instructor;
+// } else if (userType === 'Owner') {
+//     user.value = ownerStore.owner;
+// }
+// console.log("inside accountview");
+// console.log(user);
+
+
 
 const editBilling = () => {
     emit('editBilling');
@@ -116,10 +152,11 @@ const editPassword = () => {
 };
 
 const deleteBilling = async () => {
+    const customer = customerStore.customer;
     const billingStore = useBillingStore();
     console.log("inside deleteBilling of accountview");
-    console.log(customer.value.username);
-    const response = await billingStore.deleteBilling(customer.value.username);
+    console.log(customer.username);
+    const response = await billingStore.deleteBilling(customer.username);
     console.log(response);
 
 

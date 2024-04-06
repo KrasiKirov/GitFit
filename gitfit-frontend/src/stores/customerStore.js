@@ -11,7 +11,7 @@ export const useCustomerStore = defineStore({
             try {
                 const response = await fetchCustomer(username);
                 localStorage.setItem('customer', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'customer');
+                localStorage.setItem('userType', 'Customer');
                 this.updateCustomerFromLocalStorage();
             } catch (error) {
                 console.error(error);
@@ -23,7 +23,7 @@ export const useCustomerStore = defineStore({
                 const response = await createCustomer(customer);
                 console.log("no error in creating customer");
                 localStorage.setItem('customer', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'customer');
+                localStorage.setItem('userType', 'Customer');
                 this.updateCustomerFromLocalStorage();
                 // this.customer = response.data;
                 console.log(this.customer);

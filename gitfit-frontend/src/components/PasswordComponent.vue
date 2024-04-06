@@ -27,6 +27,8 @@
 
 <script setup>
 import { useCustomerStore } from '@/stores/customerStore';
+import { useInstructorStore } from '@/stores/instructorStore';
+import { useOwnerStore } from '@/stores/ownerStore';
 import { defineEmits, ref } from 'vue';
 
 const emit = defineEmits(['editAccount']);
@@ -37,19 +39,60 @@ const editAccount = () => {
 
 const updatePassword = async () => {
     const customerStore = useCustomerStore();
-    const password = {
-        password: newPassword.value,
-        username: customerStore.customer.username
+    const ownerStore = useOwnerStore();
+    const instructorStore = useInstructorStore();
+    const userType = localStorage.getItem('userType');
+    // const response = null;
+    // console.log(response);
+    if (userType === 'Customer') {
+        const password = {
+            password: newPassword.value,
+            username: customerStore.customer.username
+        }
+        const response = await customerStore.updateCustomerPassword(password);
+        console.log(response);
+        if (response.status===200) {
+            console.log("Password updated");
+            editAccount();
+        } else {
+            console.log("Password not updated");
+        }
+    } else if (userType === 'Owner') {
+        const password = {
+            password: newPassword.value,
+            username: ownerStore.owner.username
+        }
+        const response = await ownerStore.updateOwnerPassword(password);
+        console.log(response);
+        if (response.status===200) {
+            console.log("Password updated");
+            editAccount();
+        } else {
+            console.log("Password not updated");
+        }
+    } else if (userType === 'Instructor') {
+        const password = {
+            password: newPassword.value,
+            username: instructorStore.instructor.username
+        }
+        console.log(password);
+        const response = await instructorStore.updateInstructorPassword(password);
+        console.log(response);
+        if (response.status===200) {
+            console.log("Password updated");
+            editAccount();
+        } else {
+            console.log("Password not updated");
+        }
     }
-    const response = await customerStore.updateCustomerPassword(password);
-    console.log(response);
-    if (response.status===200) {
-        console.log("Password updated");
-        editAccount();
-    } else {
-        console.log("Password not updated");
-    }
-
+    //console.log(response);
+    //const response = await customerStore.updateCustomerPassword(password);
+    // if (response.status===200) {
+    //     console.log("Password updated");
+    //     editAccount();
+    // } else {
+    //     console.log("Password not updated");
+    // }
 }
 
 

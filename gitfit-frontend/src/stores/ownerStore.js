@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { fetchOwner } from '@/api';
+import { fetchOwner, updateOwnerPassword } from '@/api';
 
 
 export const useOwnerStore = defineStore({
@@ -12,14 +12,27 @@ export const useOwnerStore = defineStore({
             try {
                 const response = await fetchOwner();
                 localStorage.setItem('owner', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'owner');
+                localStorage.setItem('userType', 'Owner');
                 this.updateOwnerFromLocalStorage();
             } catch (error) {
                 console.error(error);
             }
         },
-        updateInstructorFromLocalStorage() {
-            this.instructor = JSON.parse(localStorage.getItem('instructor'))||null;
+        async updateOwnerPassword(password) {
+            try {
+                console.log('Updating owner password');
+                console.log(password);
+                const response = await updateOwnerPassword(password);
+                console.log(response)
+                localStorage.setItem('owner', JSON.stringify(response.data));
+                this.updateOwnerFromLocalStorage();
+                return response;
+            } catch (error) {
+                return error.response;
+            }
+        },
+        updateOwnerFromLocalStorage() {
+            this.instructor = JSON.parse(localStorage.getItem('owner'))||null;
         },
     }
 });

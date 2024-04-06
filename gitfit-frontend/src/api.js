@@ -20,6 +20,10 @@ export function fetchOwner() {
     return AXIOS.get(`/owner`);
 }
 
+export function updateOwnerPassword(password) {
+    return AXIOS.put('/owner/password', password);
+}
+
 export function createCustomer(customer) {
     console.log("entereing api.js");
     return AXIOS.post('/customer', customer);
@@ -61,6 +65,10 @@ export function fetchInstructors() {
 
 export function fetchInstructor(username) {
     return AXIOS.get(`/instructor/${username}`);
+}
+
+export function updateInstructorPassword(password) {
+    return AXIOS.put(`/instructor/password`, password);
 }
 
 export function deleteInstructor(username) {

@@ -1,10 +1,10 @@
 import {defineStore} from 'pinia';
-import { createInstructor, fetchInstructors, fetchInstructor } from '@/api';
+import { createInstructor, fetchInstructors, fetchInstructor, updateInstructorPassword } from '@/api';
 
 export const useInstructorStore = defineStore({
     id: 'instructor',
     state: () => ({
-        customer: JSON.parse(localStorage.getItem('instructor')) || null,
+        instructor: JSON.parse(localStorage.getItem('instructor')) || null,
     }),
     actions: {
         async createInstructor(instructor) {
@@ -13,7 +13,7 @@ export const useInstructorStore = defineStore({
                 const response = await createInstructor(instructor);
                 console.log("no error in creating instructor");
                 localStorage.setItem('instructor', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'instructor');
+                localStorage.setItem('userType', 'Instructor');
                 this.updateInstructorFromLocalStorage();
                 // this.instructor = response.data;
                 console.log(this.instructor);
@@ -24,11 +24,12 @@ export const useInstructorStore = defineStore({
                 return error.response;
             }
         },
-        async updateInstructorPassword(username, password) {
+        async updateInstructorPassword(password) {
             try {
                 console.log('Updating instructor password');
-                const response = await updateInstructorPassword(username, password);
-                console.log(response)
+                const response = await updateInstructorPassword(password);
+                console.log(response);
+                console.log("REACHED HERE");
                 localStorage.setItem('instructor', JSON.stringify(response.data));
                 this.updateInstructorFromLocalStorage();
                 return response;
@@ -43,7 +44,7 @@ export const useInstructorStore = defineStore({
             try {
                 const response = await fetchInstructor(username);
                 localStorage.setItem('instructor', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'instructor');
+                localStorage.setItem('userType', 'Instructor');
                 this.updateInstructorFromLocalStorage();
             } catch (error) {
                 console.error(error);
