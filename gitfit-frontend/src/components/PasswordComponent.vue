@@ -58,10 +58,12 @@ const updatePassword = async () => {
             console.log("Password not updated");
         }
     } else if (userType === 'Owner') {
-        const password = {
-            password: newPassword.value,
-            username: ownerStore.owner.username
-        }
+        // const password = {
+        //     password: newPassword.value,
+        //     username: ownerStore.owner.username
+        // }
+        const password = newPassword.value;
+        console.log(password);
         const response = await ownerStore.updateOwnerPassword(password);
         console.log(response);
         if (response.status===200) {

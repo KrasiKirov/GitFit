@@ -1,4 +1,5 @@
 <template>
+    <ErrorModal :show="showModal" :message="errorMessage" @update:show="showModal = $event" />
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-32 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Billing Information</h2>
@@ -57,10 +58,13 @@
 
 <script setup>
 import router from '@/router';
+import ErrorModal from '@/components/ErrorModal.vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
 import { defineEmits, ref } from 'vue';
 
+const showModal = ref(false);
+const errorMessage = ref('');
 const emit = defineEmits(['editAccount']);
 
 const editAccount = () => {
@@ -86,6 +90,9 @@ const createBilling = async () => {
         console.log("Billing created");
         editAccount();
     } else {
+        console.log(response.data.errors[0])
+        errorMessage.value = response.data.errors[0];
+        showModal.value = true;
         console.log("Billing not created");
     }
 

@@ -21,7 +21,13 @@ export function fetchOwner() {
 }
 
 export function updateOwnerPassword(password) {
-    return AXIOS.put('/owner/password', password);
+    console.log("entereing api.js");
+    console.log(password);
+    return AXIOS.put('/owner/password', password, {
+        headers: {
+            'Content-Type': 'text/plain'
+        }
+    });
 }
 
 export function createCustomer(customer) {
