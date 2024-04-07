@@ -121,6 +121,11 @@ router.beforeEach((to, from, next) => {
     console.log(localStorage.getItem('userType'));
     if (localStorage.getItem('userType') === 'Owner') {
         try {
+            const owner = localStorage.getItem('owner');
+            if (owner === null) {
+                localStorage.clear();
+                return false;
+            }
             const response = ownerStore.fetchAndSetOwner();
             return true;
         }   catch (error) {
