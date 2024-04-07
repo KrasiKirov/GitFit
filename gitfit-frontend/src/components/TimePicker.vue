@@ -12,14 +12,17 @@ const format = 'HH:mm';
 const emits = defineEmits(['update-time']);
 
 const handleTime = (time) => {
+  var formattedTime = '';
+  if (time !== null) {
     const { hours, minutes, seconds } = time;
     // Format hours, minutes, and seconds with leading zeros
     const formattedHours = hours.toString().padStart(2, '0');
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = seconds.toString().padStart(2, '0');
     // Concatenate the formatted values into the desired string format
-    const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-    emits('update-time', formattedTime);
+    formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+  emits('update-time', formattedTime);
 }
 
 </script>

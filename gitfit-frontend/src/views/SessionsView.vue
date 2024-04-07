@@ -6,6 +6,7 @@ import TimePicker from '@/components/TimePicker.vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useStore } from '@/stores/fitnessClassStore';
+import { useRouter } from 'vue-router';
 
 var filters = ref();
 var selectedInstructor = ref('');
@@ -15,6 +16,8 @@ var selectedStartDate = ref('');
 var selectedEndDate = ref('');
 var selectedStartTime = ref('');
 var selectedEndTime = ref('');
+
+
 
 const sortAttribute = ref('id');
 const sortDirection = ref('asc');
@@ -30,47 +33,57 @@ onMounted(async () => {
 });
 
 var sessions = computed(() => sessionStore.sessions);
+
+var instructorLookup = computed(() => instructorStore.instructorLookup);
 var instructors = computed(() => instructorStore.instructors);
 var fitnessClasses = computed(() => store.fitnessClasses);
 
+const router = useRouter();
+
+const selectSession = async (session) => {
+    await sessionStore.fetchAndSetSessionById(session.id);
+    console.log(sessionStore.session)
+    router.push({ name: 'SessionDetails', params: { id: session.id } });
+}
+
 // updates the filtered sessions when any of the filters change
 watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDate, selectedEndDate, selectedStartTime, selectedEndTime],
-async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTime, newEndTime]) => {
-    filters.value = {
-        'instructorUsername': newInstructor,
-        'fitnessClassName': newFClass,
-        'maxPrice': newPrice,
-        'startDate': newStartDate,
-        'endDate': newEndDate,
-        'startTime': newStartTime,
-        'endTime': newEndTime
-    };
-    console.log(filters.value);
-    var params = '';
-    if (newInstructor !== '') {
-        params += `instructorUsername=${newInstructor}&`;
-    }
-    if (newFClass !== '') {
-        params += `fitnessClassName=${newFClass}&`;
-    }
-    if (newPrice !== '') {
-        params += `maxPrice=${newPrice}&`;
-    }
-    if (newStartDate !== '') {
-        params += `startDate=${newStartDate}&`;
-    }
-    if (newEndDate !== '') {
-        params += `endDate=${newEndDate}&`;
-    }
-    if (newStartTime !== '') {
-        params += `startTime=${newStartTime}&`;
-    }
-    if (newEndTime !== '') {
-        params += `endTime=${newEndTime}&`;
-    }
-    await sessionStore.fetchAndSetFilteredSessions(params);
-    sessions = computed(() => sessionStore.sessions);
-});
+    async ([newInstructor, newFClass, newPrice, newStartDate, newEndDate, newStartTime, newEndTime]) => {
+        filters.value = {
+            'instructorUsername': newInstructor,
+            'fitnessClassName': newFClass,
+            'maxPrice': newPrice,
+            'startDate': newStartDate,
+            'endDate': newEndDate,
+            'startTime': newStartTime,
+            'endTime': newEndTime
+        };
+        console.log(filters.value);
+        var params = '';
+        if (newInstructor !== '') {
+            params += `instructorUsername=${newInstructor}&`;
+        }
+        if (newFClass !== '') {
+            params += `fitnessClassName=${newFClass}&`;
+        }
+        if (newPrice !== '') {
+            params += `maxPrice=${newPrice}&`;
+        }
+        if (newStartDate !== '') {
+            params += `startDate=${newStartDate}&`;
+        }
+        if (newEndDate !== '') {
+            params += `endDate=${newEndDate}&`;
+        }
+        if (newStartTime !== '') {
+            params += `startTime=${newStartTime}&`;
+        }
+        if (newEndTime !== '') {
+            params += `endTime=${newEndTime}&`;
+        }
+        await sessionStore.fetchAndSetFilteredSessions(params);
+        sessions = computed(() => sessionStore.sessions);
+    });
 
 const sortAttributes = ref([
     { value: 'id', label: 'ID' },
@@ -102,16 +115,29 @@ const toggleSortDirection = () => {
 }
 
 const updateDates = (dates) => {
-    selectedStartDate.value = dates[0].toISOString().slice(0, 10)
-    selectedEndDate.value = dates[1].toISOString().slice(0, 10)
+    if (dates === null) {
+        selectedStartDate.value = ''
+        selectedEndDate.value = ''
+    } else {
+        selectedStartDate.value = dates[0].toISOString().slice(0, 10)
+        selectedEndDate.value = dates[1].toISOString().slice(0, 10)
+    }
 }
 
 const updateStartTime = (time) => {
-    selectedStartTime.value = time
+    if (time === null) {
+        selectedStartTime.value = ''
+    } else {
+        selectedStartTime.value = time
+    }
 }
 
 const updateEndTime = (time) => {
-    selectedEndTime.value = time
+    if (time === null) {
+        selectedEndTime.value = ''
+    } else {
+        selectedEndTime.value = time
+    }
 }
 
 const updatePrice = (event) => {
@@ -124,41 +150,44 @@ const updatePrice = (event) => {
     <div class="min-h-screen bg-linkwater pt-12 pb-8 px-4 sm:px-6 lg:px-8">
         <!-- title -->
         <h1 class="text-4xl text-center font-bold text-persianblue mb-5 ">
-        Sessions List
+            Sessions List
         </h1>
         <!-- filters -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto mb-4">
             <!-- left side of filters -->
             <div class="justify-center items-center md:items-start">
                 <label for="dates" class="text-sm font-medium text-gray-700">Date Range</label>
-                <DatePicker @update-dates="updateDates" id="dates"/>
+                <DatePicker class="z-3" @update-dates="updateDates" id="dates" placeholder="Select date range" />
                 <label for="start" class="text-sm font-medium text-gray-700">Start Time</label>
-                <TimePicker @update-time="updateStartTime" id="start"/>
+                <TimePicker class="z-2" @update-time="updateStartTime" id="start" placeholder="Select start time" />
                 <label for="end" class="text-sm font-medium text-gray-700">End Time</label>
-                <TimePicker @update-time="updateEndTime" id="end"/>
+                <TimePicker class="z-1" @update-time="updateEndTime" id="end" placeholder="Select end time" />
             </div>
             <!-- right side of filters -->
             <div class="flex flex-col justify-center h-full">
                 <label for="fclass" class="text-sm font-medium text-gray-700">Fitness Class</label>
                 <!-- dropdown menu for fitness class -->
                 <select id="fclass" v-model="selectedFitnessClass"
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
                     <option disabled value="">Filter by Fitness Class</option>
                     <option value="">No Filter</option>
-                    <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}</option>
+                    <option v-for="fitnessClass in fitnessClasses" :key="fitnessClass.name">{{ fitnessClass.name }}
+                    </option>
                 </select>
                 <!-- dropdown menu for instructor -->
                 <label for="instructor" class="text-sm font-medium text-gray-700">Instructor</label>
                 <select id="instructor" v-model="selectedInstructor"
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50">
                     <option disabled value="">Filter by Instructor</option>
                     <option value="">No Filter</option>
-                    <option v-for="instructor in instructors" :key="instructor.username">{{ instructor.username }}</option>
+                    <option v-for="instructor in instructors" :key="instructor.username" :value="instructor.username">{{
+                        instructor.firstName + ' ' + instructor.lastName }}
+                    </option>
                 </select>
                 <!-- input for max price -->
                 <label for="price" class="text-sm font-medium text-gray-700">Max Price</label>
-                <input id="price" type="number" @keyup.enter="updatePrice" placeholder="Max Price" 
-                class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50"/>
+                <input id="price" type="number" @keyup.enter="updatePrice" placeholder="Max Price"
+                    class="block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
             </div>
         </div>
         <!-- sorting -->
@@ -182,30 +211,33 @@ const updatePrice = (event) => {
         <!-- sessions table -->
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-moodyblue dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">ID</th>
-                <th scope="col" class="px-6 py-3">Date</th>
-                <th scope="col" class="px-6 py-3">Start Time</th>
-                <th scope="col" class="px-6 py-3">End Time</th>
-                <th scope="col" class="px-6 py-3">Price</th>
-                <th scope="col" class="px-6 py-3">Instructor</th>
-                <th scope="col" class="px-6 py-3">Fitness Class</th>
-            </tr>
+                <tr>
+                    <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">Date</th>
+                    <th scope="col" class="px-6 py-3">Start Time</th>
+                    <th scope="col" class="px-6 py-3">End Time</th>
+                    <th scope="col" class="px-6 py-3">Price</th>
+                    <th scope="col" class="px-6 py-3">Instructor</th>
+                    <th scope="col" class="px-6 py-3">Fitness Class</th>
+                </tr>
             </thead>
             <tbody>
-            <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-            v-for="session in sortedAndFilteredSessions" :key="session.id"
-            @click="sessionStore.fetchAndSetSessionById(session.id); $router.push(`/sessions/${session.id}`)"
-            style="cursor: pointer;"
-            >
-                <td class="px-6 py-4">{{ session.id }}</td>
-                <td class="px-6 py-4">{{ session.date }}</td>
-                <td class="px-6 py-4">{{ session.startTime }}</td>
-                <td class="px-6 py-4">{{ session.endTime }}</td>
-                <td class="px-6 py-4">{{ session.price }}</td>
-                <td class="px-6 py-4">{{ session.instructorUsername }}</td>
-                <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
-            </tr>
+                <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    v-for="session in sortedAndFilteredSessions" :key="session.id"
+                    @click="selectSession(session)"
+                    style="cursor: pointer;">
+                    <td class="px-6 py-4">{{ session.id }}</td>
+                    <td class="px-6 py-4">{{ session.date }}</td>
+                    <td class="px-6 py-4">{{ session.startTime }}</td>
+                    <td class="px-6 py-4">{{ session.endTime }}</td>
+                    <td class="px-6 py-4">{{ session.price }}</td>
+                    <td class="px-6 py-4">{{
+                        (instructorLookup[session.instructorUsername] || {}).firstName
+                        + ' '
+                        + (instructorLookup[session.instructorUsername] || {}).lastName
+                    }}</td>
+                    <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -213,6 +245,6 @@ const updatePrice = (event) => {
 
 <style scoped>
 .sort-dropdown {
-  margin-right: 1rem;
+    margin-right: 1rem;
 }
 </style>

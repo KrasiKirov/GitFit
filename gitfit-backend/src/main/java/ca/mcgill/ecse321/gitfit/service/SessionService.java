@@ -139,12 +139,14 @@ public class SessionService {
                 .filter(session -> fitnessClass == null
                         || session.getFitnessClass().equals(fitnessClass))
                 .filter(session -> maxPrice == null || session.getPrice() <= maxPrice)
-                .filter(session -> startDate == null || endDate == null
-                        || ((session.getDate().after(startDate) || session.getDate().equals(startDate))
-                                && (session.getDate().before(endDate) || session.getDate().equals(endDate))))
-                .filter(session -> startTime == null || endTime == null
-                        || ((session.getStartTime().after(startTime) || session.getStartTime().equals(startTime))
-                                && (session.getEndTime().before(endTime) || session.getEndTime().equals(endTime))))
+                .filter(session -> startDate == null
+                        || (session.getDate().after(startDate) || session.getDate().equals(startDate)))
+                .filter(session -> endDate == null
+                        || (session.getDate().before(endDate) || session.getDate().equals(endDate)))
+                .filter(session -> startTime == null
+                        || (session.getStartTime().after(startTime) || session.getStartTime().equals(startTime)))
+                .filter(session -> endTime == null
+                        || (session.getEndTime().before(endTime) || session.getEndTime().equals(endTime)))
                 .collect(Collectors.toList());
         return sessions;
     }
