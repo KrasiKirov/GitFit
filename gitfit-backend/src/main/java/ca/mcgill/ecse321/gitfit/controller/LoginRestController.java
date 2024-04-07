@@ -35,7 +35,6 @@ public class LoginRestController {
      */
     @PostMapping(value = { "/login/", "/login" })
     public AccountLoginResponseDto loginAccount(@RequestBody AccountLoginRequestDto loginRequest) {
-        System.out.println("reached backend");
         return loginService.login(loginRequest.getUsername(), loginRequest.getPassword());
     }
 

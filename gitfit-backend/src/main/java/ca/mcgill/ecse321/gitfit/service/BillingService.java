@@ -105,9 +105,6 @@ public class BillingService {
     @Transactional
     public void deleteBilling(String username) {
         Customer customer = customerRepository.findCustomerByUsername(username);
-        System.out.println(customer.getUsername());
-        System.out.println(customer.getEmail());
-        System.out.println(customer);
         if (customer == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "The customer does not exist.");
         }
@@ -115,18 +112,8 @@ public class BillingService {
         if (billing == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "The customer does not have billing set up.");
         }
-//        customer.getBilling().setCustomer(null);
         billing.delete();
-//        customerRepository.save(customer);
-//        System.out.println(billing);
-//        System.out.println(billing.getCountry());
-//        System.out.println(billing.getId());
-//        billingRepository.delete(billing);
-//        customer.setBilling(null);
 
-//        Billing tester = getBilling(username);
-//        System.out.println(tester);
-//        System.out.println(tester.getCountry());
     }
 
 }

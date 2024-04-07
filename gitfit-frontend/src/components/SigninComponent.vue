@@ -38,8 +38,7 @@
   </template>
 
 <script setup>
-import { checkLogin } from '@/api';
-import { defineEmits, ref, onMounted } from 'vue';
+import { defineEmits, ref} from 'vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useOwnerStore } from '@/stores/ownerStore';
@@ -63,55 +62,27 @@ const login = async () => {
     const password = signinPassword.value;
     const store = useStore();
     const response = await store.checkLogin(username, password);
-    console.log(response);
     if (response.status === 200 && response.data.success === true) {
         if (response.data.role === 'Customer') {
             const customerStore = useCustomerStore();
             await customerStore.fetchAndSetCustomer(username);
-            console.log("Customer login successful");
         } else if (response.data.role === 'Instructor') {
             const instructorStore = useInstructorStore();
             await instructorStore.fetchAndSetInstructor(username);
-            console.log("Instructor login successful");
         } else if (response.data.role === 'Owner') {
             const ownerStore = useOwnerStore();
             await ownerStore.fetchAndSetOwner();
-            console.log("Owner login successful");
         }
         var signinForm = document.getElementById("signinForm");
         signinForm.reset();
-        console.log("Login successful");
         router.push({path: '/'});
     } else {
-        console.log(response)
         if (response.data.errors) {
             errorMessage.value = response.data.errors[0];
         } else {
             errorMessage.value = "Authentication failed. Please try again.";
         }
-        //errorMessage.value = response.data.errors[0];
         showModal.value = true;
-        console.log(response)
-        console.log("Login failed");
     }
 }
 </script>
-
-<!-- <script>
-export default {
-    data() {
-        return {
-            username: '',
-            password: ''
-        };
-    },
-    methods: {
-        updateForm() {
-            this.$emit('updateForm');
-        },
-        login() {
-            
-        }
-    }
-}
-</script> -->

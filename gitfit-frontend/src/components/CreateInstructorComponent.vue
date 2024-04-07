@@ -68,19 +68,13 @@ const create = async () => {
         LastName: createInstructorLastName.value,
         username: createInstructorUsername.value
     };
-    console.log(instructor);
     const instructorStore = useInstructorStore();
     const response = await instructorStore.createInstructor(instructor);
-    console.log(response);
-    console.log(response.status);
-    console.log(instructorStore.instructor);
     if (response.status === 200) {
-        console.log("Instructor created successfully");
         router.push('/');
     } else {
         errorMessage.value = response.data.errors[0];
         showModal.value = true;
-        console.log("Not successful");
     }
     
 }

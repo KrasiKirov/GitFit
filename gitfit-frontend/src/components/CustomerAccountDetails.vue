@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
 import { useOwnerStore } from '@/stores/ownerStore';
@@ -107,25 +107,17 @@ const showModal = ref(false);
 const errorMessage = ref('');
 
 const emit = defineEmits(['editBilling', 'editPassword']);
-// const customerStore = useCustomerStore();
-const billingStore = useBillingStore();
-// const ownerStore = useOwnerStore();
-// const instructorStore = useInstructorStore();
 
-// const customer = computed(() => customerStore.customer);
-// const instructor = computed(() => customerStore.instructor);
-// const owner = computed(() => customerStore.owner);
+const billingStore = useBillingStore();
+
 const billing = computed(() => billingStore.billing);
 const userType = localStorage.getItem('userType');
 const user = computed(() => {
-    console.log(userType);
     if (userType === 'Customer') {
         const customerStore = useCustomerStore();
-        console.log("inside accountviewcustomer");
         return customerStore.customer;
     } else if (userType === 'Instructor') {
         const instructorStore = useInstructorStore();
-        console.log("inside accountviewinstructor");
         return instructorStore.instructor;
     } else if (userType === 'Owner') {
         const ownerStore = useOwnerStore();
@@ -133,21 +125,6 @@ const user = computed(() => {
     }
     return null;
 });
-
-
-// const userType = localStorage.getItem('userType');
-// console.log(userType);
-// const user = ref(null);
-// if (userType === 'Customer') {
-//     console.log("entered");
-//     user.value = customerStore.customer;
-// } else if (userType === 'Instructor') {
-//     user.value = instructorStore.instructor;
-// } else if (userType === 'Owner') {
-//     user.value = ownerStore.owner;
-// }
-// console.log("inside accountview");
-// console.log(user);
 
 
 
@@ -163,18 +140,13 @@ const deleteBilling = async () => {
     const customerStore = useCustomerStore();
     const customer = customerStore.customer;
     const billingStore = useBillingStore();
-    console.log("inside deleteBilling of accountview");
-    console.log(customer.username);
     const response = await billingStore.deleteBilling(customer.username);
     if (response.status === 200) {
-        console.log("Billing deleted");
         billingStore.billing = null;
     } else {
         errorMessage.value = response.data.errors[0];
         showModal.value = true;
-        console.log("Billing not deleted");
     }
-    console.log(response);
 
 
 };

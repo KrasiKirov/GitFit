@@ -57,7 +57,6 @@
   </template>
 
 <script setup>
-import router from '@/router';
 import ErrorModal from '@/components/ErrorModal.vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useBillingStore } from '@/stores/billingStore';
@@ -76,7 +75,6 @@ const editAccount = () => {
 const createBilling = async () => {
     const customerStore = useCustomerStore();
     const billingStore = useBillingStore();
-    console.log(customerStore.customer);
     const billing = {
         country: billingCountry.value,
         state: billingState.value,
@@ -87,13 +85,10 @@ const createBilling = async () => {
     }
     const response = await billingStore.createBilling(billing);
     if (response.status===200) {
-        console.log("Billing created");
         editAccount();
     } else {
-        console.log(response.data.errors[0])
         errorMessage.value = response.data.errors[0];
         showModal.value = true;
-        console.log("Billing not created");
     }
 
 
@@ -102,20 +97,3 @@ const createBilling = async () => {
 
 
 </script>
-
-
-
-<!-- <script>
-
-
-export default {
-    data() {
-        return {
-            cardNumber: ''
-        };
-    },
-    methods: {
-        
-    }
-}
-</script> -->

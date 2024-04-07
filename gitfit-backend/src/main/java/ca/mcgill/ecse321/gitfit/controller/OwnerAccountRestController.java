@@ -45,12 +45,8 @@ public class OwnerAccountRestController {
      */
     @PutMapping(value = { "/owner/password", "/owner/password/" })
     public OwnerAccountDto updateOwnerPassword(@RequestBody String password) {
-        System.out.println(password);
         Owner owner = ownerAccountService.getOwner();
-//        System.out.println(passwordRequestDto);
-        System.out.println("Reached backend");
         owner = ownerAccountService.updateOwnerPassword(password);
-        System.out.println(owner.getPassword());
         return convertToDto(owner);
     }
 

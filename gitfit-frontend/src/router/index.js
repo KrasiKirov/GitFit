@@ -6,7 +6,6 @@ import CreateInstructorComponent from '../components/CreateInstructorComponent.v
 import { useOwnerStore } from '@/stores/ownerStore'
 import { useInstructorStore } from '@/stores/instructorStore'
 import { useCustomerStore } from '@/stores/customerStore'
-import { defineStore } from 'pinia'
 import CreateSessionView from '../views/CreateSessionView.vue'
 import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
 import InstructorManagementView from '../views/InstructorManagementView.vue'
@@ -40,14 +39,6 @@ const router = createRouter({
         name: 'createinstructor',
         component: CreateInstructorComponent
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // },
     {
       path: '/InstructorManagementView',
       path: '/new-session',
@@ -79,23 +70,12 @@ const router = createRouter({
       name: 'about',
       component: SportCenterManagementView
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ]
 });
 
 
 
 router.beforeEach(async (to, from, next) => {
-    console.log("inside router before each");
-    console.log(localStorage.getItem('userType'));
-    //console.log(isLoggedIn());
     try {
         const loggedIn = await isLoggedIn();
         if (loggedIn && (to.name==='login'|| 
@@ -111,49 +91,14 @@ router.beforeEach(async (to, from, next) => {
         }
     } catch (error){
         next({ name: 'login' });
-        console.log(error);
     }
 
-
-    // router.beforeEach((to, from, next) => {
-    //     console.log("inside router before each");
-    //     console.log(localStorage.getItem('userType'));
-    //     //console.log(isLoggedIn());
-    //     if (to.path === from.path) {
-    //         console.log("inside equals");
-    //         next();
-    //     }
-    //     else if (isLoggedIn() && to.name==='login') {
-    //         console.log("inside isLoggedIn and login");
-    //         next({ name: 'about' });
-    //         window.location.reload();
-    //     }
-    //     else if (isLoggedIn() || to.name==='login') {
-    //         console.log("inside isLoggedIn or login")
-    //         next({name: "about"});
-    //         window.location.reload();
-    //     } else {
-    //         console.log("inside else");
-    //         next({ name: 'login' });
-    //         window.location.reload();
-    //     }
-    //   // Check if user is authenticated
-    //   if (!isLoggedIn()) {
-    //     // Redirect to login page if not authenticated
-    //     next({ name: 'login' });
-    //   } else {
-    //     // Proceed to the route
-    //     next();
-    //   }
   })
   
   async function isLoggedIn() {
     const ownerStore = useOwnerStore();
     const instructorStore = useInstructorStore();
     const customerStore = useCustomerStore();
-    console.log("++++++++++++")
-    // console.log(customerStore.customer.username);
-    console.log(localStorage.getItem('userType'));
     if (localStorage.getItem('userType') === 'Owner') {
         try {
             const owner = localStorage.getItem('owner');
@@ -178,15 +123,11 @@ router.beforeEach(async (to, from, next) => {
         }
     } else if (localStorage.getItem('userType') === 'Customer') {
         try {
-            console.log("REACHED HERE");
             const customer = JSON.parse(localStorage.getItem('customer'));
-            console.log(customer);
             const response = await customerStore.fetchAndSetCustomer(customer.username);
             return true;
         }   catch (error) {
             localStorage.clear();
-            console.log("ERROR");
-            console.log(error);
             return false;
         }
     } else {

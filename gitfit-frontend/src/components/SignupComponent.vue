@@ -82,44 +82,17 @@ const signup = async () => {
         lastName: customerSignupLastName.value,
         username: customerSignupUsername.value
     };
-    console.log(customer);
     const customerStore = useCustomerStore();
     const response = await customerStore.createCustomer(customer);
-    console.log(response);
-    console.log(response.status);
-    console.log(customerStore.customer);
     if (response.status === 200) {
         var signupForm = document.getElementById("signupForm");
         signupForm.reset();
-        console.log("Customer created successfully");
         router.push('/');
     } else {
         errorMessage.value = response.data.errors[0];
         showModal.value = true;
-        console.log("Not successful");
     }
     
 }
 
 </script>
-
-<!-- <script>
-export default {
-    data() {
-        return {
-            email: '',
-            password: ''
-        };
-    },
-    methods: {
-      updateForm() {
-        this.$emit('updateForm');
-      },
-      signup() {
-          // Perform signup logic here
-          // Example: make an API call to authenticate the user
-          // and redirect to the dashboard on success
-      }
-    }
-}
-</script> -->

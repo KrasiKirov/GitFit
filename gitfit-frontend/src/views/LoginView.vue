@@ -1,15 +1,9 @@
 <script setup>
 import SigninComponent from '../components/SigninComponent.vue';
 import SignupComponent from '../components/SignupComponent.vue';
-import CreateInstructorComponent from '../components/CreateInstructorComponent.vue';
-import CustomerAccountDetails from '../components/CustomerAccountDetails.vue';
-import BillingComponent from '../components/BillingComponent.vue';
 </script>
 
 <template>
-    <!-- <BillingComponent /> -->
-    <!-- <CustomerAccountDetails /> -->
-    <!-- <CreateInstructorComponent />  -->
   <div v-if = "showSignup">
     <SignupComponent @updateForm='updateForm' />
   </div>
@@ -21,7 +15,6 @@ import BillingComponent from '../components/BillingComponent.vue';
   
 
 <script>
-import { emitter } from '../main';
 
 
 export default {
