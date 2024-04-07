@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.gitfit.controller;
 
+import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,13 +40,13 @@ public class OwnerAccountRestController {
      * Update the owner's password
      * 
      * @author Jatin Patel (Jatin-Pat)
-     * @param newPassword
+     * @param password
      * @return OwnerAccountDto
      */
-    @PutMapping(value = { "/owner/Password", "/owner/Password/" })
-    public OwnerAccountDto updateOwnerPassword(@RequestBody String newPassword) {
+    @PutMapping(value = { "/owner/password", "/owner/password/" })
+    public OwnerAccountDto updateOwnerPassword(@RequestBody String password) {
         Owner owner = ownerAccountService.getOwner();
-        owner = ownerAccountService.updateOwnerPassword(newPassword);
+        owner = ownerAccountService.updateOwnerPassword(password);
         return convertToDto(owner);
     }
 
