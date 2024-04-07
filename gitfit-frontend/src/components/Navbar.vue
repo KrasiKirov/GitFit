@@ -76,27 +76,6 @@
 import router from '@/router';
 import { ref, onMounted, onBeforeUnmount} from 'vue';
 
-const userType = ref(localStorage.getItem('userType') || '');
-
-const updateUserType = (event) => {
-  if (event.key === 'userType') {
-    const newValue = localStorage.getItem('userType');
-    userType.value = newValue;
-  }
-};
-
-onMounted(() => {
-  // Retrieve userType from localStorage
-  userType.value = localStorage.getItem('userType');
-
-  // Watch for changes in userType in localStorage
-  window.addEventListener('storage', updateUserType);
-});
-
-onBeforeUnmount(() => {
-  // Clean up event listener when component is destroyed
-  window.removeEventListener('storage', updateUserType);
-});
 
 const logout = () => {
     console.log("Logging out");

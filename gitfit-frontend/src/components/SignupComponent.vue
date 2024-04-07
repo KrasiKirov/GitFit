@@ -6,7 +6,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST" @submit.prevent="signup">
+        <form id="signupForm" class="space-y-6" action="#" method="POST" @submit.prevent="signup">
           <div>
             <label for="customerSignupEmail" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
@@ -89,6 +89,8 @@ const signup = async () => {
     console.log(response.status);
     console.log(customerStore.customer);
     if (response.status === 200) {
+        var signupForm = document.getElementById("signupForm");
+        signupForm.reset();
         console.log("Customer created successfully");
         router.push('/');
     } else {

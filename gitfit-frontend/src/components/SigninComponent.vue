@@ -6,7 +6,7 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST" @submit.prevent="login">
+        <form id="signinForm" class="space-y-6" action="#" method="POST" @submit.prevent="login">
           <div>
             <label for="signinUsername" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
@@ -78,6 +78,8 @@ const login = async () => {
             await ownerStore.fetchAndSetOwner();
             console.log("Owner login successful");
         }
+        var signinForm = document.getElementById("signinForm");
+        signinForm.reset();
         console.log("Login successful");
         router.push({path: '/'});
     } else {
