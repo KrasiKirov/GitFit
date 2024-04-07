@@ -24,6 +24,8 @@ import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
+import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
 import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.Owner;
@@ -35,6 +37,12 @@ import jakarta.validation.ValidatorFactory;
 
 @SpringBootTest
 public class OwnerAccountServiceTests {
+
+    @Mock
+    private InstructorRepository instructorRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
 
     @Mock
     private OwnerRepository ownerRepository;
