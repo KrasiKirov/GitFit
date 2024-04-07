@@ -31,7 +31,7 @@
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">Sessions</router-link>
                     </li>
-                    <li v-if="userType!='Customer'">
+                    <li>
                         <router-link to="/new-session" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
@@ -43,13 +43,13 @@
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">Fitness Classes</router-link>
                     </li>
-                    <li v-if="userType!='Customer'">
+                    <li>
                         <router-link to="/new-fitness-class" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">New Fitness Class</router-link>
                     </li>
-                    <li v-if="userType!='Customer'">
+                    <li>
                         <router-link to="/instructors" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
@@ -74,7 +74,6 @@
 
 <script setup>
 import router from '@/router';
-import { ref, onMounted, onBeforeUnmount} from 'vue';
 
 
 const logout = () => {

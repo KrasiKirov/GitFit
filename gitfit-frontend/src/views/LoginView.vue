@@ -11,19 +11,21 @@ import BillingComponent from '../components/BillingComponent.vue';
     <!-- <CustomerAccountDetails /> -->
     <!-- <CreateInstructorComponent />  -->
   <div v-if = "showSignup">
-    <SignupComponent @updateForm='updateForm'/>
+    <SignupComponent @updateForm='updateForm' />
   </div>
   <div v-else>
-    <SigninComponent @updateForm='updateForm'/>
+    <SigninComponent @updateForm='updateForm' />
   </div>
 
 </template>
   
 
 <script>
+import { emitter } from '../main';
 
 
 export default {
+    inject: ['emitter'],
     data() {
         return {
             email: '',
@@ -34,9 +36,9 @@ export default {
         };
     },
     methods: {
-      updateForm() {
-        this.showSignup = !this.showSignup;
-      },
+        updateForm() {
+            this.showSignup = !this.showSignup;
+        }, 
     }
 };
 </script>
