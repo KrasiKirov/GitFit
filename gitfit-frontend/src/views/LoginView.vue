@@ -18,7 +18,6 @@ import SignupComponent from '../components/SignupComponent.vue';
 
 
 export default {
-    inject: ['emitter'],
     data() {
         return {
             email: '',
