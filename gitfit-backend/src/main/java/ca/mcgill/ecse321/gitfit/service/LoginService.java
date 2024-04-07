@@ -49,7 +49,6 @@ public class LoginService {
         if (owner != null && owner.getPassword().equals(password)) {
             return new AccountLoginResponseDto(true, "Owner");
         }
-
         return new AccountLoginResponseDto(false, null);
     }
 }

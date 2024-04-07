@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.gitfit.dto.AccountLoginRequestDto;
+import ca.mcgill.ecse321.gitfit.dto.AccountLoginResponseDto;
 import ca.mcgill.ecse321.gitfit.dto.AccountRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.InstructorAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
@@ -52,7 +54,7 @@ public class InstructorAccountRestController {
      * @author Jatin Patel (Jatin-Pat)
      * @return List of all InstructorAccountDto
      */
-    @GetMapping(value = { "/instructors/", "/instructors/" })
+    @GetMapping(value = { "/instructors/", "/instructors" })
     public List<InstructorAccountDto> getAllInstructors() {
         List<InstructorAccountDto> dtoList = new ArrayList<>();
 
@@ -104,7 +106,7 @@ public class InstructorAccountRestController {
      * @author Jatin Patel (Jatin-Pat)
      * @param username
      */
-    @DeleteMapping(value = { "/instructor/", "/instructor/" })
+    @DeleteMapping(value = { "/instructor/", "/instructor" })
     public void deleteInstructor(@RequestBody String username) {
         instructorAccountService.deleteInstructor(username);
     }

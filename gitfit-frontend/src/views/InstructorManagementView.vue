@@ -1,67 +1,7 @@
 <script setup>
 import InstructorCard from '@/components/InstructorCard.vue';
-import OwnerNavbar from '@/components/OwnerNavbar.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useInstructorStore } from '@/stores/instructorStore'
-
-const instructorsTest = ref([
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    },
-    {
-        username: 'test1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.Doe@gmail.com',
-        password: 'john123',
-    }
-]);
 
 const store = useInstructorStore();
 

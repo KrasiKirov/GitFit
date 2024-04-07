@@ -1,25 +1,18 @@
 <script setup>
-import { defineProps} from 'vue'
-import { updateFitnessClassStatus } from '@/api'
+import { defineProps } from 'vue';
+import { useStore } from '@/stores/fitnessClassStore';
 
 const props = defineProps({
-    fitnessClass: {
-        type: Object,
-        required: true
-    }
-})
+  fitnessClass: {
+    type: Object,
+    required: true,
+  },
+});
 
-const emit = defineEmits(['update'])
-
-const approveClass = async () => {
-    await updateFitnessClassStatus(props.fitnessClass.name, 'APPROVED')
-    emit('update')
-}
-
-const rejectClass = async () => {
-    await updateFitnessClassStatus(props.fitnessClass.name, 'REJECTED')
-    emit('update')
-}
+const deleteCourseHandler = async () => {
+  const store = useStore();
+  await store.deleteFitnessClass(props.fitnessClass.name);
+};
 </script>
 
 <template>
@@ -35,11 +28,12 @@ const rejectClass = async () => {
                 <p class="text-moodyblue text-xl font-medium mb-2">
                     {{ fitnessClass.description }}
                 </p>
+                <p class="text-moodyblue text-S font-small mb-2">
+                    {{ fitnessClass.approvalStatus }}
+                </p>
                 <div class="flex items-center mt-4">
-                    <font-awesome-icon icon="heart" class="text-red-500 mr-4 cursor-pointer text-2xl"
-                        @click="approveClass" />
                     <font-awesome-icon icon="thumbs-down" class="text-gray-500 cursor-pointer text-2xl"
-                        @click="rejectClass" />
+                        @click="deleteCourseHandler" />
                 </div>
             </div>
         </a>

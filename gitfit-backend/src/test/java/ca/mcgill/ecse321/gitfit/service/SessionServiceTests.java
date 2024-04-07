@@ -10,12 +10,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.sql.Time;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.http.HttpStatus;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,15 +21,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
+import ca.mcgill.ecse321.gitfit.dao.RegistrationRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
+import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Registration;
 import ca.mcgill.ecse321.gitfit.model.Session;
 import ca.mcgill.ecse321.gitfit.model.SportCenter;
-
-import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
-import ca.mcgill.ecse321.gitfit.dao.SportCenterRepository;
 
 @SpringBootTest
 public class SessionServiceTests {
@@ -41,6 +41,9 @@ public class SessionServiceTests {
 
     @Mock
     private SportCenterRepository sportCenterRepository;
+
+    @Mock
+    private RegistrationRepository registrationRepository;
 
     @InjectMocks
     private SessionService sessionService;
@@ -89,6 +92,8 @@ public class SessionServiceTests {
     private FitnessClass FITNESS_CLASS = new FitnessClass();
     private FitnessClass FITNESS_CLASS2 = new FitnessClass();
 
+    private Registration REGISTRATION = new Registration();
+
     @BeforeEach
     public void setMockOutput() {
         SPORT_CENTER.setOpeningTime(SPORT_CENTER_OPENING_TIME);
@@ -97,6 +102,7 @@ public class SessionServiceTests {
         INSTRUCTOR2.setUsername(INSTRUCTOR2_USERNAME);
         FITNESS_CLASS.setName(FITNESS_CLASS_NAME);
         FITNESS_CLASS2.setName(FITNESS_CLASS2_NAME);
+        REGISTRATION.setSession(SESSION);
 
         SESSION.setId(SESSION_ID);
         SESSION.setPrice(SESSION_PRICE);
@@ -449,12 +455,14 @@ public class SessionServiceTests {
 
     @Test
     public void testDeleteSession() {
+        lenient().when(registrationRepository.findBySession(SESSION)).thenReturn(Arrays.asList(REGISTRATION));
         try {
             sessionService.deleteSession(SESSION);
         } catch (SportCenterException e) {
             fail();
         }
         verify(sessionRepository, times(1)).delete(SESSION);
+        verify(registrationRepository, times(1)).findBySession(SESSION);
     }
 
     @Test

@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
+import ca.mcgill.ecse321.gitfit.model.Session;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -19,6 +21,12 @@ public class FitnessClassService {
     private FitnessClassRepository fitnessClassRepository;
     @Autowired
     private SportCenterService sportCenterService;
+
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @Transactional
     public List<FitnessClass> getAllFitnessClasses() {
@@ -102,7 +110,7 @@ public class FitnessClassService {
         fitnessClass.setApprovalStatus(approvalStatus);
         return fitnessClassRepository.save(fitnessClass);
     }
-    
+
     @Transactional
     public FitnessClass updateFitnessClass(String name, String description) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty()) {
@@ -130,6 +138,12 @@ public class FitnessClassService {
         }
 
         FitnessClass fitnessClass = getFitnessClassByName(name);
+
+        List<Session> sessions = sessionRepository.findByFitnessClass(fitnessClass);
+        for (Session session : sessions) {
+            sessionService.deleteSession(session);
+        }
+
         fitnessClassRepository.delete(fitnessClass);
     }
 

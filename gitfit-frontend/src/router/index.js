@@ -3,11 +3,19 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import CreateInstructorComponent from '../components/CreateInstructorComponent.vue'
-import InstructorManagementView from '../views/InstructorManagementView.vue'
 import { useOwnerStore } from '@/stores/ownerStore'
 import { useInstructorStore } from '@/stores/instructorStore'
 import { useCustomerStore } from '@/stores/customerStore'
 import { defineStore } from 'pinia'
+import CreateSessionView from '../views/CreateSessionView.vue'
+import CreateFitnessClassView from '../views/CreateFitnessClassView.vue'
+import InstructorManagementView from '../views/InstructorManagementView.vue'
+import FitnessClassManagementView from '../views/FitnessClassManagementView.vue'
+import RegistrationView from '../views/RegistrationView.vue';
+import SportCenterManagementView from '../views/SportCenterManagementView.vue';
+
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,8 +50,34 @@ const router = createRouter({
     // },
     {
       path: '/InstructorManagementView',
+      path: '/new-session',
+      name: 'SessionCreation',
+      component: CreateSessionView
+    },
+    {
+      path: '/new-fitness-class',
+      name: 'FitnessClasssCreation',
+      component: CreateFitnessClassView
+    },
+    {
+      path: '/instructors',
       name: 'InstructorManagement',
       component: InstructorManagementView
+    },
+    {
+      path: '/fitness-classes',
+      name: 'FitnessClassManagement',
+      component: FitnessClassManagementView
+    },
+    {
+      path: "/registrations",
+      name: "registrations",
+      component: RegistrationView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: SportCenterManagementView
     }
     // {
     //   path: '/about',
@@ -121,4 +155,4 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-export default router
+export default router;
