@@ -160,6 +160,7 @@ const editPassword = () => {
 };
 
 const deleteBilling = async () => {
+    const customerStore = useCustomerStore();
     const customer = customerStore.customer;
     const billingStore = useBillingStore();
     console.log("inside deleteBilling of accountview");

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { fetchFitnessClasses, createCustomer, checkLogin } from '../api.js'; // Update the import route to api.js
 
 export const useStore = defineStore({
-    id: 'main',
+    id: 'login',
     state: () => ({
         fitnessClasses: [],
         loggedInUser: null,
