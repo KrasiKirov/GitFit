@@ -39,7 +39,7 @@
 
 <script setup>
 import { checkLogin } from '@/api';
-import { defineEmits, ref } from 'vue';
+import { defineEmits, ref, onMounted } from 'vue';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useOwnerStore } from '@/stores/ownerStore';
@@ -61,6 +61,9 @@ const login = async () => {
     const store = useStore();
     const username = signinUsername.value;
     const password = signinPassword.value;
+    onMounted(async () => {
+        const response = await store.checkLogin(username, password);
+    });
     const response = await store.checkLogin(username, password);
     console.log(response);
     if (response.status === 200 && response.data.success === true) {
