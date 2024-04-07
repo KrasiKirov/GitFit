@@ -96,7 +96,10 @@ router.beforeEach((to, from, next) => {
     console.log("inside router before each");
     console.log(localStorage.getItem('userType'));
     //console.log(isLoggedIn());
-    if (isLoggedIn() || to.name==='login') {
+    if (isLoggedIn() && to.name==='login') {
+        next({ name: 'home' });
+    }
+    else if (isLoggedIn() || to.name==='login') {
         next();
     }
     else {
