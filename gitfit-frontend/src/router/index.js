@@ -92,19 +92,48 @@ const router = createRouter({
 
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     console.log("inside router before each");
     console.log(localStorage.getItem('userType'));
     //console.log(isLoggedIn());
-    if (isLoggedIn() && to.name==='login') {
-        next({ name: 'home' });
-    }
-    else if (isLoggedIn() || to.name==='login') {
-        next();
-    }
-    else {
+    try {
+        const loggedIn = await isLoggedIn();
+        if (loggedIn && to.name==='login') {
+            next({ name: 'home' });
+        }
+        else if (loggedIn || to.name==='login') {
+            next();
+        } else {
+            next({ name: 'login' });
+        }
+    } catch (error){
         next({ name: 'login' });
+        console.log(error);
     }
+
+
+    // router.beforeEach((to, from, next) => {
+    //     console.log("inside router before each");
+    //     console.log(localStorage.getItem('userType'));
+    //     //console.log(isLoggedIn());
+    //     if (to.path === from.path) {
+    //         console.log("inside equals");
+    //         next();
+    //     }
+    //     else if (isLoggedIn() && to.name==='login') {
+    //         console.log("inside isLoggedIn and login");
+    //         next({ name: 'about' });
+    //         window.location.reload();
+    //     }
+    //     else if (isLoggedIn() || to.name==='login') {
+    //         console.log("inside isLoggedIn or login")
+    //         next({name: "about"});
+    //         window.location.reload();
+    //     } else {
+    //         console.log("inside else");
+    //         next({ name: 'login' });
+    //         window.location.reload();
+    //     }
     //   // Check if user is authenticated
     //   if (!isLoggedIn()) {
     //     // Redirect to login page if not authenticated
@@ -115,7 +144,7 @@ router.beforeEach((to, from, next) => {
     //   }
   })
   
-  function isLoggedIn() {
+  async function isLoggedIn() {
     const ownerStore = useOwnerStore();
     const instructorStore = useInstructorStore();
     const customerStore = useCustomerStore();
@@ -129,7 +158,7 @@ router.beforeEach((to, from, next) => {
                 localStorage.clear();
                 return false;
             }
-            const response = ownerStore.fetchAndSetOwner();
+            const response = await ownerStore.fetchAndSetOwner();
             return true;
         }   catch (error) {
             localStorage.clear();
@@ -138,7 +167,7 @@ router.beforeEach((to, from, next) => {
     } else if (localStorage.getItem('userType') === 'Instructor') {
         try {
             const instructor = localStorage.getItem('instructor');
-            const response = instructorStore.fetchAndSetInstructor(instructor.username);
+            const response = await instructorStore.fetchAndSetInstructor(instructor.username);
             return true;
         }   catch (error) {
             localStorage.clear();
@@ -149,7 +178,7 @@ router.beforeEach((to, from, next) => {
             console.log("REACHED HERE");
             const customer = JSON.parse(localStorage.getItem('customer'));
             console.log(customer);
-            const response = customerStore.fetchAndSetCustomer(customer.username);
+            const response = await customerStore.fetchAndSetCustomer(customer.username);
             return true;
         }   catch (error) {
             localStorage.clear();

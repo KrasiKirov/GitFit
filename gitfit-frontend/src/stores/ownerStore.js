@@ -5,7 +5,7 @@ import { fetchOwner, updateOwnerPassword } from '@/api';
 export const useOwnerStore = defineStore({
     id: 'owner',
     state: () => ({
-        owner: JSON.parse(localStorage.getItem('owner')) || null,
+        owner: null,
     }),
     actions: {
         async fetchAndSetOwner() {
@@ -13,7 +13,7 @@ export const useOwnerStore = defineStore({
                 const response = await fetchOwner();
                 localStorage.setItem('owner', JSON.stringify(response.data));
                 localStorage.setItem('userType', 'Owner');
-                this.updateOwnerFromLocalStorage();
+                await this.updateOwnerFromLocalStorage();
             } catch (error) {
                 console.error(error);
             }
@@ -32,8 +32,8 @@ export const useOwnerStore = defineStore({
                 return error.response;
             }
         },
-        updateOwnerFromLocalStorage() {
-            this.instructor = JSON.parse(localStorage.getItem('owner'))||null;
+        async updateOwnerFromLocalStorage() {
+            this.owner = JSON.parse(localStorage.getItem('owner'))||null;
         },
     }
 });

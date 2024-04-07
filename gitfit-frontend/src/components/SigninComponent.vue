@@ -58,12 +58,10 @@ const updateForm = () => {
 
 const login = async () => {
     localStorage.clear();
-    const store = useStore();
+    
     const username = signinUsername.value;
     const password = signinPassword.value;
-    onMounted(async () => {
-        const response = await store.checkLogin(username, password);
-    });
+    const store = useStore();
     const response = await store.checkLogin(username, password);
     console.log(response);
     if (response.status === 200 && response.data.success === true) {
@@ -81,8 +79,9 @@ const login = async () => {
             console.log("Owner login successful");
         }
         console.log("Login successful");
-        router.push('/');
+        router.push({path: '/'});
     } else {
+        console.log(response)
         if (response.data.errors) {
             errorMessage.value = response.data.errors[0];
         } else {

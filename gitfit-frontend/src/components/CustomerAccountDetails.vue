@@ -107,10 +107,10 @@ const showModal = ref(false);
 const errorMessage = ref('');
 
 const emit = defineEmits(['editBilling', 'editPassword']);
-const customerStore = useCustomerStore();
+// const customerStore = useCustomerStore();
 const billingStore = useBillingStore();
-const ownerStore = useOwnerStore();
-const instructorStore = useInstructorStore();
+// const ownerStore = useOwnerStore();
+// const instructorStore = useInstructorStore();
 
 // const customer = computed(() => customerStore.customer);
 // const instructor = computed(() => customerStore.instructor);
@@ -120,12 +120,15 @@ const userType = localStorage.getItem('userType');
 const user = computed(() => {
     console.log(userType);
     if (userType === 'Customer') {
+        const customerStore = useCustomerStore();
         console.log("inside accountviewcustomer");
         return customerStore.customer;
     } else if (userType === 'Instructor') {
+        const instructorStore = useInstructorStore();
         console.log("inside accountviewinstructor");
         return instructorStore.instructor;
     } else if (userType === 'Owner') {
+        const ownerStore = useOwnerStore();
         return ownerStore.owner;
     }
     return null;
