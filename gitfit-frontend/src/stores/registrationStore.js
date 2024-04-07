@@ -30,6 +30,11 @@ export const useRegistrationStore = defineStore({
             return true;
         } catch (error) {
             console.error(error);
+            if (error.response && error.response.data.errors) {
+              // Assuming error.response.data.errors is populated based on ErrorDto
+              const errorMessages = error.response.data.errors.join(', '); // Join all errors into a single string
+              throw new Error(errorMessages);
+            }
         }
     },
     async deleteRegistration(registrationId) {
