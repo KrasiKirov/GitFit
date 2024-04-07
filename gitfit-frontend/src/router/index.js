@@ -98,7 +98,10 @@ router.beforeEach(async (to, from, next) => {
     //console.log(isLoggedIn());
     try {
         const loggedIn = await isLoggedIn();
-        if (loggedIn && (to.name==='login'|| (localStorage.getItem('userType')==='Customer') && (to.name==='createinstructor' || to.name==='InstructorManagement' || to.name==='FitnessClassManagement' || to.name==='SessionCreation' || to.name==='FitnessClasssCreation' || to.name==='about'))) {
+        if (loggedIn && (to.name==='login'|| 
+        (localStorage.getItem('userType')==='Customer') && (to.name==='createinstructor' || to.name==='InstructorManagement' || to.name==='FitnessClassManagement' || to.name==='SessionCreation' || to.name==='FitnessClasssCreation' || to.name==='about') ||
+        (localStorage.getItem('userType')==='Instructor') && (to.name==='createinstructor' || to.name==='InstructorManagement' || to.name==='FitnessClassManagement' ||to.name==='about')
+    )) {
             next({ name: 'home' });
         }
         else if (loggedIn || to.name==='login') {
