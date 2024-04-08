@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OwnerAccountService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.service</a> &gt; <span class="el_source">OwnerAccountService.java</span></div><h1>OwnerAccountService.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ca.mcgill.ecse321.gitfit.dao.OwnerRepository;
+import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
+import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.Owner;
+
+/**
+ * This class is responsible for handling owner account operations
+ * 
+ * @author Jatin Patel (Jatin-Pat)
+ */
+@Service
+<span class="fc" id="L22">public class OwnerAccountService {</span>
+
+    @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private ValidatorService validatorService;
+
+    /**
+     * Retrieve the owner
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @return Owner
+     * @throws SportCenterException if no owner found
+     */
+    @Transactional
+    public Owner getOwner() {
+<span class="fc" id="L39">        List&lt;Owner&gt; list = toList(ownerRepository.findAll());</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (list.isEmpty()) {</span>
+<span class="nc" id="L41">            throw new SportCenterException(HttpStatus.NOT_FOUND, &quot;No current owner.&quot;);</span>
+        } else {
+<span class="fc" id="L43">            return list.get(0);</span>
+        }
+    }
+
+    /**
+     * Update the owner's password
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param newPassword
+     * @return Owner
+     * @throws SportCenterException if password is invalid
+     */
+    @Transactional
+    public Owner updateOwnerPassword(String newPassword) {
+<span class="fc" id="L57">        Owner owner = getOwner();</span>
+
+<span class="fc" id="L59">        validatorService.validate(new PasswordCheckDto(newPassword));</span>
+
+<span class="fc" id="L61">        owner.setPassword(newPassword);</span>
+<span class="fc" id="L62">        ownerRepository.save(owner);</span>
+<span class="fc" id="L63">        return owner;</span>
+    }
+
+    /**
+     * Converts an iterable to a list
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param iterable
+     * @return List containing all the elements from the given iterable
+     */
+    private &lt;T&gt; List&lt;T&gt; toList(Iterable&lt;T&gt; iterable) {
+<span class="fc" id="L74">        List&lt;T&gt; resultList = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (T t : iterable) {</span>
+<span class="fc" id="L76">            resultList.add(t);</span>
+<span class="fc" id="L77">        }</span>
+<span class="fc" id="L78">        return resultList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

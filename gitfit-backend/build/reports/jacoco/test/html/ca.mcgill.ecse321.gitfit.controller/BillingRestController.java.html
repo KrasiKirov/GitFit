@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BillingRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.controller</a> &gt; <span class="el_source">BillingRestController.java</span></div><h1>BillingRestController.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import ca.mcgill.ecse321.gitfit.dto.BillingRequestDto;
+import ca.mcgill.ecse321.gitfit.dto.BillingResponseDto;
+import ca.mcgill.ecse321.gitfit.model.Billing;
+import ca.mcgill.ecse321.gitfit.service.BillingService;
+
+@CrossOrigin(origins = &quot;*&quot;)
+@RestController
+<span class="fc" id="L19">public class BillingRestController {</span>
+    @Autowired
+    private BillingService billingService;
+
+    /**
+     * Get billing information for a customer
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param username
+     * @return billing information for given customer
+     */
+    @GetMapping(&quot;/customers/{username}/billing&quot;)
+    public BillingResponseDto getBilling(@PathVariable(&quot;username&quot;) String username) {
+<span class="fc" id="L32">        Billing billing = billingService.getBilling(username);</span>
+<span class="fc" id="L33">        return convertToResponseDto(billing);</span>
+    }
+
+    /**
+     * Create or update billing information for a customer
+     * 
+     * @author Li Yang Lei (LeiLiYang)
+     * @param billing
+     * @param username
+     * @return persisted billing information for given customer
+     */
+    @PutMapping(&quot;/customers/{username}/billing&quot;)
+    public BillingResponseDto createOrUpdateBilling(@RequestBody BillingRequestDto billing,
+            @PathVariable(&quot;username&quot;) String username) {
+<span class="fc" id="L47">        Billing updatedBilling = billingService.createOrUpdateBilling(billing.getCountry(), billing.getState(),</span>
+<span class="fc" id="L48">                billing.getPostalCode(), billing.getCardNumber(), billing.getAddress(), username);</span>
+<span class="fc" id="L49">        return convertToResponseDto(updatedBilling);</span>
+    }
+
+    /**
+     * Delete billing information for a customer
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param username
+     */
+    @DeleteMapping(&quot;/customers/{username}/billing&quot;)
+    public void deleteBilling(@PathVariable(&quot;username&quot;) String username) {
+<span class="fc" id="L60">        billingService.deleteBilling(username);</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Convert billing to response dto
+     *
+     * @author Li Yang Lei (LeiLiYang)
+     * @param billing
+     * @return billing response dto
+     */
+    public BillingResponseDto convertToResponseDto(Billing billing) {
+<span class="fc" id="L71">        BillingResponseDto billingResponseDto = new BillingResponseDto(billing.getCountry(), billing.getState(),</span>
+<span class="fc" id="L72">                billing.getPostalCode(), billing.getCardNumberEnd());</span>
+<span class="fc" id="L73">        return billingResponseDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

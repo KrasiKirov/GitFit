@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.controller</a> &gt; <span class="el_source">SessionRestController.java</span></div><h1>SessionRestController.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.controller;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import ca.mcgill.ecse321.gitfit.dto.DatesDto;
+import ca.mcgill.ecse321.gitfit.dto.HoursDto;
+import ca.mcgill.ecse321.gitfit.dto.SessionDto;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
+import ca.mcgill.ecse321.gitfit.model.Session;
+import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
+import ca.mcgill.ecse321.gitfit.service.InstructorAccountService;
+import ca.mcgill.ecse321.gitfit.service.SessionService;
+
+@CrossOrigin(origins = &quot;*&quot;)
+@RestController
+<span class="fc" id="L32">public class SessionRestController {</span>
+
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private InstructorAccountService instructorService;
+    @Autowired
+    private FitnessClassService fitnessClassService;
+
+    /**
+     * Create a session
+     * 
+     * @author William Wang (wangwiza)
+     * @param sessionDto
+     * @return
+     */
+    @PostMapping(value = { &quot;/sessions&quot;, &quot;/sessions/&quot; })
+    public SessionDto createSession(@RequestBody SessionDto sessionDto) {
+<span class="fc" id="L50">        Instructor instructor = instructorService.getInstructor(sessionDto.getInstructorUsername());</span>
+<span class="fc" id="L51">        FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(sessionDto.getFitnessClassName());</span>
+<span class="fc" id="L52">        Session session = sessionService.createSession(instructor, fitnessClass, sessionDto.getPrice(),</span>
+<span class="fc" id="L53">                Time.valueOf(sessionDto.getStartTime()),</span>
+<span class="fc" id="L54">                Time.valueOf(sessionDto.getEndTime()), Date.valueOf(sessionDto.getDate()));</span>
+<span class="fc" id="L55">        return convertToDto(session);</span>
+    }
+
+    /**
+     * Get all sessions
+     * 
+     * @author William Wang (wangwiza)
+     * @return
+     */
+    @GetMapping(value = { &quot;/sessions&quot;, &quot;/sessions/&quot; })
+    public List&lt;SessionDto&gt; getAllSessions() {
+<span class="fc" id="L66">        List&lt;Session&gt; sessions = sessionService.getAllSessions();</span>
+<span class="fc" id="L67">        List&lt;SessionDto&gt; sessionDtos = new ArrayList&lt;SessionDto&gt;();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (Session session : sessions) {</span>
+<span class="fc" id="L69">            sessionDtos.add(convertToDto(session));</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">        return sessionDtos;</span>
+    }
+
+    /**
+     * Get a session by ID
+     * 
+     * @author William Wang (wangwiza)
+     * @param id
+     * @return
+     */
+    @GetMapping(value = { &quot;/sessions/{id}&quot;, &quot;/sessions/{id}/&quot; })
+    public SessionDto getSessionById(@PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L83">        Session session = sessionService.getSessionById(id);</span>
+<span class="fc" id="L84">        return convertToDto(session);</span>
+    }
+
+
+    @GetMapping(value = { &quot;/sessions/filter&quot;, &quot;/sessions/filter/&quot;})
+    public List&lt;SessionDto&gt; getFilteredSessions(@RequestParam(required = false) String instructorUsername,
+            @RequestParam(required = false) String fitnessClassName, @RequestParam(required = false) Integer maxPrice,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = &quot;HH:mm:ss&quot;) Time startTime, 
+            @RequestParam(required = false) @DateTimeFormat(pattern = &quot;HH:mm:ss&quot;) Time endTime) {
+<span class="fc" id="L95">                Instructor instructor = null;</span>
+<span class="fc" id="L96">                FitnessClass fitnessClass = null;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                if (instructorUsername != null) {</span>
+<span class="nc" id="L98">                    instructor = instructorService.getInstructor(instructorUsername);</span>
+                }
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                if (fitnessClassName != null) {</span>
+<span class="nc" id="L101">                    fitnessClass = fitnessClassService.getFitnessClassByName(fitnessClassName);</span>
+                }
+<span class="nc" id="L103">        List&lt;Session&gt; sessions = sessionService.getSessionsByFilters(instructor, fitnessClass, maxPrice,</span>
+                startDate, endDate, startTime, endTime);
+<span class="nc" id="L105">        return sessions.stream().map(this::convertToDto).toList();</span>
+    }
+
+    /**
+     * Update a session
+     * 
+     * @author William Wang (wangwiza)
+     * @param sessionDto
+     * @return
+     */
+    @PutMapping(value = { &quot;/sessions&quot;, &quot;/sessions/&quot; })
+    public SessionDto updateSession(@RequestBody SessionDto sessionDto) {
+<span class="fc" id="L117">        Session session = sessionService.getSessionById(sessionDto.getId());</span>
+<span class="fc" id="L118">        session = sessionService.updateSession(session, sessionDto.getPrice(),</span>
+<span class="fc" id="L119">                Time.valueOf(sessionDto.getStartTime()),</span>
+<span class="fc" id="L120">                Time.valueOf(sessionDto.getEndTime()), Date.valueOf(sessionDto.getDate()));</span>
+<span class="fc" id="L121">        return convertToDto(session);</span>
+    }
+
+    /**
+     * Delete a session
+     * 
+     * @author William Wang (wangwiza)
+     * @param id
+     */
+    @DeleteMapping(value = { &quot;/sessions/{id}&quot;, &quot;/sessions/{id}/&quot; })
+    public void deleteSession(@PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L132">        Session session = sessionService.getSessionById(id);</span>
+<span class="fc" id="L133">        sessionService.deleteSession(session);</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * Convert a session to a DTO
+     * 
+     * @author William Wang (wangwiza)
+     * @param session
+     * @return
+     */
+    private SessionDto convertToDto(Session session) {
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (session == null) {</span>
+<span class="nc" id="L145">            throw new IllegalArgumentException(&quot;There is no such session!&quot;);</span>
+        }
+<span class="fc" id="L147">        SessionDto sessionDto = new SessionDto(session.getId(), session.getPrice(),</span>
+<span class="fc" id="L148">                session.getStartTime().toLocalTime(),</span>
+<span class="fc" id="L149">                session.getEndTime().toLocalTime(), session.getDate().toLocalDate(),</span>
+<span class="fc" id="L150">                session.getInstructor().getUsername(),</span>
+<span class="fc" id="L151">                session.getFitnessClass().getName());</span>
+<span class="fc" id="L152">        return sessionDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
