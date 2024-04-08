@@ -25,7 +25,9 @@ const instructorStore = useInstructorStore();
 const store = useHomeStore();
 
 onMounted(async () => {
-    await sessionStore.fetchAndSetSessions();
+    if (!sessionStore.sessions.length) {
+        await sessionStore.fetchAndSetSessions();
+    }
     await instructorStore.fetchInstructors();
     await store.fetchAndSetFitnessClasses();
 });

@@ -5,13 +5,18 @@ import { useHomeStore } from '@/stores/fitnessClassStore';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useInstructorStore } from '@/stores/instructorStore';
 import { useOwnerStore } from '@/stores/ownerStore';
+import { useSessionStore } from '@/stores/sessionStore';
 import { useStore } from '@/stores/store';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const customerStore = useCustomerStore();
 const instructorStore = useInstructorStore();
 const ownerStore = useOwnerStore();
 const homeStore = useHomeStore();
+const sessionStore = useSessionStore();
 const store = useStore();
 
 const { userRole } = storeToRefs(store);
@@ -53,6 +58,14 @@ const greeting = computed(() => {
         return 'Good evening';
     }
 });
+
+const viewRelatedSessions = async (fitnessClass) => {
+    if (userRole.value === 'Owner') {
+        return;
+    }
+    await sessionStore.fetchAndSetFilteredSessions(`fitnessClassName${fitnessClass.name}`);
+    router.push('/sessions');
+}
 </script>
 
 <template>
@@ -61,7 +74,7 @@ const greeting = computed(() => {
     </div>
     <div class="grid grid-cols-3 gap-8 p-8">
         <FitnessClassCard v-for="fclass in fitnessClasses" :key="fclass.name" :fitnessClass="fclass"
-            @update="refreshClasses"
+            @click="viewRelatedSessions(fclass)" @update="refreshClasses"
             class="transform transition-transform duration-500 hover:scale-105 bg-linkwater rounded-lg shadow-md" />
     </div>
 </template>
