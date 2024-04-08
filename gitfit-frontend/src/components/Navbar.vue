@@ -56,15 +56,22 @@
                             md:dark:hover:bg-transparent">Instructors</router-link>
                     </li>
                     <li>
-                        <div class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
+                        <router-link to="/createinstructor" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
+                            md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
+                            dark:hover:bg-gray-700 dark:hover:text-white
+                            md:dark:hover:bg-transparent">New Instructor</router-link>
+                    </li>
+                    <li>
+                        <div style="cursor: pointer;" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent" @click="account">Account</div>
                     </li>
                     <li @click="logout">
                         <div
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign
-                            Out</div>
+                            style="cursor: pointer;"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                            Sign Out</div>
                     </li>
                 </ul>
             </div>

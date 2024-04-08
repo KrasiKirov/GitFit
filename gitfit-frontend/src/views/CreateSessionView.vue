@@ -29,7 +29,7 @@ const handleSessionCreation = async (sessionData) => {
 
 const closeSuccessModalAndRedirect = () => {
   showSuccessModal.value = false;
-  router.push('/'); // Redirect to homepage
+  router.push('/sessions'); // Redirect to sessions
 };
 
 </script>
