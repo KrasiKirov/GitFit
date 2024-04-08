@@ -5,6 +5,7 @@ export const useInstructorStore = defineStore({
     id: 'instructor',
     state: () => ({
         instructor: JSON.parse(localStorage.getItem('instructor')) || null,
+        instructorLookup: {},
     }),
     actions: {
         async createInstructor(instructor) {
@@ -54,6 +55,9 @@ export const useInstructorStore = defineStore({
             try {
               const response = await fetchInstructors();
               this.instructors = response.data;
+              this.instructors.forEach(instructor => {
+                this.instructorLookup[instructor.username] = instructor;
+            });
             } catch (error) {
               console.error(error);
             }

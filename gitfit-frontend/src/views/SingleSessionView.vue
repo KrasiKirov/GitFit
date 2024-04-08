@@ -4,11 +4,13 @@ import SessionCard from '@/components/SessionCard.vue';
 import SessionCreationSuccessModal from '@/components/SessionCreationSuccessModal.vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
 import { useSessionStore } from '@/stores/sessionStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const registrationStore = useRegistrationStore();
 const sessionStore = useSessionStore();
+const customerStore = useCustomerStore();
 const router = useRouter();
 const route = useRoute();
 const showSuccessModal = ref(false);
@@ -16,9 +18,7 @@ const showModal = ref(false);
 const errorMessage = ref('');
 const message = ref('Session registered successfully.');
 const session = ref(null);
-const customer = ref({
-    "username": "john_smith",
-});
+const customer = customerStore.customer;
 
 const registrationData = ref({
     "date": `${new Date().toISOString().slice(0, 10)}`,
@@ -37,13 +37,14 @@ onBeforeMount(async () => {
 
 const handleRegister = async () => {
     try {
+        console.log(registrationData.value);
         const response = await registrationStore.createRegistration(registrationData.value);
         if (response) {
             console.log("Registration successful");
             showSuccessModal.value = true;
             setTimeout(() => {
                 closeSuccessModalAndRedirect();
-            }, 2000); // Wait for 2 seconds before redirecting
+            }, 3000); // Wait for 3 seconds before redirecting
         }
     } catch (error) {
         errorMessage.value = error.message;

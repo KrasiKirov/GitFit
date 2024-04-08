@@ -17,8 +17,6 @@ var selectedEndDate = ref('');
 var selectedStartTime = ref('');
 var selectedEndTime = ref('');
 
-
-
 const sortAttribute = ref('id');
 const sortDirection = ref('asc');
 

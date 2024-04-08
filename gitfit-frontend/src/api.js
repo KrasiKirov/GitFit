@@ -87,11 +87,6 @@ export function createInstructor(instructor) {
 }
 // return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});
 
-
-export function fetchSessions() {
-    return AXIOS.get('/sessions/');
-}
-
 export function createSession(sessionData) {
     return AXIOS.post('/sessions/', sessionData)
 }
@@ -176,13 +171,3 @@ export function fetchRegistrationsByCustomerUsername(username) {
 export function deleteRegistation(registrationId) {
     return AXIOS.delete('/registrations/' + registrationId);
 }
-
-export function createCustomer(customer) {
-    console.log("entereing api.js");
-    return AXIOS.post('/customer', customer);
-}
-
-export function updateCustomerPassword(password) {
-    return AXIOS.put(`/customer/password`, password);
-}
-
