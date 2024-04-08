@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FitnessClassRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.controller</a> &gt; <span class="el_source">FitnessClassRestController.java</span></div><h1>FitnessClassRestController.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import ca.mcgill.ecse321.gitfit.dto.FitnessClassStatusDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import ca.mcgill.ecse321.gitfit.service.FitnessClassService;
+
+import ca.mcgill.ecse321.gitfit.dto.FitnessClassDto;
+import ca.mcgill.ecse321.gitfit.model.FitnessClass;
+
+@CrossOrigin(origins = &quot;*&quot;)
+@RestController
+<span class="fc" id="L18">public class FitnessClassRestController {</span>
+    @Autowired
+    private FitnessClassService fitnessClassService;
+
+    @GetMapping(value = { &quot;/fitnessclasses&quot;, &quot;/fitnessclasses/&quot; })
+    public List&lt;FitnessClassDto&gt; findAllFitnessClasses() {
+<span class="fc" id="L24">        return fitnessClassService.getAllFitnessClasses().stream().map(fc -&gt; convertToDto(fc))</span>
+<span class="fc" id="L25">                .collect(Collectors.toList());</span>
+    }
+
+    @GetMapping(value = { &quot;/fitnessclasses/approved&quot;, &quot;/fitnessclasses/approved/&quot; })
+    public List&lt;FitnessClassDto&gt; findApprovedClasses() {
+<span class="pc" id="L30">        return fitnessClassService.getApprovedClasses().stream().map(fc -&gt; convertToDto(fc))</span>
+<span class="fc" id="L31">                .collect(Collectors.toList());</span>
+    }
+
+    @GetMapping(value = { &quot;/fitnessclasses/pending&quot;, &quot;/fitnessclasses/pending/&quot; })
+    public List&lt;FitnessClassDto&gt; findPendingClasses() {
+<span class="nc" id="L36">        return fitnessClassService.getPendingClasses().stream().map(fc -&gt; convertToDto(fc))</span>
+<span class="nc" id="L37">                .collect(Collectors.toList());</span>
+    }
+
+    @GetMapping(value = { &quot;/fitnessclasses/rejected&quot;, &quot;/fitnessclasses/rejected/&quot; })
+    public List&lt;FitnessClassDto&gt; findRejectedClasses() {
+<span class="nc" id="L42">        return fitnessClassService.getRejectedClasses().stream().map(fc -&gt; convertToDto(fc))</span>
+<span class="nc" id="L43">                .collect(Collectors.toList());</span>
+    }
+
+    @DeleteMapping(value = { &quot;/fitnessclasses/rejected&quot;, &quot;/fitnessclasses/rejected/&quot; })
+    public void deleteRejectedClasses() {
+<span class="fc" id="L48">        fitnessClassService.deleteRejectedFitnessClasses();</span>
+<span class="fc" id="L49">    }</span>
+
+    @GetMapping(value = { &quot;/fitnessclasses/{name}&quot;, &quot;/fitnessclasses/{name}/&quot; })
+    public FitnessClassDto findFitnessClassByName(@PathVariable String name) {
+<span class="fc" id="L53">        FitnessClass fitnessClass = fitnessClassService.getFitnessClassByName(name);</span>
+<span class="fc" id="L54">        return convertToDto(fitnessClass);</span>
+    }
+
+    @PostMapping(value = { &quot;/fitnessclasses&quot;, &quot;/fitnessclasses/&quot; })
+    @ResponseStatus(HttpStatus.CREATED)
+    public FitnessClassDto createFitnessClass(@RequestBody FitnessClassDto fitnessClass) {
+<span class="fc" id="L60">        FitnessClass createdFitnessClass = fitnessClassService.createFitnessClass(</span>
+<span class="fc" id="L61">                fitnessClass.getName(),</span>
+<span class="fc" id="L62">                fitnessClass.getDescription());</span>
+<span class="fc" id="L63">        return convertToDto(createdFitnessClass);</span>
+    }
+
+    @PutMapping(value = { &quot;/fitnessclasses/{name}/approval&quot;, &quot;/fitnessclasses/{name}/approval/&quot; })
+    public FitnessClassDto updateApprovalStatus(@PathVariable String name, @RequestBody FitnessClassStatusDto status) {
+<span class="fc" id="L68">        FitnessClass updatedFitnessClass = fitnessClassService.updateApprovalStatus(</span>
+                name,
+<span class="fc" id="L70">                status.toString());</span>
+<span class="fc" id="L71">        return convertToDto(updatedFitnessClass);</span>
+    }
+
+    @PutMapping(value = { &quot;/fitnessclasses/{name}&quot;, &quot;/fitnessclasses/{name}/&quot; })
+    public FitnessClassDto updateFitnessClass(@PathVariable String name, @RequestBody FitnessClassDto fitnessClass) {
+<span class="fc" id="L76">        FitnessClass updatedFitnessClass = fitnessClassService.updateFitnessClass(</span>
+                name,
+<span class="fc" id="L78">                fitnessClass.getDescription());</span>
+<span class="fc" id="L79">        return convertToDto(updatedFitnessClass);</span>
+    }
+
+    @DeleteMapping(value = { &quot;/fitnessclasses/{name}&quot;, &quot;/fitnessclasses/{name}/&quot; })
+    public void deleteFitnessClass(@PathVariable String name) {
+<span class="fc" id="L84">        fitnessClassService.deleteFitnessClass(name);</span>
+<span class="fc" id="L85">    }</span>
+
+    private FitnessClassDto convertToDto(FitnessClass fitnessClass) {
+<span class="fc" id="L88">        return new FitnessClassDto(fitnessClass.getName(), fitnessClass.getDescription(),</span>
+<span class="fc" id="L89">                fitnessClass.getApprovalStatus());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

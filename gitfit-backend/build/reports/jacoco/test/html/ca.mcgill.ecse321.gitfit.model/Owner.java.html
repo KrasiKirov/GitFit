@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Owner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.model</a> &gt; <span class="el_source">Owner.java</span></div><h1>Owner.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.model;
+
+import java.sql.Time;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+
+@Entity
+public class Owner extends Account {
+
+  // ------------------------
+  // MEMBER VARIABLES
+  // ------------------------
+
+  // Owner Attributes
+  @Id // No need for @GeneratedValue because the id is mapped to the sportCenter
+  private int id;
+
+  // Owner Associations
+  @OneToOne(optional = false)
+  @MapsId
+  private SportCenter sportCenter;
+
+  // ------------------------
+  // CONSTRUCTOR
+  // ------------------------
+
+  public Owner() {
+<span class="fc" id="L31">    super();</span>
+<span class="fc" id="L32">  }</span>
+
+  public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      SportCenter aSportCenter) {
+<span class="fc" id="L36">    super(aUsername, aEmail, aPassword, aLastName, aFirstName);</span>
+<span class="pc bpc" id="L37" title="2 of 4 branches missed.">    if (aSportCenter == null || aSportCenter.getOwner() != null) {</span>
+<span class="nc" id="L38">      throw new RuntimeException(</span>
+          &quot;Unable to create Owner due to aSportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html&quot;);
+    }
+<span class="fc" id="L41">    sportCenter = aSportCenter;</span>
+<span class="fc" id="L42">  }</span>
+
+  public Owner(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String aNameForSportCenter, int aMaxCapacityForSportCenter,
+      Time aOpeningTimeForSportCenter, Time aClosingTimeForSportCenter) {
+<span class="nc" id="L47">    super(aUsername, aEmail, aPassword, aLastName, aFirstName);</span>
+<span class="nc" id="L48">    sportCenter = new SportCenter(aNameForSportCenter, aMaxCapacityForSportCenter,</span>
+        aOpeningTimeForSportCenter, aClosingTimeForSportCenter, this);
+<span class="nc" id="L50">  }</span>
+
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setId(int aId) {
+<span class="nc" id="L57">    boolean wasSet = false;</span>
+<span class="nc" id="L58">    id = aId;</span>
+<span class="nc" id="L59">    wasSet = true;</span>
+<span class="nc" id="L60">    return wasSet;</span>
+  }
+
+  public int getId() {
+<span class="nc" id="L64">    return id;</span>
+  }
+
+  /* Code from template association_GetOne */
+  public SportCenter getSportCenter() {
+<span class="fc" id="L69">    return sportCenter;</span>
+  }
+
+  public void delete() {
+<span class="nc" id="L73">    SportCenter existingSportCenter = sportCenter;</span>
+<span class="nc" id="L74">    sportCenter = null;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    if (existingSportCenter != null) {</span>
+<span class="nc" id="L76">      existingSportCenter.delete();</span>
+    }
+<span class="nc" id="L78">    super.delete();</span>
+<span class="nc" id="L79">  }</span>
+
+  public String toString() {
+<span class="nc" id="L82">    return super.toString() + &quot;[&quot; +</span>
+<span class="nc" id="L83">        &quot;id&quot; + &quot;:&quot; + getId() + &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+        &quot;  &quot; + &quot;sportCenter = &quot;
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : &quot;null&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

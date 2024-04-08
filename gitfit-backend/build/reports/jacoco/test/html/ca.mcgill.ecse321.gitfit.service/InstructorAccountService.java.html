@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InstructorAccountService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.service</a> &gt; <span class="el_source">InstructorAccountService.java</span></div><h1>InstructorAccountService.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ca.mcgill.ecse321.gitfit.dao.InstructorRepository;
+import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
+import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
+import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.Instructor;
+
+/**
+ * This class is responsible for handling instructor account operations
+ * 
+ * @author Jatin Patel (Jatin-Pat)
+ */
+@Service
+<span class="fc" id="L23">public class InstructorAccountService {</span>
+
+    @Autowired
+    private InstructorRepository instructorRepository;
+
+    @Autowired
+    private SportCenterService sportCenterService;
+
+    @Autowired
+    private ValidatorService validatorService;
+
+    /**
+     * Retrieve an instructor by username
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     * @return Instructor
+     * @throws SportCenterException if instructor not found
+     */
+    @Transactional
+    public Instructor getInstructor(String username) {
+<span class="fc" id="L44">        Instructor instructor = instructorRepository.findInstructorByUsername(username);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (instructor == null) {</span>
+<span class="fc" id="L46">            throw new SportCenterException(HttpStatus.NOT_FOUND, &quot;Instructor not found.&quot;);</span>
+        }
+<span class="fc" id="L48">        return instructor;</span>
+    }
+
+    /**
+     * Retrieve all instructors
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @return List of all instructors
+     * @throws SportCenterException if no instructors found
+     */
+    @Transactional
+    public List&lt;Instructor&gt; getAllInstructors() {
+<span class="fc" id="L60">        List&lt;Instructor&gt; list = toList(instructorRepository.findAll());</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (list.isEmpty()) {</span>
+<span class="nc" id="L62">            throw new SportCenterException(HttpStatus.NOT_FOUND, &quot;No current instructors.&quot;);</span>
+        }
+
+<span class="fc" id="L65">        return list;</span>
+    }
+
+    /**
+     * Create an instructor. Calls the validator service to validate the input for
+     * AccountCreationDto and PasswordCheckDto
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     * @param email
+     * @param password
+     * @param lastName
+     * @param firstName
+     * @return Instructor object
+     * @throws SportCenterException if password or fields required for an account
+     *                              creation do not meet
+     *                              the requirements.
+     */
+    @Transactional
+    public Instructor createInstructor(String username, String email, String password, String lastName,
+            String firstName) {
+
+<span class="fc" id="L87">        validatorService.validate(new AccountCreationDto(username, email, lastName, firstName));</span>
+<span class="fc" id="L88">        validatorService.validate(new PasswordCheckDto(password));</span>
+<span class="fc" id="L89">        Instructor checkExistenceInstructor = instructorRepository.findInstructorByUsername(username);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (checkExistenceInstructor != null) {</span>
+<span class="fc" id="L91">            throw new SportCenterException(HttpStatus.BAD_REQUEST, &quot;Username already exists.&quot;);</span>
+        }
+
+<span class="fc" id="L94">        Instructor instructor = new Instructor(username, email, password, lastName, firstName,</span>
+<span class="fc" id="L95">                sportCenterService.getSportCenter());</span>
+<span class="fc" id="L96">        instructorRepository.save(instructor);</span>
+<span class="fc" id="L97">        return instructor;</span>
+    }
+
+    /**
+     * Update an instructor's password. Calls the validator service to validate the
+     * input for PasswordCheckDto
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     * @param newPassword
+     * @return Instructor object if updated
+     * @throws SportCenterException if password does not meet the requirements.
+     */
+    @Transactional
+    public Instructor updateInstructorPassword(String username, String newPassword) {
+<span class="fc" id="L112">        Instructor instructor = getInstructor(username);</span>
+
+<span class="fc" id="L114">        validatorService.validate(new PasswordCheckDto(newPassword));</span>
+
+<span class="fc" id="L116">        instructor.setPassword(newPassword);</span>
+<span class="fc" id="L117">        instructorRepository.save(instructor);</span>
+<span class="fc" id="L118">        return instructor;</span>
+    }
+
+    /**
+     * Deletes an instructor
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param username
+     */
+    public void deleteInstructor(String username) {
+<span class="fc" id="L128">        Instructor instructor = getInstructor(username);</span>
+<span class="fc" id="L129">        instructorRepository.delete(instructor);</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Converts an iterable to a list
+     * 
+     * @author Jatin Patel (Jatin-Pat)
+     * @param iterable
+     * @return List containing all the elements from the given iterable
+     */
+    private &lt;T&gt; List&lt;T&gt; toList(Iterable&lt;T&gt; iterable) {
+<span class="fc" id="L140">        List&lt;T&gt; resultList = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (T t : iterable) {</span>
+<span class="fc" id="L142">            resultList.add(t);</span>
+<span class="fc" id="L143">        }</span>
+<span class="fc" id="L144">        return resultList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

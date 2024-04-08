@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerAccountService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.service</a> &gt; <span class="el_source">CustomerAccountService.java</span></div><h1>CustomerAccountService.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import ca.mcgill.ecse321.gitfit.dao.CustomerRepository;
+import ca.mcgill.ecse321.gitfit.dto.AccountCreationDto;
+import ca.mcgill.ecse321.gitfit.dto.BillingInfoCheckDto;
+import ca.mcgill.ecse321.gitfit.dto.PasswordCheckDto;
+import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
+import ca.mcgill.ecse321.gitfit.model.Billing;
+import ca.mcgill.ecse321.gitfit.model.Customer;
+import jakarta.validation.Valid;
+
+/**
+ * This class is responsible for handling instructor account operations
+ * 
+ * @author Krasimir Kirov (KrasiKirov)
+ */
+@Service
+<span class="fc" id="L27">public class CustomerAccountService {</span>
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private SportCenterService sportCenterService;
+
+    @Autowired
+    private ValidatorService validatorService;
+
+    /**
+     * Retrieve a customer by username
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @param username
+     * @return Customer
+     * @throws SportCenterException if customer not found or empty username
+     */
+    @Transactional
+    public Customer getCustomer(String username) {
+
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (!StringUtils.hasText(username)) {</span>
+<span class="nc" id="L50">            throw new SportCenterException(HttpStatus.BAD_REQUEST, &quot;Username cannot be empty&quot;);</span>
+        }
+
+<span class="fc" id="L53">        Customer customer = customerRepository.findCustomerByUsername(username);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (customer == null) {</span>
+<span class="fc" id="L55">            throw new SportCenterException(HttpStatus.NOT_FOUND, &quot;Customer not found.&quot;);</span>
+        }
+<span class="fc" id="L57">        return customer;</span>
+    }
+
+    /**
+     * Retrieve all customers
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @return List of all customers
+     * @throws SportCenterException if no customers found
+     */
+    @Transactional
+    public List&lt;Customer&gt; getAllCustomers() {
+<span class="fc" id="L69">        List&lt;Customer&gt; list = toList(customerRepository.findAll());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (list.isEmpty()) {</span>
+<span class="fc" id="L71">            throw new SportCenterException(HttpStatus.NOT_FOUND, &quot;No current customers.&quot;);</span>
+        }
+
+<span class="fc" id="L74">        return list;</span>
+    }
+
+    /**
+     * Create an customer. Calls the validator service to validate the input for
+     * AccountCreationDto and BillingInfoCheckDto, and validates the Password.
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @param username
+     * @param email
+     * @param password
+     * @param lastName
+     * @param firstName
+     * @param country
+     * @param state
+     * @param postalCode
+     * @param cardNumber
+     * @param address
+     * @return Customer object in all cases and Billing object if valid non-empty
+     *         billing info
+     * @throws SportCenterException if password or fields required for an account
+     *                              creation do not meet
+     *                              the requirements, or if non-empty invalid
+     *                              billing info
+     */
+    @Transactional
+    @Valid
+    public Customer createCustomer(String username, String email, String password, String lastName,
+            String firstName, String country, String state, String postalCode, String cardNumber, String address) {
+
+<span class="fc" id="L104">        validatorService.validate(new AccountCreationDto(username, email, firstName, lastName));</span>
+
+<span class="fc" id="L106">        validatorService.validate(new PasswordCheckDto(password));</span>
+
+<span class="fc" id="L108">        Customer checkExistenceCustomer = customerRepository.findCustomerByUsername(username);</span>
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (checkExistenceCustomer != null) {</span>
+<span class="fc" id="L111">            throw new SportCenterException(HttpStatus.BAD_REQUEST, &quot;Username already exists.&quot;);</span>
+        }
+
+<span class="fc" id="L114">        Customer customer = new Customer(username, email, password, lastName, firstName,</span>
+<span class="fc" id="L115">                country, state, postalCode, cardNumber, address, sportCenterService.getSportCenter());</span>
+
+<span class="fc bfc" id="L117" title="All 6 branches covered.">        if (StringUtils.hasText(country) &amp;&amp; StringUtils.hasText(state) &amp;&amp; StringUtils.hasText(postalCode)</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">                &amp;&amp; StringUtils.hasText(cardNumber) &amp;&amp; StringUtils.hasText(address)) {</span>
+<span class="fc" id="L119">            Billing billing = new Billing();</span>
+<span class="fc" id="L120">            billing.setCountry(country);</span>
+<span class="fc" id="L121">            billing.setState(state);</span>
+<span class="fc" id="L122">            billing.setPostalCode(postalCode);</span>
+<span class="fc" id="L123">            billing.setCardNumber(cardNumber);</span>
+<span class="fc" id="L124">            billing.setAddress(address);</span>
+<span class="fc" id="L125">            customer.setBilling(billing);</span>
+<span class="fc" id="L126">            validatorService.validate(new BillingInfoCheckDto(country, state, postalCode, cardNumber, address));</span>
+        }
+<span class="fc" id="L128">        customerRepository.save(customer);</span>
+<span class="fc" id="L129">        return customer;</span>
+    }
+
+    /**
+     * Update a customer's password, by first validating it.
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @param username
+     * @param newPassword
+     * @return Customer object if updated
+     * @throws SportCenterException if password does not meet the requirements.
+     */
+    @Transactional
+    public Customer updateCustomerPassword(String username, String newPassword) {
+<span class="fc" id="L143">        Customer customer = getCustomer(username);</span>
+
+<span class="fc" id="L145">        validatorService.validate(new PasswordCheckDto(newPassword));</span>
+
+<span class="fc" id="L147">        customer.setPassword(newPassword);</span>
+<span class="fc" id="L148">        customerRepository.save(customer);</span>
+<span class="fc" id="L149">        return customer;</span>
+    }
+
+    /**
+     * Deletes a customer
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @param username
+     */
+    public void deleteCustomer(String username) {
+<span class="fc" id="L159">        Customer customer = getCustomer(username);</span>
+<span class="fc" id="L160">        customerRepository.delete(customer);</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Converts to List
+     * 
+     * @author Krasimir Kirov (KrasiKirov)
+     * @param iterable
+     * @return List containing all the elements from the given iterable
+     */
+    private &lt;T&gt; List&lt;T&gt; toList(Iterable&lt;T&gt; iterable) {
+<span class="fc" id="L171">        List&lt;T&gt; resultList = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (T t : iterable) {</span>
+<span class="fc" id="L173">            resultList.add(t);</span>
+<span class="fc" id="L174">        }</span>
+<span class="fc" id="L175">        return resultList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
