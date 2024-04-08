@@ -35,7 +35,7 @@
             class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
         <div class="mt-3 flex justify-end gap-3">
-          <button v-if="isOwner" @click="saveChanges(key)"
+          <button @click="saveChanges(key)"
             class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
             Save
           </button>
@@ -44,7 +44,7 @@
       <template v-else>
         <div class="flex justify-between items-center">
           <span class="text-gray-700">{{ displayValue(key, value) }}</span>
-          <button @click="startEdit(key)"
+          <button v-if="userRole === 'Owner'" @click="startEdit(key)"
             class="px-4 py-2 rounded-lg text-sm bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
             Edit
           </button>
@@ -57,11 +57,14 @@
 </template>
 
 <script setup>
+import { useStore } from '@/stores/store';
+import { storeToRefs } from 'pinia';
 import ErrorModal from '@/components/ErrorModal.vue';
 import { ref, reactive } from 'vue';
 import { useSportCenterStore } from '@/stores/sportCenterStore';
 
-const isOwner = localStorage.getItem('userType')==='Owner';
+const store = useStore();
+const { userRole } = storeToRefs(store);
 
 const sportCenterStore = useSportCenterStore();
 const sportCenterDetails = ref({});
