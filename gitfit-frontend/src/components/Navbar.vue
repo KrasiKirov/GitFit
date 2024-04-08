@@ -19,7 +19,7 @@
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">About</router-link>
                     </li>
-                    <li><!-- /registrations -->
+                    <li v-if="userRole === 'Customer'">
                         <router-link to="/registrations" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
@@ -31,31 +31,31 @@
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">Sessions</router-link>
                     </li>
-                    <li>
+                    <li v-if="userRole === 'Instructor'">
                         <router-link to="/new-session" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">New Session</router-link>
                     </li>
-                    <li>
+                    <li v-if="userRole === 'Owner'">
                         <router-link to="/fitness-classes" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">Fitness Classes</router-link>
                     </li>
-                    <li>
+                    <li v-if="userRole === 'Instructor'">
                         <router-link to="/new-fitness-class" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">New Fitness Class</router-link>
                     </li>
-                    <li>
+                    <li v-if="userRole === 'Owner'">
                         <router-link to="/instructors" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
                             md:dark:hover:bg-transparent">Instructors</router-link>
                     </li>
-                    <li>
+                    <li v-if="userRole === 'Owner'">
                         <router-link to="/createinstructor" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent
                             md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                             dark:hover:bg-gray-700 dark:hover:text-white
@@ -68,8 +68,7 @@
                             md:dark:hover:bg-transparent" @click="account">Account</div>
                     </li>
                     <li @click="logout">
-                        <div
-                            style="cursor: pointer;"
+                        <div style="cursor: pointer;"
                             class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                             Sign Out</div>
                     </li>
@@ -81,11 +80,16 @@
 
 <script setup>
 import router from '@/router';
+import { useStore } from '@/stores/store';
+import { storeToRefs } from 'pinia';
 
+const store = useStore();
+const { userRole } = storeToRefs(store);
 
 const logout = () => {
     console.log("Logging out");
     localStorage.clear();
+    store.updateUserRole('');
     router.push('/login');
 };
 

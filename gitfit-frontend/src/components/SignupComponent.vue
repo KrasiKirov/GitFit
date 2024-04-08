@@ -61,6 +61,7 @@
 import router from '@/router';
 import ErrorModal from '@/components/ErrorModal.vue';
 import { useCustomerStore } from '@/stores/customerStore';
+import { useStore } from '@/stores/store';
 import { defineEmits, ref } from 'vue';
 
 const showModal = ref(false);
@@ -71,7 +72,7 @@ const updateForm = () => {
     emit('updateForm');
 };
 
-
+const store = useStore();
 
 const signup = async () => {
     localStorage.clear();
@@ -85,6 +86,7 @@ const signup = async () => {
     const customerStore = useCustomerStore();
     const response = await customerStore.createCustomer(customer);
     if (response.status === 200) {
+        store.updateUserRole('Customer');
         var signupForm = document.getElementById("signupForm");
         signupForm.reset();
         router.push('/');

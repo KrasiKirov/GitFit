@@ -6,6 +6,7 @@ export const useStore = defineStore({
     state: () => ({
         fitnessClasses: [],
         loggedInUser: null,
+        userRole: '',
     }),
     actions: {
         async fetchAndSetFitnessClasses() {
@@ -24,6 +25,9 @@ export const useStore = defineStore({
             } catch (error) {
                 return error.response;
             }
+        },
+        updateUserRole(role) {
+            this.userRole = role;
         }
     },
 });

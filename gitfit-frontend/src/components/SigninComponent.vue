@@ -63,9 +63,11 @@ const login = async () => {
     const store = useStore();
     const response = await store.checkLogin(username, password);
     if (response.status === 200 && response.data.success === true) {
+        store.updateUserRole(response.data.role);
         if (response.data.role === 'Customer') {
             const customerStore = useCustomerStore();
             await customerStore.fetchAndSetCustomer(username);
+            console.log(customerStore.customer);
         } else if (response.data.role === 'Instructor') {
             const instructorStore = useInstructorStore();
             await instructorStore.fetchAndSetInstructor(username);
