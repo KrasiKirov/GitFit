@@ -40,6 +40,16 @@ const router = createRouter({
         component: CreateInstructorComponent
     },
     {
+      path: '/sessions',
+      name: 'sessions',
+      component: () => import('../views/SessionsView.vue')
+    },
+    {
+      path: '/sessions/:id',
+      name: 'SessionDetails',
+      component: () => import('../views/SingleSessionView.vue')
+    },
+    {
       path: '/InstructorManagementView',
       path: '/new-session',
       name: 'SessionCreation',

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fetchRegistrations, fetchRegistrationsByCustomerUsername, deleteRegistation } from '../api.js';
+import { createRegistration, fetchRegistrations, fetchRegistrationsByCustomerUsername, deleteRegistation } from '../api.js';
 
 export const useRegistrationStore = defineStore({
   id: 'registrations',
@@ -22,6 +22,20 @@ export const useRegistrationStore = defineStore({
       } catch (error) {
         console.error(error);
       }
+    },
+    async createRegistration(registrationData) {
+        try {
+            const response = await createRegistration(registrationData);
+            this.registrations.push(response.data);
+            return true;
+        } catch (error) {
+            console.error(error);
+            if (error.response && error.response.data.errors) {
+              // Assuming error.response.data.errors is populated based on ErrorDto
+              const errorMessages = error.response.data.errors.join(', '); // Join all errors into a single string
+              throw new Error(errorMessages);
+            }
+        }
     },
     async deleteRegistration(registrationId) {
       try {

@@ -37,7 +37,6 @@ export function deleteFitnessClass(name) {
     return AXIOS.delete(`/fitnessclasses/${encodedName}`);
 }
 
-
 export function fetchApprovedFitnessClasses() {
     return AXIOS.get('/fitnessclasses/approved');
 }
@@ -88,29 +87,12 @@ export function createInstructor(instructor) {
 }
 // return AXIOS.post('/customer', {data: customer, headers: { 'Content-Type': 'application/json' }});
 
-
-export function fetchSessions() {
-    return AXIOS.get('/sessions/');
-}
-
 export function createSession(sessionData) {
     return AXIOS.post('/sessions/', sessionData)
 }
 
 export function fetchSessionBySessionId(sessionId) {
     return AXIOS.get('/sessions/' + sessionId);
-}
-
-export function fetchRegistrations() {
-    return AXIOS.get('/registrations');
-}
-
-export function fetchRegistrationsByCustomerUsername(username) {
-    return AXIOS.get('/registrations/customer/' + username);
-}
-
-export function deleteRegistation(registrationId) {
-    return AXIOS.delete('/registrations/' + registrationId);
 }
 
 export function createFitnessClass(fitnessClassData) {
@@ -134,7 +116,6 @@ export function deleteInstructor(username) {
         headers: { 'Content-Type': 'text/plain' }
     });
 }
-
 
 export function fetchSportCenter() {
     return AXIOS.get('/sportcenter');
@@ -163,3 +144,30 @@ export function updateSportCenterHours(openingTime, closingTime) {
     });
 }
 
+export function fetchSessions() {
+    return AXIOS.get('/sessions');
+}
+
+export function fetchFilteredSessions(filter) {
+    return AXIOS.get('/sessions/filter?' + filter);
+}
+
+export function fetchSessionById(id) {
+    return AXIOS.get('/sessions/' + id);
+}
+
+export function createRegistration(registrationData) {
+    return AXIOS.post('/registrations/', registrationData);
+}
+
+export function fetchRegistrations() {
+    return AXIOS.get('/registrations');
+}
+
+export function fetchRegistrationsByCustomerUsername(username) {
+    return AXIOS.get('/registrations/customer/' + username);
+}
+
+export function deleteRegistation(registrationId) {
+    return AXIOS.delete('/registrations/' + registrationId);
+}

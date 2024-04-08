@@ -6,7 +6,7 @@ import { useStore } from '@/stores/fitnessClassStore';
 const store = useStore();
 
 onMounted(async () => {
-    await store.fetchAndSetPendingFitnessClasses();
+    await store.fetchAndSetPendingFitnessClasses(); 
 });
 
 const fitnessClasses = computed(() => store.pendingFitnessClasses);

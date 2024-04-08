@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.gitfit.dto.AccountLoginRequestDto;
-import ca.mcgill.ecse321.gitfit.dto.AccountLoginResponseDto;
 import ca.mcgill.ecse321.gitfit.dto.AccountRequestDto;
 import ca.mcgill.ecse321.gitfit.dto.InstructorAccountDto;
 import ca.mcgill.ecse321.gitfit.dto.PasswordRequestDto;
