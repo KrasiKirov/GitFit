@@ -2,15 +2,17 @@
 import RegistrationCard from '@/components/RegistrationCard.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
+import { useCustomerStore } from '@/stores/customerStore';
 
 const store = useRegistrationStore();
+const customerStore = useCustomerStore();
+const customer = customerStore.customer;
 
 onMounted(() => {
-    store.fetchRegistrationsByCustomerUsername("john_smith");
+    store.fetchRegistrationsByCustomerUsername(customer.username);
 });
 
 const registrations = computed(() => store.registrations);
-console.log(registrations);
 </script>
 
 <template>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Customer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gitfit</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.gitfit.model</a> &gt; <span class="el_source">Customer.java</span></div><h1>Customer.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.gitfit.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
+import jakarta.persistence.CascadeType;
+
+@Entity
+public class Customer extends Account {
+
+  // ------------------------
+  // MEMBER VARIABLES
+  // ------------------------
+
+  // Customer Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
+
+  // Customer Associations
+  @OneToOne(mappedBy = &quot;customer&quot;, optional = true, cascade = { CascadeType.ALL }, orphanRemoval = true)
+  private Billing billing;
+  @ManyToOne(optional = false)
+  private SportCenter sportCenter;
+
+  // ------------------------
+  // CONSTRUCTOR
+  // ------------------------
+
+  public Customer() {
+<span class="fc" id="L35">    super();</span>
+<span class="fc" id="L36">  }</span>
+
+  public Customer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      SportCenter aSportCenter) {
+<span class="fc" id="L40">    super(aUsername, aEmail, aPassword, aLastName, aFirstName);</span>
+<span class="fc" id="L41">    boolean didAddSportCenter = setSportCenter(aSportCenter);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">    if (!didAddSportCenter) {</span>
+<span class="nc" id="L43">      throw new RuntimeException(</span>
+          &quot;Unable to create customer due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html&quot;);
+    }
+<span class="fc" id="L46">  }</span>
+
+  public Customer(String aUsername, String aEmail, String aPassword, String aLastName, String aFirstName,
+      String country, String state, String postalCode, String cardNumber, String address,
+      SportCenter aSportCenter) {
+<span class="fc" id="L51">    super(aUsername, aEmail, aPassword, aLastName, aFirstName);</span>
+<span class="fc" id="L52">    boolean didAddSportCenter = setSportCenter(aSportCenter);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">    if (!didAddSportCenter) {</span>
+<span class="nc" id="L54">      throw new RuntimeException(</span>
+          &quot;Unable to create customer due to sportCenter. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html&quot;);
+    }
+<span class="fc" id="L57">  }</span>
+
+  // ------------------------
+  // INTERFACE
+  // ------------------------
+
+  public boolean setId(int aId) {
+<span class="nc" id="L64">    boolean wasSet = false;</span>
+<span class="nc" id="L65">    id = aId;</span>
+<span class="nc" id="L66">    wasSet = true;</span>
+<span class="nc" id="L67">    return wasSet;</span>
+  }
+
+  public int getId() {
+<span class="fc" id="L71">    return id;</span>
+  }
+
+  /* Code from template association_GetOne */
+  public Billing getBilling() {
+<span class="fc" id="L76">    return billing;</span>
+  }
+
+  public boolean hasBilling() {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">    boolean has = billing != null;</span>
+<span class="nc" id="L81">    return has;</span>
+  }
+
+  /* Code from template association_GetOne */
+  public SportCenter getSportCenter() {
+<span class="fc" id="L86">    return sportCenter;</span>
+  }
+
+  /* Code from template association_SetOptionalOneToOne */
+  public boolean setBilling(Billing aNewBilling) {
+<span class="fc" id="L91">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L92" title="3 of 6 branches missed.">    if (billing != null &amp;&amp; !billing.equals(aNewBilling) &amp;&amp; equals(billing.getCustomer())) {</span>
+      // Unable to setBilling, as existing billing would become an orphan
+<span class="nc" id="L94">      return wasSet;</span>
+    }
+
+<span class="fc" id="L97">    billing = aNewBilling;</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">    Customer anOldCustomer = aNewBilling != null ? aNewBilling.getCustomer() : null;</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">    if (!this.equals(anOldCustomer)) {</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">      if (anOldCustomer != null) {</span>
+<span class="nc" id="L102">        anOldCustomer.billing = null;</span>
+      }
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">      if (billing != null) {</span>
+<span class="fc" id="L105">        billing.setCustomer(this);</span>
+      }
+    }
+<span class="fc" id="L108">    wasSet = true;</span>
+<span class="fc" id="L109">    return wasSet;</span>
+  }
+
+  /* Code from template association_SetOneToMany */
+  public boolean setSportCenter(SportCenter aSportCenter) {
+<span class="fc" id="L114">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">    if (aSportCenter == null) {</span>
+<span class="nc" id="L116">      return wasSet;</span>
+    }
+
+<span class="fc" id="L119">    SportCenter existingSportCenter = sportCenter;</span>
+<span class="fc" id="L120">    sportCenter = aSportCenter;</span>
+<span class="pc bpc" id="L121" title="3 of 4 branches missed.">    if (existingSportCenter != null &amp;&amp; !existingSportCenter.equals(aSportCenter)) {</span>
+<span class="nc" id="L122">      existingSportCenter.removeCustomer(this);</span>
+    }
+<span class="fc" id="L124">    sportCenter.addCustomer(this);</span>
+<span class="fc" id="L125">    wasSet = true;</span>
+<span class="fc" id="L126">    return wasSet;</span>
+  }
+
+  public void delete() {
+<span class="nc" id="L130">    Billing existingBilling = billing;</span>
+<span class="nc" id="L131">    billing = null;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">    if (existingBilling != null) {</span>
+<span class="nc" id="L133">      existingBilling.delete();</span>
+<span class="nc" id="L134">      existingBilling.setCustomer(null);</span>
+    }
+<span class="nc" id="L136">    SportCenter placeholderSportCenter = sportCenter;</span>
+<span class="nc" id="L137">    this.sportCenter = null;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">    if (placeholderSportCenter != null) {</span>
+<span class="nc" id="L139">      placeholderSportCenter.removeCustomer(this);</span>
+    }
+<span class="nc" id="L141">    super.delete();</span>
+<span class="nc" id="L142">  }</span>
+
+  public String toString() {
+<span class="nc" id="L145">    return super.toString() + &quot;[&quot; +</span>
+<span class="nc" id="L146">        &quot;id&quot; + &quot;:&quot; + getId() + &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+        &quot;  &quot; + &quot;billing = &quot;
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        + (getBilling() != null ? Integer.toHexString(System.identityHashCode(getBilling())) : &quot;null&quot;)</span>
+<span class="nc" id="L149">        + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+        &quot;  &quot; + &quot;sportCenter = &quot;
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        + (getSportCenter() != null ? Integer.toHexString(System.identityHashCode(getSportCenter())) : &quot;null&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" tests="11" skipped="0" failures="0" errors="0" timestamp="2024-04-06T22:42:07" hostname="Vlads-Air" time="0.031">
+  <properties/>
+  <testcase name="testSetOpenHoursClosingBeforeOpening()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetSportCenterMaxCapacity()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetSportCenterName()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.001"/>
+  <testcase name="testSetOpenHours()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetSportCenterNameNull()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetSportCenterMaxCapacityNegative()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetOpenHoursNull()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testGetSportCenter()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.004"/>
+  <testcase name="testSetSportCenterNameSpaces()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <testcase name="testSetOpenHoursClosingEqualsOpening()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.001"/>
+  <testcase name="testSetSportCenterNameEmpty()" classname="ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests" time="0.002"/>
+  <system-out><![CDATA[2024-04-06T18:42:07.881-04:00  INFO 66381 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests]: SportCenterServiceTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-04-06T18:42:07.882-04:00  INFO 66381 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ca.mcgill.ecse321.gitfit.GitFitApplication for test class ca.mcgill.ecse321.gitfit.service.SportCenterServiceTests
+ca.mcgill.ecse321.gitfit.model.SportCenter@4b9ebaf6[id:1360,name:McGill Gym,maxCapacity:100]
+  openingTime=08:00:00
+  closingTime=22:00:00
+  owner = null
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

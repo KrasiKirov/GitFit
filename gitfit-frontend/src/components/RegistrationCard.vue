@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import ConfirmationModal from './ConfirmationModal.vue';
 import SessionDetailsModal from './SessionDetailsModal.vue';
 import { useRegistrationStore } from '@/stores/registrationStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { defineProps } from 'vue';
 
 const props = defineProps({
@@ -14,10 +15,12 @@ const props = defineProps({
 
 const showModal = ref(false);
 const store = useRegistrationStore();
+const customerStore = useCustomerStore();
+const customer = customerStore.customer;
 
 const confirmDelete = async () => {
     await store.deleteRegistration(props.registration.id);
-    await store.fetchRegistrationsByCustomerUsername("john_smith");
+    await store.fetchRegistrationsByCustomerUsername(customer.username);
     showModal.value = false;
 };
 
