@@ -1,14 +1,19 @@
 <script setup>
 import { ref } from 'vue';
+import { useInstructorStore } from '@/stores/instructorStore';
+
 
 const emits = defineEmits(['create-session']);
+
+const instructorStore = useInstructorStore();
+const instructor = instructorStore.instructor;
 
 const formData = ref({
   price: '',
   startTime: '',
   endTime: '',
   date: '',
-  instructorUsername: '',
+  instructorUsername: instructor.username,
   fitnessClassName: '',
 });
 
@@ -40,11 +45,6 @@ const handleSubmit = () => {
         <div>
           <label for="date" class="text-sm font-medium text-gray-700">Date</label>
           <input v-model="formData.date" type="date" id="date" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
-        </div>
-        <!-- Input for Instructor Username with a label -->
-        <div>
-          <label for="instructor" class="text-sm font-medium text-gray-700">Instructor</label>
-          <input v-model="formData.instructorUsername" type="text" id="instructor" placeholder="Enter instructor username" class="mt-1 block w-full px-4 py-2 rounded-md border border-spindle focus:border-persianblue focus:ring focus:ring-persianblue focus:ring-opacity-50" />
         </div>
         <!-- Input for Fitness Class Name with a label -->
         <div>
