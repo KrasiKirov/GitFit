@@ -2,10 +2,8 @@
 import FitnessClassCard from '@/components/FitnessClassCard.vue';
 import { onMounted, computed } from 'vue';
 import { useStore } from '@/stores/fitnessClassStore';
-import { useRouter } from 'vue-router';
 
 const store = useStore();
-const router = useRouter();
 
 onMounted(async () => {
     await store.fetchAndSetPendingFitnessClasses(); 
@@ -16,12 +14,6 @@ const fitnessClasses = computed(() => store.pendingFitnessClasses);
 const refreshClasses = async () => {
     await store.fetchAndSetPendingFitnessClasses();
 }
-
-const navigateToSessionsView = (fitnessClass) => {
-    store.setSelectedFitnessClass(fitnessClass);
-    console.log('navigating to sessions view');
-    router.push('/sessions');
-}
 </script>
 
 <template>
@@ -31,7 +23,6 @@ const navigateToSessionsView = (fitnessClass) => {
     <div class="grid grid-cols-3 gap-8 p-8">
         <FitnessClassCard v-for="fclass in fitnessClasses" :key="fclass.name" :fitnessClass="fclass"
             @update="refreshClasses"
-            @click="navigateToSessionsView(fclass)"
             class="transform transition-transform duration-500 hover:scale-105 bg-linkwater rounded-lg shadow-md" />
     </div>
 </template>

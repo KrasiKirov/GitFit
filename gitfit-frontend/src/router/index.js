@@ -12,7 +12,6 @@ import InstructorManagementView from '../views/InstructorManagementView.vue'
 import FitnessClassManagementView from '../views/FitnessClassManagementView.vue'
 import RegistrationView from '../views/RegistrationView.vue';
 import SportCenterManagementView from '../views/SportCenterManagementView.vue';
-import SessionsView from '../views/SessionsView.vue'
 
 
 
@@ -42,8 +41,8 @@ const router = createRouter({
     },
     {
       path: '/sessions',
-      name: 'SessionsView',
-      component: SessionsView
+      name: 'sessions',
+      component: () => import('../views/SessionsView.vue')
     },
     {
       path: '/sessions/:id',
