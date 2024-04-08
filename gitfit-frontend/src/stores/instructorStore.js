@@ -10,14 +10,7 @@ export const useInstructorStore = defineStore({
     actions: {
         async createInstructor(instructor) {
             try {
-                console.log('Creating instructor', instructor);
                 const response = await createInstructor(instructor);
-                console.log("no error in creating instructor");
-                localStorage.setItem('instructor', JSON.stringify(response.data));
-                localStorage.setItem('userType', 'Instructor');
-                this.updateInstructorFromLocalStorage();
-                // this.instructor = response.data;
-                console.log(this.instructor);
                 return response;
             } catch (error) {
                 console.log(error);
