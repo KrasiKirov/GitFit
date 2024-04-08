@@ -1,6 +1,7 @@
 <script setup>
-import { defineProps} from 'vue'
-import { updateFitnessClassStatus } from '@/api'
+import { updateFitnessClassStatus } from '@/api';
+import { useStore } from '@/stores/store';
+import { defineProps, computed } from 'vue';
 
 const props = defineProps({
     fitnessClass: {
@@ -10,6 +11,9 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update'])
+
+const store = useStore();
+const userRole = computed(() => store.userRole)
 
 const approveClass = async () => {
     await updateFitnessClassStatus(props.fitnessClass.name, 'APPROVED')
@@ -35,7 +39,7 @@ const rejectClass = async () => {
                 <p class="text-moodyblue text-xl font-medium mb-2">
                     {{ fitnessClass.description }}
                 </p>
-                <div class="flex items-center mt-4">
+                <div v-if="userRole === 'Owner'" class="flex items-center mt-4">
                     <font-awesome-icon icon="heart" class="text-red-500 mr-4 cursor-pointer text-2xl"
                         @click="approveClass" />
                     <font-awesome-icon icon="thumbs-down" class="text-gray-500 cursor-pointer text-2xl"

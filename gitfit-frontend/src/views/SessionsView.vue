@@ -5,7 +5,7 @@ import DatePicker from '@/components/DatePicker.vue';
 import TimePicker from '@/components/TimePicker.vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useInstructorStore } from '@/stores/instructorStore';
-import { useStore } from '@/stores/fitnessClassStore';
+import { useHomeStore } from '@/stores/fitnessClassStore';
 import { useRouter } from 'vue-router';
 
 var filters = ref();
@@ -22,10 +22,12 @@ const sortDirection = ref('asc');
 
 const sessionStore = useSessionStore();
 const instructorStore = useInstructorStore();
-const store = useStore();
+const store = useHomeStore();
 
 onMounted(async () => {
-    await sessionStore.fetchAndSetSessions();
+    if (!sessionStore.sessions.length) {
+        await sessionStore.fetchAndSetSessions();
+    }
     await instructorStore.fetchInstructors();
     await store.fetchAndSetFitnessClasses();
 });
@@ -179,7 +181,7 @@ const updatePrice = (event) => {
                     <option disabled value="">Filter by Instructor</option>
                     <option value="">No Filter</option>
                     <option v-for="instructor in instructors" :key="instructor.username" :value="instructor.username">{{
-                        instructor.firstName + ' ' + instructor.lastName }}
+                    instructor.firstName + ' ' + instructor.lastName }}
                     </option>
                 </select>
                 <!-- input for max price -->
@@ -221,8 +223,7 @@ const updatePrice = (event) => {
             </thead>
             <tbody>
                 <tr class="bg-spindle border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    v-for="session in sortedAndFilteredSessions" :key="session.id"
-                    @click="selectSession(session)"
+                    v-for="session in sortedAndFilteredSessions" :key="session.id" @click="selectSession(session)"
                     style="cursor: pointer;">
                     <td class="px-6 py-4">{{ session.id }}</td>
                     <td class="px-6 py-4">{{ session.date }}</td>
@@ -230,10 +231,10 @@ const updatePrice = (event) => {
                     <td class="px-6 py-4">{{ session.endTime }}</td>
                     <td class="px-6 py-4">{{ session.price }}</td>
                     <td class="px-6 py-4">{{
-                        (instructorLookup[session.instructorUsername] || {}).firstName
-                        + ' '
-                        + (instructorLookup[session.instructorUsername] || {}).lastName
-                    }}</td>
+                    (instructorLookup[session.instructorUsername] || {}).firstName
+                    + ' '
+                    + (instructorLookup[session.instructorUsername] || {}).lastName
+                }}</td>
                     <td class="px-6 py-4">{{ session.fitnessClassName }}</td>
                 </tr>
             </tbody>

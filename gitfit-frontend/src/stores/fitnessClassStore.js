@@ -7,7 +7,7 @@ import {
 } from '../api.js'; // Update the import route to api.js
 
 
-export const useStore = defineStore({
+export const useHomeStore = defineStore({
     id: 'main',
     state: () => ({
         fitnessClasses: [],
