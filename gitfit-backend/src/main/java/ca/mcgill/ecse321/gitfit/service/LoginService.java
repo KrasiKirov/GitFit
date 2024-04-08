@@ -13,7 +13,7 @@ import ca.mcgill.ecse321.gitfit.model.Owner;
 
 /**
  * This class is responsible for handling login operations
- * 
+ *
  * @Author Jatin Patel (Jatin-Pat)
  */
 @Service
@@ -30,7 +30,7 @@ public class LoginService {
 
     /**
      * Login method
-     * 
+     *
      * @author Jatin Patel (Jatin-Pat)
      * @param username
      * @param password
@@ -49,7 +49,6 @@ public class LoginService {
         if (owner != null && owner.getPassword().equals(password)) {
             return new AccountLoginResponseDto(true, "Owner");
         }
-        
         return new AccountLoginResponseDto(false, null);
     }
 }

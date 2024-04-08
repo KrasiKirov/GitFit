@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import { createCustomer, updateCustomerPassword } from '@/api';
+import { createCustomer, updateCustomerPassword, fetchCustomer } from '@/api';
 
 export const useCustomerStore = defineStore({
     id: 'customer',
@@ -7,8 +7,19 @@ export const useCustomerStore = defineStore({
         customer: JSON.parse(localStorage.getItem('customer')) || null,
     }),
     actions: {
-        getCustomer() {
-            return this.customer;
+        async fetchAndSetCustomer(username) {
+            try {
+                console.log("[[[[[[[[[[");
+                console.log(username);
+                const response = await fetchCustomer(username);
+                localStorage.setItem('customer', JSON.stringify(response.data));
+                localStorage.setItem('userType', 'Customer');
+                this.updateCustomerFromLocalStorage();
+                console.log("update localstorage complete")
+            } catch (error) {
+                console.log("***********************")
+                console.error(error);
+            }
         },
         async createCustomer(customer) {
             try {
@@ -16,6 +27,7 @@ export const useCustomerStore = defineStore({
                 const response = await createCustomer(customer);
                 console.log("no error in creating customer");
                 localStorage.setItem('customer', JSON.stringify(response.data));
+                localStorage.setItem('userType', 'Customer');
                 this.updateCustomerFromLocalStorage();
                 // this.customer = response.data;
                 console.log(this.customer);

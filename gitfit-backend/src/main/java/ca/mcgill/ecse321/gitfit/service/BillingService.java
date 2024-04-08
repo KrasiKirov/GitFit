@@ -108,11 +108,12 @@ public class BillingService {
         if (customer == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "The customer does not exist.");
         }
-        Billing billing = billingRepository.findBillingByCustomer(customer);
+        Billing billing = getBilling(username);
         if (billing == null) {
             throw new SportCenterException(HttpStatus.NOT_FOUND, "The customer does not have billing set up.");
         }
-        billingRepository.deleteById(billing.getId());
+        billing.delete();
+
     }
 
 }
