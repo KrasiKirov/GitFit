@@ -1,17 +1,17 @@
 <script setup>
 import { defineProps } from 'vue';
-import { useStore } from '@/stores/fitnessClassStore';
+import { useHomeStore } from '@/stores/fitnessClassStore';
 
 const props = defineProps({
-  fitnessClass: {
-    type: Object,
-    required: true,
-  },
+    fitnessClass: {
+        type: Object,
+        required: true,
+    },
 });
 
 const deleteCourseHandler = async () => {
-  const store = useStore();
-  await store.deleteFitnessClass(props.fitnessClass.name);
+    const store = useHomeStore();
+    await store.deleteFitnessClass(props.fitnessClass.name);
 };
 </script>
 
