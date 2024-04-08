@@ -35,7 +35,7 @@
             class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
         <div class="mt-3 flex justify-end gap-3">
-          <button @click="saveChanges(key)"
+          <button v-if="isOwner" @click="saveChanges(key)"
             class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
             Save
           </button>
@@ -60,6 +60,8 @@
 import ErrorModal from '@/components/ErrorModal.vue';
 import { ref, reactive } from 'vue';
 import { useSportCenterStore } from '@/stores/sportCenterStore';
+
+const isOwner = localStorage.getItem('userType')==='Owner';
 
 const sportCenterStore = useSportCenterStore();
 const sportCenterDetails = ref({});
