@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar.vue';
 
 <template>
 
-        <Navbar />
+    <Navbar v-if="!$route.meta.hideNavbar" />
     <RouterView />
 </template>
 
