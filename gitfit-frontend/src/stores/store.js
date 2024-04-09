@@ -12,7 +12,6 @@ export const useStore = defineStore({
         async fetchAndSetFitnessClasses() {
             try {
                 const response = await fetchFitnessClasses();
-                console.log(response.data);
                 this.fitnessClasses = response.data;
             } catch (error) {
                 console.error(error);

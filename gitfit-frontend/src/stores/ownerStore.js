@@ -15,16 +15,11 @@ export const useOwnerStore = defineStore({
                 localStorage.setItem('userType', 'Owner');
                 await this.updateOwnerFromLocalStorage();
             } catch (error) {
-                console.error(error);
             }
         },
         async updateOwnerPassword(password) {
             try {
-                console.log('Updating owner password');
-                console.log(password);
-                // console.log(password);
                 const response = await updateOwnerPassword(password);
-                console.log(response)
                 localStorage.setItem('owner', JSON.stringify(response.data));
                 this.updateOwnerFromLocalStorage();
                 return response;

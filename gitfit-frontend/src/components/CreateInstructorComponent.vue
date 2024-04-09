@@ -54,7 +54,7 @@
 <script setup>
 import router from '@/router';
 import { useInstructorStore } from '@/stores/instructorStore';
-import { defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 import ErrorModal from '@/components/ErrorModal.vue';
 
 const showModal = ref(false);

@@ -67,7 +67,6 @@ const login = async () => {
         if (response.data.role === 'Customer') {
             const customerStore = useCustomerStore();
             await customerStore.fetchAndSetCustomer(username);
-            console.log(customerStore.customer);
         } else if (response.data.role === 'Instructor') {
             const instructorStore = useInstructorStore();
             await instructorStore.fetchAndSetInstructor(username);

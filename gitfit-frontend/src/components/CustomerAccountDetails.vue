@@ -147,8 +147,6 @@ const deleteBilling = async () => {
         errorMessage.value = response.data.errors[0];
         showModal.value = true;
     }
-
-
 };
 
 </script>
