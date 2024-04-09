@@ -4,9 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -205,13 +203,7 @@ public class BillingServiceTests {
         String postalCode = "H3A0G4";
         String cardNumber = "8888888888888888";
         String address = "666 McGill Avenue";
-        Billing billing1 = new Billing();
-        billing1.setCountry(country);
-        billing1.setState(state);
-        billing1.setPostalCode(postalCode);
-        billing1.setCardNumber(cardNumber);
-        billing1.setAddress(address);
-        billing1.setId(1);
+        Billing billing1 = mock(Billing.class);
 
         // mock behaviours
         when(customerRepository.findCustomerByUsername(any(String.class))).thenReturn(customer);
@@ -219,7 +211,7 @@ public class BillingServiceTests {
 
         billingService.deleteBilling("Bob");
 
-        verify(billingRepository, times(1)).deleteById(any(Integer.class));
+        verify(billing1, times(1)).delete();
     }
 
     @Test
