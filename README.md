@@ -20,7 +20,7 @@ We are 6 McGill University students from the Faculty of Engineering
 |------------------------|------|-----------|----------|----------|
 | William Wang       | Documentation Lead | 20     |    30     |    0      |
 | Li Yang Lei       | Project Manager | 18    |    40     |    0      |
-| Kevin-Ruikai Li | Software Developer | 16      |    15     |    0      |
+| Kevin-Ruikai Li | Software Developer | 16      |    15     |    25      |
 | Vlad Arama | Software Developer | 16    |    25     |    0      |
 | Krasimir Kirov | Testing Lead |   17   |    22    |    25      |
 | Jatin Patel | Software Developer | 16     |    28     |    0      |
