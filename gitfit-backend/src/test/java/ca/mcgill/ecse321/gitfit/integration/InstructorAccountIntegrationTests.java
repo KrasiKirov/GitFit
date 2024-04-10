@@ -187,7 +187,7 @@ public class InstructorAccountIntegrationTests {
 
                 assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
                 assertTrue(response.getBody()
-                                .contains("Username already exists."));
+                                .contains("Username already exists as instructor."));
 
                 ResponseEntity<InstructorAccountDto[]> response2 = client.getForEntity("/instructors/",
                                 InstructorAccountDto[].class);

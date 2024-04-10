@@ -209,7 +209,7 @@ public class CustomerAccountIntegrationTests {
 
                 assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
                 assertTrue(response.getBody()
-                                .contains("Username already exists."));
+                                .contains("Username already exists as customer."));
 
                 ResponseEntity<CustomerAccountDto[]> response2 = client.getForEntity("/customers/",
                                 CustomerAccountDto[].class);
