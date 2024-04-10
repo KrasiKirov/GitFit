@@ -59,7 +59,7 @@ The project report for this deliverable can be found [here]().
 | ------------- | ------------- | ------------- |
 | William Wang | |  |
 | Li Yang Lei |  |  |
-| Kevin-Ruikai Li |  | |
+| Kevin-Ruikai Li | <ul><li>Implemented the frontend for the Sessions List view</li><li>Implemented the frontend for Session Details</li><li>Fixed service tests for Fitness Class</li></ul> | 25 |
 | Vlad Arama |  |  |
 | Krasimir Kirov | <ul><li>Responsible of frontend of create new session view</li><li>Responsible of frontend of propose new fitness class view</li><li>Responsible of frontend of sport center information view</li><li>Fixed customer services</li><li>Fixed customer integrations tests</li><li>Backend and Frontend Setup Documentation for Deliverable 3</li></ul>  | 25 |
 | Jatin Patel |  |  |
