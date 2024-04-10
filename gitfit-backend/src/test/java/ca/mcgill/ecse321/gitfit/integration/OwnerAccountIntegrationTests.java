@@ -89,7 +89,7 @@ public class OwnerAccountIntegrationTests {
         HttpEntity<String> request = new HttpEntity<>(newPassword);
 
         // Act
-        ResponseEntity<OwnerAccountDto> response = client.exchange("/owner/Password",
+        ResponseEntity<OwnerAccountDto> response = client.exchange("/owner/password",
                 HttpMethod.PUT, request,
                 OwnerAccountDto.class);
 
@@ -109,7 +109,7 @@ public class OwnerAccountIntegrationTests {
         HttpEntity<String> request = new HttpEntity<>(newPassword);
 
         // Act
-        ResponseEntity<String> response = client.exchange("/owner/Password",
+        ResponseEntity<String> response = client.exchange("/owner/password",
                 HttpMethod.PUT, request, String.class);
 
         assertNotNull(response);

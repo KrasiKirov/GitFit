@@ -48,6 +48,8 @@ public class OwnerRepositoryTests {
         SportCenter sportCenter = new SportCenter(sportCenterName, maxCapacity, openingTime, closingTime,
                 username, email, password, lastName, firstName);
 
+        sportCenter = sportCenterRepository.save(sportCenter);
+
         Owner owner = sportCenter.getOwner();
         // save owner to database
         owner = ownerRepository.save(owner);
