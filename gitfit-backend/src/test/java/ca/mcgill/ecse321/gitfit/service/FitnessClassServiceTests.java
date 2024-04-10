@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.gitfit.dao.FitnessClassRepository;
+import ca.mcgill.ecse321.gitfit.dao.SessionRepository;
 import ca.mcgill.ecse321.gitfit.exception.SportCenterException;
 import ca.mcgill.ecse321.gitfit.model.FitnessClass;
 import ca.mcgill.ecse321.gitfit.model.FitnessClassApprovalStatus;
@@ -29,6 +30,8 @@ public class FitnessClassServiceTests {
     private FitnessClassRepository fitnessClassRepository;
     @Mock
     private SportCenterService sportCenterService;
+    @Mock
+    private SessionRepository sessionRepository;
     @InjectMocks
     private FitnessClassService fitnessClassService;
 
