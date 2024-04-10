@@ -13,8 +13,12 @@ export const useHomeStore = defineStore({
         fitnessClasses: [],
         approvedFitnessCLasses: [],
         pendingFitnessClasses: [],
+        selectedFitnessClass: null,
     }),
     actions: {
+        setSelectedFitnessClass(fitnessClass) {
+            this.selectedFitnessClass = fitnessClass;
+        },
         async fetchAndSetFitnessClasses() {
             try {
                 const response = await fetchFitnessClasses();
