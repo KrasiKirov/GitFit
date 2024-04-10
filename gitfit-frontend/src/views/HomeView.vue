@@ -63,7 +63,8 @@ const viewRelatedSessions = async (fitnessClass) => {
     if (userRole.value === 'Owner') {
         return;
     }
-    await sessionStore.fetchAndSetFilteredSessions(`fitnessClassName${fitnessClass.name}`);
+    await homeStore.setSelectedFitnessClass(fitnessClass);
+    await sessionStore.fetchAndSetFilteredSessions(`fitnessClassName=${fitnessClass.name}`);
     router.push('/sessions');
 }
 </script>

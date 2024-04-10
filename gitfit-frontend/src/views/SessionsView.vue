@@ -8,14 +8,7 @@ import { useInstructorStore } from '@/stores/instructorStore';
 import { useHomeStore } from '@/stores/fitnessClassStore';
 import { useRouter } from 'vue-router';
 
-var filters = ref();
-var selectedInstructor = ref('');
-var selectedFitnessClass = ref('');
-var selectedPrice = ref('');
-var selectedStartDate = ref('');
-var selectedEndDate = ref('');
-var selectedStartTime = ref('');
-var selectedEndTime = ref('');
+const router = useRouter();
 
 const sortAttribute = ref('id');
 const sortDirection = ref('asc');
@@ -26,7 +19,7 @@ const store = useHomeStore();
 
 onMounted(async () => {
     if (!sessionStore.sessions.length) {
-        await sessionStore.fetchAndSetSessions();
+        await sessionStore.fetchAndSetFilteredSessions(params);
     }
     await instructorStore.fetchInstructors();
     await store.fetchAndSetFitnessClasses();
@@ -38,13 +31,27 @@ var instructorLookup = computed(() => instructorStore.instructorLookup);
 var instructors = computed(() => instructorStore.instructors);
 var fitnessClasses = computed(() => store.fitnessClasses);
 
-const router = useRouter();
-
 const selectSession = async (session) => {
     await sessionStore.fetchAndSetSessionById(session.id);
     console.log(sessionStore.session)
     router.push({ name: 'SessionDetails', params: { id: session.id } });
 }
+
+// filter variables
+var params = '';
+var selectedFitnessClass = ref('');
+if (store.selectedFitnessClass !== null && store.selectedFitnessClass.name !== '') {
+    params += `fitnessClassName=${store.selectedFitnessClass.name}&`;
+    var selectedFitnessClassName = computed(() => store.selectedFitnessClass.name);
+    selectedFitnessClass.value = selectedFitnessClassName.value;
+}
+var filters = ref();
+var selectedInstructor = ref('');
+var selectedPrice = ref('');
+var selectedStartDate = ref('');
+var selectedEndDate = ref('');
+var selectedStartTime = ref('');
+var selectedEndTime = ref('');
 
 // updates the filtered sessions when any of the filters change
 watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDate, selectedEndDate, selectedStartTime, selectedEndTime],
@@ -59,7 +66,7 @@ watch([selectedInstructor, selectedFitnessClass, selectedPrice, selectedStartDat
             'endTime': newEndTime
         };
         console.log(filters.value);
-        var params = '';
+        params = '';
         if (newInstructor !== '') {
             params += `instructorUsername=${newInstructor}&`;
         }
