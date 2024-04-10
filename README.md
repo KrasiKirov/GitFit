@@ -22,7 +22,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Li Yang Lei       | Project Manager | 18    |    40     |    0      |    0      |
 | Kevin-Ruikai Li | Software Developer | 16      |    15     |    0      |    0      |
 | Vlad Arama | Software Developer | 16    |    25     |    0      |    0      |
-| Krasimir Kirov | Testing Lead |   17   |    17    |    0      |    0      |
+| Krasimir Kirov | Testing Lead |   17   |    22    |    25      |    0      |
 | Jatin Patel | Software Developer | 16     |    28     |    0      |    0      |
 
 ### Deliverable 1
@@ -61,19 +61,5 @@ The project report for this deliverable can be found [here]().
 | Li Yang Lei |  |  |
 | Kevin-Ruikai Li |  | |
 | Vlad Arama |  |  |
-| Krasimir Kirov |  |  |
-| Jatin Patel |  |  |
-
-
-### Deliverable 4
-
-The project report for this deliverable can be found [here]().
-
-| Name | Contributions | Hours |
-| ------------- | ------------- | ------------- |
-| William Wang | |  |
-| Li Yang Lei |  |  |
-| Kevin-Ruikai Li |  | |
-| Vlad Arama |  |  |
-| Krasimir Kirov |  |  |
+| Krasimir Kirov | <ul><li>Responsible of frontend of create new session view</li><li>Responsible of frontend of propose new fitness class view</li><li>Responsible of frontend of sport center information view</li><li>Fixed customer services</li><li>Fixed customer integrations tests</li><li>Backend and Frontend Setup Documentation for Deliverable 3</li></ul>  | 25 |
 | Jatin Patel |  |  |
