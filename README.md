@@ -23,7 +23,7 @@ We are 6 McGill University students from the Faculty of Engineering
 | Kevin-Ruikai Li | Software Developer | 16      |    15     |    25      |
 | Vlad Arama | Software Developer | 16    |    25     |    20      |
 | Krasimir Kirov | Testing Lead |   17   |    22    |    25      |
-| Jatin Patel | Software Developer | 16     |    28     |    30      |
+| Jatin Patel | Software Developer | 16     |    28     |    28      |
 
 ### Deliverable 1
 
@@ -62,4 +62,4 @@ The project report for this deliverable can be found [here]().
 | Kevin-Ruikai Li | <ul><li>Implemented the frontend for the Sessions List view</li><li>Implemented the frontend for Session Details</li><li>Fixed service tests for Fitness Class</li></ul> | 25 |
 | Vlad Arama | <ul><li>Implemented Registration View Frontend</li><li>Improved Registration Controller</li><li>Reviewed multiple pull requests</li><li>GitHub issue tracking and project management</li><li>Prepared Owner Demo for Presentation</li></ul> | 20 |
 | Krasimir Kirov | <ul><li>Responsible of frontend of create new session view</li><li>Responsible of frontend of propose new fitness class view</li><li>Responsible of frontend of sport center information view</li><li>Fixed customer services</li><li>Fixed customer integrations tests</li><li>Backend and Frontend Setup Documentation for Deliverable 3</li></ul>  | 25 |
-| Jatin Patel | <ul><li>Implemented Instructor Management View</li><li>Implemented Fitness Class Management View</li><li>Updated Instructor/Owner Backend (Controller, Service class) to support frontend requirements</li><li>Implemented login functionality to backend</li><li>Updated Integration tests for owner and instructor</li><li>Prepared presentation (slides, key features) and contributed to presentation planning meetings</li></ul>  | 30 |
+| Jatin Patel | <ul><li>Implemented Instructor Management View</li><li>Implemented Fitness Class Management View</li><li>Updated Instructor/Owner Backend (Controller, Service class) to support frontend requirements</li><li>Implemented login functionality to backend</li><li>Updated Integration tests for owner and instructor</li><li>Prepared presentation (slides, key features) and contributed to presentation planning meetings</li></ul>  | 28 |
