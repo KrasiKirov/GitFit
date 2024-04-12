@@ -57,7 +57,7 @@ The project report for this deliverable can be found [here]().
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
-| William Wang | |  |
+| William Wang | <li>Setup frontend Vue 3 application using Vite, Tailwind CSS, and Pinia</li><li>Implemented Homepage, Navbar, and FitnessClassCard</li><li>Handled conditional page routing with user role</li><li>Developed Axios template for team</li><li>Designed backend improvements</li><li>Added calls to Unsplash API for auto-generated images</li> | 30 |
 | Li Yang Lei | <li>Implemented the frontend authentication logic for all types of users</li> <li>Implemented the frontend of accounts detail view for three types of users</li> <li>Implemented the frontend of create customer account view</li> <li>Implemented the frontend of create instructor account view</li> <li>Implemented the frontend of edit password view for all types of users</li> <li>Implemented the frontend of edit billing view for customers</li> <li>Implemented the frontend of login view</li> <li>Implemented the frontend of signup view</li> <li>Fixed billing service and its respective service test</li>  | 40 |
 | Kevin-Ruikai Li | <ul><li>Implemented the frontend for the Sessions List view</li><li>Implemented the frontend for Session Details</li><li>Fixed service tests for Fitness Class</li></ul> | 25 |
 | Vlad Arama | <ul><li>Implemented Registration View Frontend</li><li>Improved Registration Controller</li><li>Reviewed multiple pull requests</li><li>GitHub issue tracking and project management</li><li>Prepared Owner Demo for Presentation</li></ul> | 20 |
