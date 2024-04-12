@@ -18,7 +18,7 @@ We are 6 McGill University students from the Faculty of Engineering
 ### Project
 | NAME                   | ROLE |  SPRINT 1 | SPRINT 2 | SPRINT 3 |
 |------------------------|------|-----------|----------|----------|
-| William Wang       | Documentation Lead | 20     |    30     |    0      |
+| William Wang       | Documentation Lead | 20     |    30     |    30      |
 | Li Yang Lei       | Project Manager | 18    |    40     |    40      |
 | Kevin-Ruikai Li | Software Developer | 16      |    15     |    25      |
 | Vlad Arama | Software Developer | 16    |    25     |    20      |
@@ -27,7 +27,7 @@ We are 6 McGill University students from the Faculty of Engineering
 
 ### Deliverable 1
 
-The project report for this deliverable can be found [here](https://github.com/McGill-ECSE321-Winter2024/project-group-6/wiki).
+The project report for this deliverable can be found [here](https://github.com/McGill-ECSE321-Winter2024/project-group-6/wiki/D1:-Detailed-Use-Case-Specifications).
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
@@ -40,7 +40,7 @@ The project report for this deliverable can be found [here](https://github.com/M
 
 ### Deliverable 2
 
-The project report for this deliverable can be found [here]().
+The project report for this deliverable can be found [here](https://github.com/McGill-ECSE321-Winter2024/project-group-6/wiki/D2:-Key-Decisions).
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
@@ -53,7 +53,7 @@ The project report for this deliverable can be found [here]().
 
 ### Deliverable 3
 
-The project report for this deliverable can be found [here]().
+The project report for this deliverable can be found [here](https://github.com/McGill-ECSE321-Winter2024/project-group-6/wiki/D3:-Project-Setup-and-Deployment-Documentation).
 
 | Name | Contributions | Hours |
 | ------------- | ------------- | ------------- |
