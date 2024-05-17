@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Project Overview
 Welcome to GitFit - Your Ultimate Sport Center Management System! 🏋️‍♂️🔗 This GitHub repository is home to the codebase that powers GitFit, our cutting-edge web application designed to revolutionize the management of sport centers. With GitFit, we empower owners and instructors to seamlessly organize and supervise classes, while offering customers a user-friendly platform to explore schedules, register for sessions, and take control of their fitness journey. GitFit is not just a project; it's a commitment to providing a robust and intuitive solution that enhances the operations of sport centers and delivers an unparalleled experience for owners, instructors, and fitness enthusiasts. Together, let's elevate the world of fitness management with GitFit! 💪🌐
 
@@ -63,3 +64,6 @@ The project report for this deliverable can be found [here](https://github.com/M
 | Vlad Arama | <ul><li>Implemented Registration View Frontend</li><li>Improved Registration Controller</li><li>Reviewed multiple pull requests</li><li>GitHub issue tracking and project management</li><li>Prepared Owner Demo for Presentation</li></ul> | 20 |
 | Krasimir Kirov | <ul><li>Responsible of frontend of create new session view</li><li>Responsible of frontend of propose new fitness class view</li><li>Responsible of frontend of sport center information view</li><li>Fixed customer services</li><li>Fixed customer integrations tests</li><li>Backend and Frontend Setup Documentation for Deliverable 3</li></ul>  | 25 |
 | Jatin Patel | <ul><li>Implemented Instructor Management View</li><li>Implemented Fitness Class Management View</li><li>Updated Instructor/Owner Backend (Controller, Service class) to support frontend requirements</li><li>Implemented login functionality to backend</li><li>Updated Integration tests for owner and instructor</li><li>Prepared presentation (slides, key features) and contributed to presentation planning meetings</li></ul>  | 28 |
+=======
+# GitFit
+>>>>>>> c6791d852dd6930c735861a8334f290f05a17daa
